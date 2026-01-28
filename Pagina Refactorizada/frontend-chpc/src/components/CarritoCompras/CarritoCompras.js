@@ -1,7 +1,6 @@
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: "CarritoCompras",
@@ -61,7 +60,7 @@ export default {
     async cargarDatosUsuario() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${API_BASE_URL}/usuarios/perfil`, {
+        const response = await apiClient.get(\'/usuarios/perfil\', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -155,8 +154,7 @@ export default {
           observaciones: 'Pedido pendiente de coordinación con vendedor' // Nota automática
         };
 
-        const response = await axios.post(
-          `${API_BASE_URL}/ordenes`,
+        const response = await apiClient.post(\'/ordenes\',
           orderData,
           {
             headers: { Authorization: `Bearer ${token}` }

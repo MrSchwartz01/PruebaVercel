@@ -81,8 +81,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
 
@@ -111,7 +110,7 @@ export default {
       this.errorMessage = '';
       
       try {
-        const response = await axios.get(`${API_BASE_URL}/promociones/activas`);
+        const response = await apiClient.get('/promociones/activas');
         // Procesar las promociones para asignar la imagen correcta
         this.promocionesActivas = response.data.map(promo => ({
           ...promo,

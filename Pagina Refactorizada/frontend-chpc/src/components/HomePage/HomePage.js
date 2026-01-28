@@ -1,5 +1,4 @@
-import axios from "axios";
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
 import CarouselBanner from "../CarouselBanner/CarouselBanner.vue";
@@ -95,7 +94,7 @@ export default {
     try {
       // Cargar Banners desde la API
       try {
-        const bannersResponse = await axios.get(`${API_BASE_URL}/tienda/banners`);
+        const bannersResponse = await apiClient.get(\'/tienda/banners\');
         this.banners = bannersResponse.data.data || bannersResponse.data || [];
         console.log('Banners cargados:', this.banners.length);
       } catch (bannerError) {
@@ -108,7 +107,7 @@ export default {
       }
 
       // Cargar Productos
-      const productosResponse = await axios.get(`${API_BASE_URL}/tienda/productos`);
+      const productosResponse = await apiClient.get(\'/tienda/productos\');
       this.productos = productosResponse.data.map((producto) => ({
         ...producto,
         imagen_url:
@@ -125,7 +124,7 @@ export default {
       console.log('Categorías únicas encontradas:', categoriasUnicas);
       
       // Cargar Promociones Activas
-      const promocionesResponse = await axios.get(`${API_BASE_URL}/promociones/activas`);
+      const promocionesResponse = await apiClient.get(\'/promociones/activas\');
       this.promociones = promocionesResponse.data;
       
       // Combinar promociones con productos

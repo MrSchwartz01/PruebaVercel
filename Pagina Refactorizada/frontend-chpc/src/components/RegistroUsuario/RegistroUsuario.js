@@ -1,5 +1,5 @@
-import axios from 'axios';
-import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
+import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 
 export default {
   name: 'RegistroUsuario',
@@ -28,7 +28,7 @@ export default {
         return;
       }
       try {
-        const response = await axios.post(`${API_BASE_URL}/auth/registro`, {
+        const response = await apiClient.post('/auth/registro', {
           nombre: this.nombre,
           apellido: this.apellido,
           username: this.nombre_usuario,

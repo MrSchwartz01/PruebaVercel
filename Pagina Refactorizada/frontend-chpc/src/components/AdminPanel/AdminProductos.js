@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: 'AdminProductos',
@@ -49,7 +48,7 @@ export default {
       try {
         this.cargando = true;
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${API_BASE_URL}/tienda/productos`, {
+        const response = await apiClient.get(\'/tienda/productos\', {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Mostrar todos los productos, incluso inactivos
@@ -85,7 +84,7 @@ export default {
           alert('Producto actualizado correctamente');
         } else {
           // Crear nuevo producto
-          await axios.post(`${API_BASE_URL}/tienda/productos`, this.formProducto, {
+          await apiClient.post(\'/tienda/productos\', this.formProducto, {
             headers,
           });
           alert('Producto creado correctamente');
@@ -130,7 +129,7 @@ export default {
       try {
         this.cargandoImagenes = true;
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${API_BASE_URL}/images/producto/${productoId}`, {
+        const response = await apiClient.get(\'/images/producto/${productoId}\', {
           headers: { Authorization: `Bearer ${token}` },
         });
         this.imagenes = response.data;
@@ -174,8 +173,7 @@ export default {
         formData.append('es_principal', this.imagenPrincipal);
         formData.append('orden', this.imagenes.length);
 
-        await axios.post(
-          `${API_BASE_URL}/images/upload/${this.productoActual.id}`,
+        await apiClient.post(\'/images/upload/${this.productoActual.id}\',
           formData,
           {
             headers: {
@@ -219,7 +217,7 @@ export default {
 
       try {
         const token = localStorage.getItem('access_token');
-        await axios.delete(`${API_BASE_URL}/images/${imagenId}`, {
+        await apiClient.delete(\'/images/${imagenId}\', {
           headers: { Authorization: `Bearer ${token}` },
         });
         await this.cargarImagenes(this.productoActual.id);

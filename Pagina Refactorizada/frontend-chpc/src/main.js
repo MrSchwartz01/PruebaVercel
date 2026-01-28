@@ -3,7 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from '../store';
 import './styles/globals.css';
-import './config/axiosConfig'; // Importar configuración de Axios con interceptor
+import './config/axiosConfig';
+ // Importar configuración de Axios con interceptor
 
 // Manejo de errores globales
 window.addEventListener('error', (e) => {

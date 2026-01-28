@@ -1,8 +1,7 @@
 import HeaderAnth from '../HeaderAnth/HeaderAnth.vue';
 import FooterAnth from '../FooterAnth/FooterAnth.vue';
 import ContactoAsesor from '../ContactoAsesor/ContactoAsesor.vue';
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: 'TodosLosProductos',
@@ -82,7 +81,7 @@ export default {
     async cargarProductos() {
       try {
         this.cargando = true;
-        const response = await axios.get(`${API_BASE_URL}/tienda/productos`);
+        const response = await apiClient.get('/tienda/productos');
         this.productos = response.data;
         this.productosFiltrados = [...this.productos];
         

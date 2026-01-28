@@ -1,6 +1,5 @@
-import axios from 'axios';
+import apiClient from '@/services/api';
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
-import { API_BASE_URL } from '@/config/api';
 import inactivityService from '@/services/inactivityService';
 
 
@@ -31,7 +30,7 @@ export default {
       }
       
       try {
-        const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+        const response = await apiClient.post('/auth/login', {
           username: this.nombre_usuario,
           password: this.contraseña,
         });

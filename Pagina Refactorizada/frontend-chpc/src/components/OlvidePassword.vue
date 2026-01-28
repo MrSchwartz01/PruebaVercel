@@ -71,8 +71,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: 'OlvidePassword',
@@ -106,7 +105,7 @@ export default {
       this.enviando = true;
 
       try {
-        await axios.post(`${API_BASE_URL}/auth/forgot-password`, {
+        await apiClient.post('/auth/forgot-password', {
           email: this.email
         });
 

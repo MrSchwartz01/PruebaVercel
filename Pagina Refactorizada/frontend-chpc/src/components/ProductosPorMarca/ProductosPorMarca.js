@@ -1,8 +1,7 @@
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
 import ContactoAsesor from '../ContactoAsesor/ContactoAsesor.vue';
-import axios from "axios";
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: "ProductosPorMarca",
@@ -66,12 +65,9 @@ export default {
         this.cargando = true;
         this.error = null;
         
-        const response = await axios.get(
-          `${API_BASE_URL}/tienda/productos`,
-          {
-            params: { marca: marca }
-          }
-        );
+        const response = await apiClient.get('/tienda/productos', {
+          params: { marca: marca }
+        });
         
         this.productos = response.data;
         

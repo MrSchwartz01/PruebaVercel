@@ -122,8 +122,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: 'RestablecerPassword',
@@ -185,7 +184,7 @@ export default {
   methods: {
     async verificarToken() {
       try {
-        await axios.get(`${API_BASE_URL}/auth/verify-reset-token`, {
+        await apiClient.get('/auth/verify-reset-token', {
           params: { token: this.token }
         });
         
@@ -221,7 +220,7 @@ export default {
       this.enviando = true;
 
       try {
-        await axios.post(`${API_BASE_URL}/auth/reset-password`, {
+        await apiClient.post('/auth/reset-password', {
           token: this.token,
           newPassword: this.newPassword
         });

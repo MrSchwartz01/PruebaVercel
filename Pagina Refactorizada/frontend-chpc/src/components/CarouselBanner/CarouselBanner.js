@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from '@/services/api';
 
 export default {
   name: "CarouselBanner",

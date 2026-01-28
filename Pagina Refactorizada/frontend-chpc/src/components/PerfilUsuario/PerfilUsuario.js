@@ -1,7 +1,6 @@
 import HeaderAnth from '../HeaderAnth/HeaderAnth.vue';
 import FooterAnth from '../FooterAnth/FooterAnth.vue';
-import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: 'PerfilUsuario',
@@ -72,7 +71,7 @@ export default {
     async cargarDatosUsuario() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${API_BASE_URL}/usuarios/perfil`, {
+        const response = await apiClient.get(\'/usuarios/perfil\', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -123,8 +122,7 @@ export default {
           payload.direccion = this.formData.direccion.trim();
         }
 
-        await axios.patch(
-          `${API_BASE_URL}/usuarios/perfil`,
+        await apiClient.patch(\'/usuarios/perfil\',
           payload,
           {
             headers: {
@@ -167,8 +165,7 @@ export default {
         this.mensajePassword = '';
         
         const token = localStorage.getItem('access_token');
-        await axios.patch(
-          `${API_BASE_URL}/usuarios/cambiar-password`,
+        await apiClient.patch(\'/usuarios/cambiar-password\',
           {
             nuevaPassword: this.passwordData.nueva,
           },
@@ -201,7 +198,7 @@ export default {
       try {
         this.cargandoPedidos = true;
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${API_BASE_URL}/ordenes`, {
+        const response = await apiClient.get(\'/ordenes\', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

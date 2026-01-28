@@ -1,5 +1,4 @@
-import axios from "axios";
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
 import ContactoAsesor from '../ContactoAsesor/ContactoAsesor.vue';
@@ -52,16 +51,12 @@ export default {
       const productoId = this.$route.params.id;
       try {
         // Obtener los datos del producto
-        const response = await axios.get(
-          `${API_BASE_URL}/tienda/productos/${productoId}`
-        );
+        const response = await apiClient.get(`/tienda/productos/${productoId}`);
         this.producto = response.data;
 
         // Cargar imágenes del producto
         try {
-          const imagenesResponse = await axios.get(
-            `${API_BASE_URL}/images/producto/${productoId}`
-          );
+          const imagenesResponse = await apiClient.get(`/images/producto/${productoId}`);
           this.imagenes = imagenesResponse.data;
         } catch (imgError) {
           console.warn('No se pudieron cargar las imágenes:', imgError);
@@ -92,7 +87,7 @@ export default {
       try {
         console.log('Cargando productos relacionados de categoría:', this.producto.categoria);
         
-        const response = await axios.get(`${API_BASE_URL}/tienda/productos`, {
+        const response = await apiClient.get('/tienda/productos', {
           params: {
             categoria: this.producto.categoria,
           }

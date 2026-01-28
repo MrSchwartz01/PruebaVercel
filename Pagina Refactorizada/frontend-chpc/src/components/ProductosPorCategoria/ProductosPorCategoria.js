@@ -1,8 +1,7 @@
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
 import ContactoAsesor from '../ContactoAsesor/ContactoAsesor.vue';
-import axios from "axios";
-import { API_BASE_URL } from '@/config/api';
+import apiClient from '@/services/api';
 
 export default {
   name: "ProductosPorCategoria",
@@ -89,10 +88,10 @@ export default {
         
         console.log('📦 [DEBUG] Categoría formateada para buscar:', categoriaFormateada);
         
-        const url = `${API_BASE_URL}/tienda/productos?categoria=${categoriaFormateada}`;
+        const url = `/tienda/productos?categoria=${categoriaFormateada}`;
         console.log('🌐 [DEBUG] URL de petición:', url);
         
-        const response = await axios.get(url);
+        const response = await apiClient.get(url);
         
         console.log('✅ [DEBUG] Respuesta del servidor:', {
           status: response.status,
@@ -112,7 +111,7 @@ export default {
         if (this.productos.length === 0) {
           console.warn('⚠️ No se encontraron productos para esta categoría');
           // Intentar cargar TODOS los productos para ver qué categorías existen
-          const todosResponse = await axios.get(`${API_BASE_URL}/tienda/productos`);
+          const todosResponse = await apiClient.get('/tienda/productos');
           const categoriasExistentes = [...new Set(todosResponse.data.map(p => p.categoria))];
           console.log('📋 Categorías disponibles en la BD:', categoriasExistentes);
         }

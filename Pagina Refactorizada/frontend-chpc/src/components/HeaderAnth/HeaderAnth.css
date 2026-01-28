@@ -1,0 +1,417 @@
+/* Header general (estilo claro) */
+.header {
+  font-family: "Roboto", sans-serif;
+  color: #222222;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Estilo para la sección principal */
+  .main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 32px;
+  }
+  
+  .logo img {
+    width: 81px;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  /* Barra de búsqueda estilo tienda online */
+.search-bar {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 27px;
+  display: flex;
+  align-items: stretch;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 7px 11px;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 999px 0 0 999px;
+  outline: none;
+  font-size: 11px;
+  background-color: #f8f9fa;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.search-bar input:focus {
+  background-color: #ffffff;
+  border-color: #FF6000 ;
+  box-shadow: 0 0 0 2px rgba(255, 168, 38, 0.422);
+}
+
+
+.search-bar button {
+  background: linear-gradient(90deg, #ffa726, #fb8c00);
+  color: white;
+  padding: 0 13px;
+  border: none;
+  border-radius: 0 999px 999px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.search-bar button:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.search-bar button .search-icon {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+   /* Convierte el icono a blanco */
+}
+
+/* Sugerencias de autocompletado */
+.sugerencias-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 9px 9px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.sugerencia-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sugerencia-item:hover {
+  background: #f5f5f5;
+}
+
+.sugerencia-nombre {
+  font-size: 11px;
+}
+
+.sugerencia-precio {
+  font-size: 10px;
+  font-weight: 600;
+  color: #e67e22;
+}
+  
+  /* Acciones del usuario */
+  .user-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  /* --- ESTILO UNIFICADO PARA BOTONES DE CABECERA --- */
+  .carrito-button,
+  .admin-button,
+  .pedidos-button,
+  .perfil-button,
+  .action-button {
+    /* Tamaño idéntico para todos */
+    height: 34px; 
+    min-width: 120px; /* Asegura que el texto quepa bien */
+    padding: 0 15px;
+    
+    /* Alineación y Tipografía */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    
+    /* COLOR SOLICITADO */
+    background: #FF8000 !important; 
+    color: white !important;
+    transition: all 0.3s ease;
+  }
+
+  .carrito-button .carrito-icon {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    transition: transform 0.3s ease;
+  }
+
+  .carrito-button:hover .carrito-icon {
+    transform: scale(1.1);
+  }
+  
+  .carrito-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background-color: #FF6600;
+    color: white;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Efecto hover uniforme para todos los botones */
+  .carrito-button:hover,
+  .admin-button:hover,
+  .pedidos-button:hover,
+  .perfil-button:hover,
+  .action-button:hover {
+    background: #FF6600 !important; /* Un tono un poco más oscuro al pasar el mouse */
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 128, 0, 0.3);
+  }
+  
+  /* Menú de navegación principal */
+  .main-menu {
+	background-color: #ffffff;
+	border-top: 1px solid rgba(0, 0, 0, 0.04);
+	border-bottom: 2px solid #FF8000; /* Línea sutil con el color corporativo */
+	padding: 12px 0; /* Un poco más de espacio vertical */
+  }
+  
+  .main-menu ul {
+  display: flex;
+  justify-content: center;
+  /* CAMBIO: Aumentamos el espacio entre elementos de 32px a 45px */
+  gap: 45px; 
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  }
+  
+  .main-menu a {
+  color: #444444;
+  text-decoration: none;
+  font-size: 12px; /* Aumentado ligeramente para mejor legibilidad */
+  font-weight: 600;
+  padding: 5px 8px; /* Espacio interno para que el área de clic sea mayor */
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  }
+
+  /* Estado Hover y Activo con el color corporativo */
+  .main-menu a:hover {
+  color: #FF8000; /* Color corporativo aplicado al texto */
+  border-bottom: 3px solid #FF8000; /* Línea inferior resaltada */
+  transform: translateY(-2.5px); /* Pequeño efecto de elevación */
+  }
+
+  /* Si tienes una clase para el enlace de la página actual */
+  .main-menu a.router-link-active {
+  color: #FF8000;
+  border-bottom: 3px solid #FF8000;
+  }
+  
+  /* Animaciones */
+  .fade-in {
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Menú desplegable de productos */
+  .dropdown-menu {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  /* Contenedor del dropdown (envuelve al <ul>) */
+  .dropdown-wrapper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  }
+
+  .dropdown-content {
+  background-color: #ffffff;
+  min-width: 220px;
+  max-width: 260px;
+  width: max-content;
+  max-height: 380px;
+  overflow-y: auto;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  margin: 0;
+  margin-top: -2px; /* Eliminar espacio entre el menú y el enlace */
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 2px 0;
+  }
+  
+  /* Scrollbar personalizado para el dropdown */
+  .dropdown-content::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .dropdown-content::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 3px;
+  }
+
+  .dropdown-content::-webkit-scrollbar-thumb {
+	background: #FF8000;
+	border-radius: 3px;
+  }
+
+  .dropdown-content::-webkit-scrollbar-thumb:hover {
+	background: #FF8000;
+  }
+  
+  .dropdown-content li {
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  }
+  
+  .dropdown-content a {
+  display: block;
+  padding: 2px 10px;
+  color: #444444;
+  text-decoration: none;
+  font-size: 11px;
+  line-height: 1.1;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  position: relative;
+  border-left: 3px solid transparent;
+  }
+
+  .dropdown-content a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  background: #FF8000;
+  border-radius: 0 4px 4px 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dropdown-content a:hover {
+  background: #fff4e8;
+  color: #FF8000 !important; /* Color solicitado para los títulos del menú */
+  padding-left: 18px;
+  border-left-color: #FF8000 !important;
+  transform: translateX(3px);
+  box-shadow: inset 0 0 0 1px rgba(255, 128, 0, 0.1);
+  }
+
+  .dropdown-content a:hover::before {
+  width: 4px;
+  height: 70%;
+  }
+  
+  /* Estilos especiales para "Ver Todos" */
+  .dropdown-content .ver-todos-item a {
+  background: #FF8000 !important;
+  color: white !important;
+  border-radius: 6px;
+  margin: 1px 8px;
+  padding: 3px 10px;
+  font-size: 11px;
+  }
+
+  .dropdown-content .ver-todos-item a:hover {
+  background: #e67300 !important;
+  padding-left: 18px;
+  transform: translateX(3px);
+  }
+  
+  /* Divisor entre "Ver Todos" y las categorías */
+  .dropdown-content .divider {
+  height: 1px;
+  background-color: #f0f0f0;
+  margin: 4px 10px;
+  }
+
+  /* Estilos específicos para items de marca */
+  .dropdown-content .marca-item a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  }
+
+  .dropdown-content .marca-item .marca-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+  color: #FF8000;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  }
+
+  .dropdown-content .marca-item .marca-nombre {
+  flex: 1;
+  font-weight: 500;
+  }
+
+  .dropdown-content .marca-item a:hover .marca-icon {
+  opacity: 1;
+  transform: scale(1.2) rotate(10deg);
+  }
+  
+  /* Transiciones del dropdown */
+  .dropdown-fade-enter-active,
+  .dropdown-fade-leave-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .dropdown-fade-enter-from,
+  .dropdown-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  
+  /* Transiciones para los componentes */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active en <2.1.8 */ {
+    opacity: 0;
+  }

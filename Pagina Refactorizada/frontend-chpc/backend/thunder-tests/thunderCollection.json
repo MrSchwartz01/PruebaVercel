@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "col_workorders",
+    "colName": "Work Orders API",
+    "created": "2026-01-21T00:00:00.000Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "fol_auth",
+        "name": "0. Autenticación",
+        "containerId": "",
+        "created": "2026-01-21T00:00:00.000Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "fol_crud",
+        "name": "1. CRUD Básico",
+        "containerId": "",
+        "created": "2026-01-21T00:00:00.000Z",
+        "sortNum": 20000
+      },
+      {
+        "_id": "fol_workflow",
+        "name": "2. Flujo de Trabajo",
+        "containerId": "",
+        "created": "2026-01-21T00:00:00.000Z",
+        "sortNum": 30000
+      },
+      {
+        "_id": "fol_filters",
+        "name": "3. Filtros y Consultas",
+        "containerId": "",
+        "created": "2026-01-21T00:00:00.000Z",
+        "sortNum": 40000
+      }
+    ]
+  }
+]

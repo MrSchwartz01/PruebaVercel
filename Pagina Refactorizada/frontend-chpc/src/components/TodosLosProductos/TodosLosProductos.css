@@ -1,0 +1,600 @@
+.todos-productos-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 40px;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #FF8000 0%, #FF6000 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.breadcrumb {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.breadcrumb a {
+  color: white;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.productos-layout {
+  max-width: 1400px;
+  margin: 30px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+}
+
+/* Sidebar de Filtros */
+.filtros-sidebar {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.filtros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.filtros-header h2 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #333;
+}
+
+.limpiar-btn {
+  background: none;
+  border: none;
+  color: #FF8000;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.limpiar-btn:hover {
+  color: #FF6000;
+}
+
+.filtro-seccion {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filtro-seccion:last-child {
+  border-bottom: none;
+}
+
+.filtro-seccion h3 {
+  font-size: 1rem;
+  margin: 0 0 12px 0;
+  color: #555;
+  font-weight: 600;
+}
+
+.filtro-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox-label:hover {
+  color: #333;
+}
+
+/* Estilos para categorías con iconos */
+.categoria-checkbox {
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.categoria-checkbox:hover {
+  background-color: #f5f5f5;
+}
+
+.categoria-label-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.categoria-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.categoria-icon {
+  width: 32px;
+  height: 32px;
+  stroke: #667eea;
+  stroke-width: 2;
+}
+
+.categoria-nombre {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.categoria-checkbox input[type="checkbox"]:checked ~ .categoria-label-content .categoria-icon {
+  stroke: #5568d3;
+}
+
+.precio-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.precio-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  width: 80px;
+  max-width: 90px;
+}
+
+.precio-input:focus {
+  outline: none;
+  border-color: #FF8000;
+}
+
+.precio-separador {
+  color: #999;
+  font-weight: 500;
+}
+
+.precio-info {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Área principal de productos */
+.productos-main {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.productos-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.resultados-info span {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.vista-opciones {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.vista-btn {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #666;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vista-btn:hover {
+  border-color: #FF8000;
+  color: #FF8000;
+}
+
+.vista-btn.active {
+  background-color: #FF8000;
+  color: white;
+  border-color: #FF8000;
+}
+
+.ordenar-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ordenar-section label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.ordenar-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: white;
+}
+
+.ordenar-select:focus {
+  outline: none;
+  border-color: #FF8000;
+}
+
+/* Grid de productos */
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Vista Lista */
+.productos-grid.vista-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.productos-grid.vista-lista .producto-card {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  height: auto;
+}
+
+.productos-grid.vista-lista .producto-imagen {
+  width: 220px;
+  min-width: 220px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+.productos-grid.vista-lista .producto-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.productos-grid.vista-lista .producto-info h3 {
+  font-size: 1.3rem;
+  min-height: auto;
+  margin-bottom: 10px;
+}
+
+.productos-grid.vista-lista .descripcion {
+  font-size: 0.95rem;
+  min-height: auto;
+  flex: 1;
+  margin-bottom: 15px;
+}
+
+.productos-grid.vista-lista .producto-footer {
+  margin-bottom: 15px;
+}
+
+.productos-grid.vista-lista .precio {
+  font-size: 1.6rem;
+}
+
+.productos-grid.vista-lista .producto-acciones {
+  max-width: 400px;
+}
+
+.producto-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.producto-imagen {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.producto-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.producto-card:hover .producto-imagen img {
+  transform: scale(1.12);
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+.badge.sin-stock {
+  background-color: #e74c3c;
+}
+
+.badge.poco-stock {
+  background-color: #f39c12;
+}
+
+.producto-info {
+  padding: 15px;
+}
+
+.marca-tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #555;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.producto-info h3 {
+  font-size: 1.05rem;
+  margin: 8px 0;
+  color: #333;
+  font-weight: 600;
+  min-height: 50px;
+}
+
+.descripcion {
+  font-size: 0.85rem;
+  color: #777;
+  margin: 8px 0;
+  line-height: 1.4;
+  min-height: 40px;
+}
+
+.producto-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.precio {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #FF8000;
+  margin: 0;
+}
+
+.stock {
+  font-size: 0.85rem;
+  color: #27ae60;
+  font-weight: 500;
+  margin: 0;
+}
+
+.stock.sin-stock {
+  color: #e74c3c;
+}
+
+.stock.pocas-unidades {
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.producto-acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.ver-btn, .agregar-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ver-btn {
+  background-color: #FF8000;
+  color: white;
+}
+
+.ver-btn:hover {
+  background-color: #FF6000;
+}
+
+.agregar-btn {
+  background-color: #27ae60;
+  color: white;
+  max-width: 50px;
+}
+
+.agregar-btn:hover {
+  background-color: #229954;
+}
+
+/* Loading y estados vacíos */
+.loading, .no-productos {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+/* Paginación */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.pagina-btn {
+  padding: 10px 20px;
+  border: 1px solid #FF8000;
+  background: white;
+  color: #FF8000;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagina-btn:hover:not(:disabled) {
+  background-color: #FF8000;
+  color: white;
+}
+
+.pagina-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagina-info {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .productos-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-sidebar {
+    position: static;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .productos-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .vista-opciones {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  /* Vista lista en móvil sigue siendo vertical pero más compacta */
+  .productos-grid.vista-lista .producto-card {
+    flex-direction: column;
+  }
+  
+  .productos-grid.vista-lista .producto-imagen {
+    width: 100%;
+    height: 180px;
+  }
+
+  .producto-imagen {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .paginacion {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

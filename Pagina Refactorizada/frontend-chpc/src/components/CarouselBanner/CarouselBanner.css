@@ -1,0 +1,153 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  /* Eliminamos height: 100% y min-height fija para que sea fluido */
+  height: auto; 
+  aspect-ratio: 16 / 6; /* Define la proporción de tus banners (ej. 16:6 o 21:9) */
+  margin: 0;
+  overflow: hidden;
+  background: #f0f0f0; /* Color de fondo mientras carga */
+}
+  
+  .carousel:hover {
+    box-shadow: none; /* Mantener sin sombra en hover */
+  }
+  
+  .carousel-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+  }
+  
+  .carousel-item.active {
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1);
+  }
+  
+  .banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Cubrir todo el espacio sin distorsionar */
+    object-position: center; /* Centrar la imagen */
+    background-color: #f0f0f0; /* Fondo transparente */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  }
+  
+  .banner-image.loaded {
+    opacity: 1;
+  }
+  
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  .carousel-arrow.left {
+    left: 10px;
+  }
+  
+  .carousel-arrow.right {
+    right: 10px;
+  }
+  
+  .carousel-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  
+  .carousel-indicators span {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .carousel-indicators .active {
+    background-color: #fff;
+  }
+
+  .carousel-banner {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+  }
+
+    /* Estilos para banners clickeables */
+  .carousel-item.clickable {
+    cursor: pointer;
+  }
+  
+  .carousel-item.clickable:hover .banner-image {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+  }
+  
+  .click-indicator {
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .carousel-item.clickable:hover .click-indicator {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .click-icon {
+    font-size: 20px;
+  }
+  
+  .click-text {
+    white-space: nowrap;
+  }
+    .no-banners {
+    text-align: center;
+    color: #888;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+  }
+  

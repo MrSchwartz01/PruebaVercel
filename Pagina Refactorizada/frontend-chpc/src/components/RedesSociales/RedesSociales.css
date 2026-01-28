@@ -1,0 +1,110 @@
+body {
+    background-color: #Ff8000; /* Gris claro */
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif; /* Tipografía uniforme */
+    color: #333; /* Color de texto principal */
+  }
+  
+  .social-container {
+    text-align: center;
+    margin: 40px auto;
+    max-width: 1400px;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .main-title {
+    font-size: 42px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .description {
+    font-size: 20px;
+    color: #7f8c8d;
+    margin-bottom: 40px;
+    line-height: 1.8;
+  }
+  
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    padding: 0 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .social-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .social-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+  
+  .social-card {
+    background-color: #fefefe;
+    border: none;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .social-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .social-icon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin: 20px auto;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  a:hover {
+    color: #3498db;
+  }
+  
+  /* Animación de desvanecimiento */
+  .fade-in {
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Transiciones para el grupo */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    transform: translateY(20%);
+  }

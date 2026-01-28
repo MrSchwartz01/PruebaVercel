@@ -1,0 +1,90 @@
+/* Garantias.css - Estilo Minimalista Editorial */
+
+.garantias-cphc-page {
+  background-color: #ffffff;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Hero Section: Limpio y con aire */
+.hero-section {
+  background-color: #fdfdfd; /* Casi blanco */
+  padding: 50px 20px 50px 20px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.hero-title {
+  color: #ffffff !important;
+  font-size: 52px !important;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  text-transform: none !important; /* Quitamos mayúsculas forzadas */
+  margin-bottom: 15px;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  color: #242424 !important;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.6;
+  opacity: 1;
+}
+
+/* Contenedor de lectura optimizada */
+.content-container {
+  max-width: 850px; /* Ancho de lectura ideal */
+  margin: 0 auto;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* Quitamos el gap para usar bordes divisores */
+}
+
+/* Secciones Informativas (Sin bordes ni sombras) */
+.section-card {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  padding: 50px 0 !important;
+  box-shadow: none !important; /* Eliminamos sombras */
+  transition: none;
+  border-left: none !important; /* Eliminamos el borde naranja grueso */
+  border-bottom: 1px solid #eee; /* Divisor sutil entre temas */
+}
+
+.section-card:last-child {
+  border-bottom: none;
+}
+
+.section-card:hover {
+  transform: none !important; /* Sin movimiento al pasar el mouse */
+}
+
+.section-title {
+  font-size: 28px;
+  color: #FF6000; /* Color corporativo solo en títulos */
+  margin-bottom: 25px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.section-content p {
+  font-size: 18px;
+  color: #2f2f2f;
+  line-height: 1.8;
+  text-align: left; /* Lectura formal */
+  margin-bottom: 15px;
+}
+
+/* Ocultar elementos innecesarios */
+.icon-wrapper {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 36px !important;
+  }
+}

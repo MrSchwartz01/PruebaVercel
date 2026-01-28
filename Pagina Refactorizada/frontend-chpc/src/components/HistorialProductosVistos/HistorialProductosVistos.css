@@ -1,0 +1,61 @@
+.historial-container {
+  margin-top: 2rem;
+}
+
+.historial-titulo {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.historial-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.historial-card {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #ffffff;
+  transition: box-shadow 0.2s ease;
+}
+
+.historial-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.historial-imagen {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.historial-info {
+  padding: 0.5rem;
+}
+
+.historial-nombre {
+  font-size: 0.9rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.historial-precio {
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin: 0 0 0.25rem 0;
+}
+
+.historial-fecha {
+  font-size: 0.75rem;
+  color: #666;
+  margin: 0;
+}
+
+.historial-vacio {
+  display: none;
+}

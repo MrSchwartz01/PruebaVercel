@@ -272,8 +272,13 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes
+});
+
+// Manejo de errores globales de navegación
+router.onError((error) => {
+  console.error('Router error:', error);
 });
 
 export default router;

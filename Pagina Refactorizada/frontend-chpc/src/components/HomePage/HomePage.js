@@ -113,7 +113,7 @@ export default {
         ...producto,
         imagen_url:
           producto.media?.length > 0
-            ? `http://localhost:5000${producto.media[0].url}`
+            ? `https://backend-chpc-production.up.railway.app${producto.media[0].url}`
             : producto.imagen_url || "ruta-imagen-default.png",
       }));
       

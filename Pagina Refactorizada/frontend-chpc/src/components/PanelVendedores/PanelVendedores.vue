@@ -230,7 +230,7 @@
         try {
           const token = localStorage.getItem('access_token');
           const response = await axios.get(
-            `${process.env.VUE_APP_API_URL || 'http://localhost:5000/api'}/ordenes/panel/todas`,
+            `${process.env.VUE_APP_API_URL || 'https://backend-chpc-production.up.railway.app/api'}/ordenes/panel/todas`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -247,7 +247,7 @@
         try {
           const token = localStorage.getItem('access_token');
           await axios.post(
-            `${process.env.VUE_APP_API_URL || 'http://localhost:5000/api'}/ordenes/${pedidoId}/asignar`,
+            `${process.env.VUE_APP_API_URL || 'https://backend-chpc-production.up.railway.app/api'}/ordenes/${pedidoId}/asignar`,
             {
               vendedor_nombre: this.usuarioNombre,
             },
@@ -269,7 +269,7 @@
         try {
           const token = localStorage.getItem('access_token');
           await axios.delete(
-            `${process.env.VUE_APP_API_URL || 'http://localhost:5000/api'}/ordenes/${pedidoId}/desasignar`,
+            `${process.env.VUE_APP_API_URL || 'https://backend-chpc-production.up.railway.app/api'}/ordenes/${pedidoId}/desasignar`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -285,7 +285,7 @@
         try {
           const token = localStorage.getItem('access_token');
           await axios.patch(
-            `${process.env.VUE_APP_API_URL || 'http://localhost:5000/api'}/ordenes/${pedidoId}/estado-gestion`,
+            `${process.env.VUE_APP_API_URL || 'https://backend-chpc-production.up.railway.app/api'}/ordenes/${pedidoId}/estado-gestion`,
             {
               estado_gestion: nuevoEstado,
             },
@@ -333,7 +333,7 @@
         try {
           const token = localStorage.getItem('access_token');
           const response = await axios.get(
-            `${process.env.VUE_APP_API_URL || 'http://localhost:5000/api'}/usuarios/perfil`,
+            `${process.env.VUE_APP_API_URL || 'https://backend-chpc-production.up.railway.app/api'}/usuarios/perfil`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }

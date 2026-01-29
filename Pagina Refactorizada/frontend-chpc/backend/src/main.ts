@@ -5,35 +5,35 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
-import express from 'express';
+import express, { Request, Response } from 'express';
 
-const server = express();
+const expressApp = express();
 
-export const createNestServer = async (expressInstance: express.Express) => {
+// Configuración de orígenes permitidos para CORS
+const allowedOrigins = [
+  'https://prueba-front-gules.vercel.app',
+  'https://prueba-front-git-main-mrschwartz01s-projects.vercel.app',
+  'https://prueba-front-r6mz49y40-mrschwartz01s-projects.vercel.app',
+  'http://localhost:8080',
+  'http://localhost:3000',
+];
+
+// Agregar orígenes adicionales desde variable de entorno
+const envOrigins = process.env.CORS_ORIGIN;
+if (envOrigins) {
+  envOrigins.split(',').forEach(origin => {
+    const trimmed = origin.trim();
+    if (trimmed && !allowedOrigins.includes(trimmed)) {
+      allowedOrigins.push(trimmed);
+    }
+  });
+}
+
+async function createApp(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter(expressInstance),
+    new ExpressAdapter(expressApp),
   );
-
-  // Configuración de CORS
-  const allowedOrigins = [
-    'https://prueba-front-gules.vercel.app',
-    'https://prueba-front-git-main-mrschwartz01s-projects.vercel.app',
-    'https://prueba-front-r6mz49y40-mrschwartz01s-projects.vercel.app',
-    'http://localhost:8080',
-    'http://localhost:3000',
-  ];
-  
-  // Agregar orígenes adicionales desde variable de entorno
-  const envOrigins = process.env.CORS_ORIGIN;
-  if (envOrigins) {
-    envOrigins.split(',').forEach(origin => {
-      const trimmed = origin.trim();
-      if (trimmed && !allowedOrigins.includes(trimmed)) {
-        allowedOrigins.push(trimmed);
-      }
-    });
-  }
 
   console.log('🔒 CORS habilitado para:', allowedOrigins);
 
@@ -50,9 +50,9 @@ export const createNestServer = async (expressInstance: express.Express) => {
   // Validación global de DTOs
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Eliminar propiedades no definidas en el DTO
-      forbidNonWhitelisted: true, // Lanzar error si hay propiedades extra
-      transform: true, // Transformar tipos automáticamente
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
       transformOptions: {
         enableImplicitConversion: true,
       },
@@ -86,24 +86,31 @@ export const createNestServer = async (expressInstance: express.Express) => {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
+  await app.init();
   return app;
-};
-
-// Para Vercel Serverless
-let cachedServer: NestExpressApplication;
-
-export default async function handler(req: any, res: any) {
-  if (!cachedServer) {
-    const nestApp = await createNestServer(server);
-    await nestApp.init();
-    cachedServer = nestApp;
-  }
-  server(req, res);
 }
+
+// Cache de la app para reutilización en Vercel
+let app: NestExpressApplication;
+
+// Handler para Vercel Serverless
+async function handler(req: Request, res: Response) {
+  if (!app) {
+    app = await createApp();
+  }
+  expressApp(req, res);
+}
+
+// Exportaciones para Vercel
+export default handler;
+module.exports = handler;
+module.exports.default = handler;
 
 // Para desarrollo local
 async function bootstrap() {
-  const app = await createNestServer(server);
+  if (!app) {
+    app = await createApp();
+  }
   
   const port = process.env.PORT || 5000;
   await app.listen(port, '0.0.0.0');

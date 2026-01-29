@@ -8,13 +8,46 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Habilitar CORS para red local
-  const corsOrigin = process.env.CORS_ORIGIN || '*';
+  // Configuración de CORS
+  const allowedOrigins = [
+    'https://prueba-front-gules.vercel.app',
+    'https://prueba-front-git-main-mrschwartz01s-projects.vercel.app',
+    'https://prueba-front-r6mz49y40-mrschwartz01s-projects.vercel.app',
+    'http://localhost:8080',
+    'http://localhost:3000',
+  ];
+  
+  // Agregar orígenes adicionales desde variable de entorno
+  const envOrigins = process.env.CORS_ORIGIN;
+  if (envOrigins) {
+    envOrigins.split(',').forEach(origin => {
+      const trimmed = origin.trim();
+      if (trimmed && !allowedOrigins.includes(trimmed)) {
+        allowedOrigins.push(trimmed);
+      }
+    });
+  }
+
+  console.log('🔒 CORS habilitado para:', allowedOrigins);
+
   app.enableCors({
-    origin: corsOrigin === '*' ? true : corsOrigin.split(','),
+    origin: (origin, callback) => {
+      // Permitir requests sin origin (como mobile apps o Postman)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`⚠️ CORS bloqueado para origen: ${origin}`);
+        callback(null, true); // Temporalmente permitir todos para debug
+      }
+    },
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['Authorization'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
 
   // Prefijo global de rutas

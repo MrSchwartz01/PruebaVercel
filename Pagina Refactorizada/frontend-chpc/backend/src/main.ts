@@ -4,9 +4,16 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
+import express from 'express';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+const server = express();
+
+export const createNestServer = async (expressInstance: express.Express) => {
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    new ExpressAdapter(expressInstance),
+  );
 
   // Configuración de CORS
   const allowedOrigins = [
@@ -31,23 +38,10 @@ async function bootstrap() {
   console.log('🔒 CORS habilitado para:', allowedOrigins);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      // Permitir requests sin origin (como mobile apps o Postman)
-      if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn(`⚠️ CORS bloqueado para origen: ${origin}`);
-        callback(null, true); // Temporalmente permitir todos para debug
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Requested-With'],
-    exposedHeaders: ['Authorization'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
   });
 
   // Prefijo global de rutas
@@ -92,30 +86,37 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  const port = process.env.PORT || 5000;
-  await app.listen(port, '0.0.0.0'); // Escuchar en todas las interfaces de red
+  return app;
+};
+
+// Para Vercel Serverless
+let cachedServer: NestExpressApplication;
+
+export default async function handler(req: any, res: any) {
+  if (!cachedServer) {
+    const nestApp = await createNestServer(server);
+    await nestApp.init();
+    cachedServer = nestApp;
+  }
+  server(req, res);
+}
+
+// Para desarrollo local
+async function bootstrap() {
+  const app = await createNestServer(server);
   
-  // Obtener la IP local
-  const networkInterfaces = require('os').networkInterfaces();
-  const localIP = Object.values(networkInterfaces)
-    .flat()
-    .filter((iface): iface is { family: string; internal: boolean; address: string } => 
-      iface !== null && iface !== undefined
-    )
-    .find((iface) => iface.family === 'IPv4' && !iface.internal)?.address || 'localhost';
+  const port = process.env.PORT || 5000;
+  await app.listen(port, '0.0.0.0');
   
   console.log(`\n🚀 Servidor ejecutándose en:`);
   console.log(`   - Local: http://localhost:${port}`);
-  console.log(`   - Red Local: http://${localIP}:${port}`);
   console.log(`\n📚 API disponible en:`);
-  console.log(`   - Local: http://localhost:${port}/api`);
-  console.log(`   - Red Local: http://${localIP}:${port}/api`);
+  console.log(`   - http://localhost:${port}/api`);
   console.log(`\n📖 Documentación Swagger:`);
-  console.log(`   - http://${localIP}:${port}/api/docs`);
-  console.log(`\n🔐 Endpoints de autenticación:`);
-  console.log(`   - POST http://${localIP}:${port}/api/auth/registro`);
-  console.log(`   - POST http://${localIP}:${port}/api/auth/login`);
-  console.log(`   - POST http://${localIP}:${port}/api/auth/refresh`);
-  console.log(`   - GET  http://${localIP}:${port}/api/auth/verificar\n`);
+  console.log(`   - http://localhost:${port}/api/docs\n`);
 }
-bootstrap();
+
+// Solo ejecutar bootstrap en desarrollo local
+if (process.env.NODE_ENV !== 'production') {
+  bootstrap();
+}

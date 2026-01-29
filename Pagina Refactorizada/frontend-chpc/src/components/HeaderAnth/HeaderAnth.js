@@ -82,7 +82,7 @@ export default {
       async cargarSugerencias(query) {
         this.cargandoSugerencias = true;
         try {
-          const response = await apiClient.get(\'/tienda/productos\',
+          const response = await apiClient.get('/tienda/productos',
             {
               params: { search: query },
             },
@@ -149,7 +149,7 @@ export default {
       async cargarMarcas() {
         try {
           console.log('Cargando marcas desde API...');
-          const response = await apiClient.get(\'/tienda/productos\');
+          const response = await apiClient.get('/tienda/productos');
           console.log('Respuesta de API:', response.data);
           
           const productos = Array.isArray(response.data) ? response.data : [];

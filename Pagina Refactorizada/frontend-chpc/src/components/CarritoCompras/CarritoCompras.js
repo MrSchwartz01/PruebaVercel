@@ -60,7 +60,7 @@ export default {
     async cargarDatosUsuario() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(\'/usuarios/perfil\', {
+        const response = await apiClient.get('/usuarios/perfil', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -154,7 +154,7 @@ export default {
           observaciones: 'Pedido pendiente de coordinación con vendedor' // Nota automática
         };
 
-        const response = await apiClient.post(\'/ordenes\',
+        const response = await apiClient.post('/ordenes',
           orderData,
           {
             headers: { Authorization: `Bearer ${token}` }

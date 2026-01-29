@@ -1,4 +1,5 @@
 import apiClient from '@/services/api';
+import { API_BASE_URL } from '@/config/api';
 
 export default {
   name: 'NotificationsPanel',

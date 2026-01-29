@@ -607,7 +607,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiClient from '@/services/api';
 import { API_BASE_URL } from '@/config/api';
 import AdminProductos from './AdminProductos.vue';
 import NotificationsPanel from '../NotificationsPanel/NotificationsPanel.vue';
@@ -748,9 +748,9 @@ export default {
       
       try {
         const [bannersRes, promocionesRes, logoRes] = await Promise.all([
-          apiClient.get(\'/permisos-temporales/verificar/banners\', this.getAuthHeaders()),
-          apiClient.get(\'/permisos-temporales/verificar/promociones\', this.getAuthHeaders()),
-          apiClient.get(\'/permisos-temporales/verificar/logo\', this.getAuthHeaders()),
+          apiClient.get('/permisos-temporales/verificar/banners', this.getAuthHeaders()),
+          apiClient.get('/permisos-temporales/verificar/promociones', this.getAuthHeaders()),
+          apiClient.get('/permisos-temporales/verificar/logo', this.getAuthHeaders()),
         ]);
 
         this.permisosVendedor = {
@@ -787,7 +787,7 @@ export default {
     // ========== PROMOCIONES ==========
     async loadPromociones() {
       try {
-        const response = await apiClient.get(\'/promociones\');
+        const response = await apiClient.get('/promociones');
         this.promociones = response.data;
       } catch (error) {
         console.error('Error al cargar promociones:', error);
@@ -796,7 +796,7 @@ export default {
 
     async loadProductos() {
       try {
-        const response = await apiClient.get(\'/tienda/productos\');
+        const response = await apiClient.get('/tienda/productos');
         this.productos = response.data;
       } catch (error) {
         console.error('Error al cargar productos:', error);
@@ -806,13 +806,13 @@ export default {
     async submitPromotion() {
       try {
         if (this.editingPromotion) {
-          await apiClient.patch(\'/promociones/${this.editingPromotion.id}\',
+          await apiClient.patch('/promociones/${this.editingPromotion.id}',
             this.promotionForm,
             this.getAuthHeaders()
           );
           this.showPromotionMessage('Promoción actualizada exitosamente', 'success');
         } else {
-          await apiClient.post(\'/promociones\',
+          await apiClient.post('/promociones',
             this.promotionForm,
             this.getAuthHeaders()
           );
@@ -845,7 +845,7 @@ export default {
       if (!confirm('¿Está seguro de eliminar esta promoción?')) return;
 
       try {
-        await apiClient.delete(\'/promociones/${id}\',
+        await apiClient.delete(`/promociones/${id}`,
           this.getAuthHeaders()
         );
         this.showPromotionMessage('Promoción eliminada exitosamente', 'success');
@@ -882,7 +882,7 @@ export default {
     // ========== BANNERS ==========
     async loadBanners() {
       try {
-        const response = await apiClient.get(\'/tienda/banners\');
+        const response = await apiClient.get('/tienda/banners');
         this.banners = response.data.data || response.data;
       } catch (error) {
         console.error('Error al cargar banners:', error);
@@ -892,13 +892,13 @@ export default {
     async submitBanner() {
       try {
         if (this.editingBanner) {
-          await apiClient.patch(\'/tienda/banners/${this.editingBanner.id}\',
+          await apiClient.patch('/tienda/banners/${this.editingBanner.id}',
             this.bannerForm,
             this.getAuthHeaders()
           );
           this.showBannerMessage('Banner actualizado exitosamente', 'success');
         } else {
-          await apiClient.post(\'/tienda/banners\',
+          await apiClient.post('/tienda/banners',
             this.bannerForm,
             this.getAuthHeaders()
           );
@@ -926,7 +926,7 @@ export default {
       if (!confirm('¿Está seguro de eliminar este banner?')) return;
 
       try {
-        await apiClient.delete(\'/tienda/banners/${id}\',
+        await apiClient.delete(`/tienda/banners/${id}`,
           this.getAuthHeaders()
         );
         this.showBannerMessage('Banner eliminado exitosamente', 'success');
@@ -961,7 +961,7 @@ export default {
     // ========== LOGO ==========
     async loadLogo() {
       try {
-        const response = await apiClient.get(\'/configuracion/logo_url\');
+        const response = await apiClient.get('/configuracion/logo_url');
         this.currentLogo = response.data.valor || response.data;
       } catch (error) {
         console.log('No hay logo configurado');
@@ -970,7 +970,7 @@ export default {
 
     async submitLogo() {
       try {
-        await apiClient.post(\'/configuracion\',
+        await apiClient.post('/configuracion',
           {
             clave: 'logo_url',
             valor: this.logoForm.logo_url,
@@ -997,7 +997,7 @@ export default {
     // ========== USUARIOS ==========
     async loadUsuarios() {
       try {
-        const response = await apiClient.get(\'/usuarios\',
+        const response = await apiClient.get('/usuarios',
           this.getAuthHeaders()
         );
         this.usuarios = response.data;
@@ -1008,7 +1008,7 @@ export default {
 
     async loadCurrentUserId() {
       try {
-        const response = await apiClient.get(\'/usuarios/perfil\',
+        const response = await apiClient.get('/usuarios/perfil',
           this.getAuthHeaders()
         );
         this.currentUserId = response.data.id;
@@ -1030,7 +1030,7 @@ export default {
           // Actualizar usuario (sin password)
           // eslint-disable-next-line no-unused-vars
           const { password, ...updateData } = this.userForm;
-          await apiClient.patch(\'/usuarios/${this.editingUser.id}\',
+          await apiClient.patch('/usuarios/${this.editingUser.id}',
             updateData,
             this.getAuthHeaders()
           );
@@ -1038,7 +1038,7 @@ export default {
         } else {
           // Crear usuario nuevo
           console.log('Enviando POST a:', `${API_BASE_URL}/usuarios`);
-          await apiClient.post(\'/usuarios\',
+          await apiClient.post('/usuarios',
             this.userForm,
             this.getAuthHeaders()
           );
@@ -1077,7 +1077,7 @@ export default {
       if (!confirm('¿Está seguro de eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
       try {
-        await apiClient.delete(\'/usuarios/${id}\',
+        await apiClient.delete(`/usuarios/${id}`,
           this.getAuthHeaders()
         );
         this.showUserMessage('Usuario eliminado exitosamente', 'success');
@@ -1169,7 +1169,7 @@ export default {
     // ========== PERMISOS TEMPORALES ==========
     async loadPermisos() {
       try {
-        const response = await apiClient.get(\'/permisos-temporales\',
+        const response = await apiClient.get('/permisos-temporales',
           this.getAuthHeaders()
         );
         this.permisos = response.data;
@@ -1180,7 +1180,7 @@ export default {
 
     async loadVendedores() {
       try {
-        const response = await apiClient.get(\'/usuarios\',
+        const response = await apiClient.get('/usuarios',
           this.getAuthHeaders()
         );
         this.vendedores = response.data.filter(u => u.rol === 'vendedor');
@@ -1192,7 +1192,7 @@ export default {
     async submitPermiso() {
       try {
         if (this.editingPermiso) {
-          await apiClient.patch(\'/permisos-temporales/${this.editingPermiso.id}\',
+          await apiClient.patch('/permisos-temporales/${this.editingPermiso.id}',
             {
               fecha_expiracion: this.permisoForm.fecha_expiracion,
               activo: this.permisoForm.activo,
@@ -1210,7 +1210,7 @@ export default {
             razon: this.permisoForm.razon || undefined,
           };
           
-          await apiClient.post(\'/permisos-temporales\',
+          await apiClient.post('/permisos-temporales',
             permisoData,
             this.getAuthHeaders()
           );
@@ -1243,7 +1243,7 @@ export default {
       if (!confirm('¿Está seguro de revocar este permiso?')) return;
 
       try {
-        await apiClient.patch(\'/permisos-temporales/${id}/revocar\',
+        await apiClient.patch(`/permisos-temporales/${id}/revocar`,
           {},
           this.getAuthHeaders()
         );
@@ -1262,7 +1262,7 @@ export default {
       if (!confirm('¿Está seguro de eliminar este permiso? Esta acción no se puede deshacer.')) return;
 
       try {
-        await apiClient.delete(\'/permisos-temporales/${id}\',
+        await apiClient.delete(`/permisos-temporales/${id}`,
           this.getAuthHeaders()
         );
         this.showPermisoMessage('Permiso eliminado exitosamente', 'success');

@@ -1,4 +1,5 @@
 import apiClient from '@/services/api';
+import { API_BASE_URL } from '@/config/api';
 
 export default {
   name: 'NotificationsBell',
@@ -31,7 +32,7 @@ export default {
       this.loading = true;
       try {
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(\'/notifications\', {
+        const response = await apiClient.get('/notifications', {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -51,7 +52,7 @@ export default {
     async markAllAsRead() {
       try {
         const token = localStorage.getItem('access_token');
-        await apiClient.post(\'/notifications/mark-all-read\',
+        await apiClient.post('/notifications/mark-all-read',
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -68,7 +69,7 @@ export default {
     async markAsRead(notificationId) {
       try {
         const token = localStorage.getItem('access_token');
-        await apiClient.patch(\'/notifications/${notificationId}/read\',
+        await apiClient.patch('/notifications/${notificationId}/read',
           {},
           {
             headers: { Authorization: `Bearer ${token}` },

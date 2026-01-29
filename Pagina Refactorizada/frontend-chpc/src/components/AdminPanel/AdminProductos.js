@@ -48,7 +48,7 @@ export default {
       try {
         this.cargando = true;
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(\'/tienda/productos\', {
+        const response = await apiClient.get('/tienda/productos', {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Mostrar todos los productos, incluso inactivos
@@ -76,15 +76,15 @@ export default {
 
         if (this.editando) {
           // Actualizar producto existente
-          await axios.put(
-            `${API_BASE_URL}/tienda/productos/${this.productoActual.id}`,
+          await apiClient.put(
+            `/tienda/productos/${this.productoActual.id}`,
             this.formProducto,
             { headers }
           );
           alert('Producto actualizado correctamente');
         } else {
           // Crear nuevo producto
-          await apiClient.post(\'/tienda/productos\', this.formProducto, {
+          await apiClient.post('/tienda/productos', this.formProducto, {
             headers,
           });
           alert('Producto creado correctamente');
@@ -106,8 +106,8 @@ export default {
 
       try {
         const token = localStorage.getItem('access_token');
-        await axios.put(
-          `${API_BASE_URL}/tienda/productos/${producto.id}`,
+        await apiClient.put(
+          `/tienda/productos/${producto.id}`,
           { activo: !producto.activo },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -129,7 +129,7 @@ export default {
       try {
         this.cargandoImagenes = true;
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(\'/images/producto/${productoId}\', {
+        const response = await apiClient.get(`/images/producto/${productoId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         this.imagenes = response.data;
@@ -173,7 +173,7 @@ export default {
         formData.append('es_principal', this.imagenPrincipal);
         formData.append('orden', this.imagenes.length);
 
-        await apiClient.post(\'/images/upload/${this.productoActual.id}\',
+        await apiClient.post(`/images/upload/${this.productoActual.id}`,
           formData,
           {
             headers: {
@@ -196,11 +196,11 @@ export default {
       }
     },
 
-    async marcarPrincipal(imagenId) {
+    async marcarPrincipal(imagen) {
       try {
         const token = localStorage.getItem('access_token');
-        await axios.put(
-          `${API_BASE_URL}/images/${imagenId}/principal`,
+        await apiClient.put(
+          `/images/${imagen.id}/principal`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -212,12 +212,12 @@ export default {
       }
     },
 
-    async eliminarImagen(imagenId) {
+    async eliminarImagen(imagen) {
       if (!confirm('¿Está seguro de eliminar esta imagen?')) return;
 
       try {
         const token = localStorage.getItem('access_token');
-        await apiClient.delete(\'/images/${imagenId}\', {
+        await apiClient.delete(`/images/${imagen.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         await this.cargarImagenes(this.productoActual.id);

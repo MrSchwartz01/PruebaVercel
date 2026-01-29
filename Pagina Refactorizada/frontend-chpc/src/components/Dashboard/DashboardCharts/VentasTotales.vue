@@ -13,7 +13,7 @@
     </div>
     <div class="chart-content">
       <div v-if="cargando" class="loading">Cargando datos...</div>
-      <Line v-else :data="chartData" :options="chartOptions" />
+      <LineChart v-else :data="chartData" :options="chartOptions" />
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@ ChartJS.register(
 
 export default {
   name: 'VentasTotales',
-  components: { Line },
+  components: { LineChart: Line },
   data() {
     return {
       periodo: '30dias',

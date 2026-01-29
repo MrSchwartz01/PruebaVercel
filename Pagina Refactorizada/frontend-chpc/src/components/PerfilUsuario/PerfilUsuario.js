@@ -71,7 +71,7 @@ export default {
     async cargarDatosUsuario() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(\'/usuarios/perfil\', {
+        const response = await apiClient.get('/usuarios/perfil', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -122,7 +122,7 @@ export default {
           payload.direccion = this.formData.direccion.trim();
         }
 
-        await apiClient.patch(\'/usuarios/perfil\',
+        await apiClient.patch('/usuarios/perfil',
           payload,
           {
             headers: {
@@ -165,7 +165,7 @@ export default {
         this.mensajePassword = '';
         
         const token = localStorage.getItem('access_token');
-        await apiClient.patch(\'/usuarios/cambiar-password\',
+        await apiClient.patch('/usuarios/cambiar-password',
           {
             nuevaPassword: this.passwordData.nueva,
           },
@@ -198,7 +198,7 @@ export default {
       try {
         this.cargandoPedidos = true;
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(\'/ordenes\', {
+        const response = await apiClient.get('/ordenes', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

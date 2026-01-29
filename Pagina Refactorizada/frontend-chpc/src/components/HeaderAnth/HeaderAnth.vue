@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-      <header v-bind:class="{ 'fade-in': isVisible }" class="header">
+      <header v-show="true" v-bind:class="{ 'fade-in': isVisible }" class="header">
         <div class="main-header">
           <!-- Logo -->
           <div class="logo">

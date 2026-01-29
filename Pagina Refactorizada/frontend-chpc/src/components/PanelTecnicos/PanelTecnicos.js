@@ -53,13 +53,7 @@ export default {
       this.cargando = true;
       this.error = null;
       try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(
-          `${process.env.VUE_APP_API_URL || ''}/work-orders`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await apiClient.get('/work-orders');
         this.ordenes = response.data;
       } catch (err) {
         console.error('Error al cargar órdenes de trabajo:', err);
@@ -70,14 +64,10 @@ export default {
     },
     async asignarOrden(ordenId) {
       try {
-        const token = localStorage.getItem('access_token');
-        await axios.post(
-          `${process.env.VUE_APP_API_URL || ''}/work-orders/${ordenId}/asignar`,
+        await apiClient.post(
+          `/work-orders/${ordenId}/asignar`,
           {
             tecnico_nombre: this.usuarioNombre,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
           }
         );
         await this.cargarOrdenes();
@@ -92,13 +82,7 @@ export default {
         return;
       }
       try {
-        const token = localStorage.getItem('access_token');
-        await axios.delete(
-          `${process.env.VUE_APP_API_URL || ''}/work-orders/${ordenId}/desasignar`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        await apiClient.delete(`/work-orders/${ordenId}/desasignar`);
         await this.cargarOrdenes();
         this.$toast?.success('Orden liberada exitosamente');
       } catch (err) {
@@ -108,14 +92,10 @@ export default {
     },
     async cambiarEstado(ordenId, nuevoEstado) {
       try {
-        const token = localStorage.getItem('access_token');
-        await axios.patch(
-            `${process.env.VUE_APP_API_URL || ''}/work-orders/${ordenId}/estado`,
+        await apiClient.patch(
+          `/work-orders/${ordenId}/estado`,
           {
             estado: nuevoEstado,
-          },
-          {
-            headers: { Authorization: `Bearer ${token}` },
           }
         );
         await this.cargarOrdenes();
@@ -157,13 +137,7 @@ export default {
 
       // Si no está en localStorage, cargar desde la API
       try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(
-          `${process.env.VUE_APP_API_URL || ''}/usuarios/perfil`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await apiClient.get('/usuarios/perfil');
         
         const usuario = response.data;
         this.usuarioId = usuario.id;

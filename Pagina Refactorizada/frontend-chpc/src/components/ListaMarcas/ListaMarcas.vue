@@ -7,7 +7,7 @@
   
       <!-- Transición para el contenedor de marcas -->
       <transition name="fade">
-        <div class="marcas-container">
+        <div v-show="true" class="marcas-container">
           <h1 class="main-title">Explora nuestras Marcas</h1>
           <p class="description">
             Aquí encontrarás las mejores marcas para tus necesidades. ¡Haz clic y conoce más!

@@ -90,7 +90,7 @@ export default {
           throw new Error('No estás autenticado');
         }
 
-        await axios.post('http://localhost:5000/tienda/productos', this.product, {
+        await axios.post('https://prueba-back.vercel.app/api/tienda/productos', this.product, {
           headers: {
             Authorization: `Bearer ${token}`
           }

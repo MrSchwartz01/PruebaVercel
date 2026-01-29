@@ -126,7 +126,7 @@ export default {
       try {
         const token = localStorage.getItem('access_token');
         const response = await axios.get(
-          `http://localhost:5000/analytics/ventas/por-periodo?periodo=${this.periodo}`,
+          `https://prueba-back.vercel.app/api/analytics/ventas/por-periodo?periodo=${this.periodo}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         

@@ -112,7 +112,7 @@ export default {
         ...producto,
         imagen_url:
           producto.media?.length > 0
-            ? `https://backend-chpc-production.up.railway.app${producto.media[0].url}`
+            ? `https://prueba-back.vercel.app${producto.media[0].url}`
             : producto.imagen_url || "ruta-imagen-default.png",
       }));
       

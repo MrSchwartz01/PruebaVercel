@@ -161,7 +161,7 @@ export default {
     async cargarDatosKPI() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get('http://localhost:5000/analytics/kpis', {
+        const response = await axios.get('https://prueba-back.vercel.app/api/analytics/kpis', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -176,7 +176,7 @@ export default {
     async cargarOrdenesRecientes() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get('http://localhost:5000/analytics/ordenes/recientes', {
+        const response = await axios.get('https://prueba-back.vercel.app/api/analytics/ordenes/recientes', {
           headers: { Authorization: `Bearer ${token}` }
         });
         

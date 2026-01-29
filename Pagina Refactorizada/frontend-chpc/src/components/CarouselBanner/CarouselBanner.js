@@ -37,7 +37,7 @@ export default {
       if (this.intervalId) clearInterval(this.intervalId);
     },
     getFullImageUrl(relativeUrl) {
-      return `http://192.168.2.117:5000${relativeUrl}`;
+      return `https://prueba-back.vercel.app${relativeUrl}`;
     },
     prevBanner() {
       this.activeBanner =

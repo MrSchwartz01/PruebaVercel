@@ -1,21 +1,23 @@
 {
   "version": 2,
   "buildCommand": "npm run vercel-build",
-  "outputDirectory": "dist",
   "builds": [
     {
-      "src": "dist/main.js",
-      "use": "@vercel/node"
+      "src": "api/index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["src/**", "prisma/**", "node_modules/.prisma/**"]
+      }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/dist/main.js"
+      "dest": "/api/index.ts"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/main.js"
+      "dest": "/api/index.ts"
     }
   ]
 }

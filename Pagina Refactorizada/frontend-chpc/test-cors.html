@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test CORS - Frontend ↔ Backend</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1a1a2e;
+      color: #eee;
+    }
+    h1 { color: #00d9ff; text-align: center; }
+    .config {
+      background: #16213e;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    label { display: block; margin-bottom: 5px; color: #888; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background: #0f0f23;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #00d9ff;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover { background: #00b8d9; }
+    button:disabled { background: #555; cursor: not-allowed; }
+    .results {
+      background: #16213e;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .test-item {
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border-left: 4px solid #555;
+    }
+    .test-item.success { border-left-color: #00ff88; background: rgba(0,255,136,0.1); }
+    .test-item.error { border-left-color: #ff4757; background: rgba(255,71,87,0.1); }
+    .test-item.pending { border-left-color: #ffa502; background: rgba(255,165,2,0.1); }
+    .test-title { font-weight: bold; margin-bottom: 8px; }
+    .test-details { font-size: 13px; color: #aaa; }
+    .test-details pre {
+      background: #0f0f23;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .status-icon { margin-right: 8px; }
+    .summary {
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .summary.success { background: rgba(0,255,136,0.2); color: #00ff88; }
+    .summary.error { background: rgba(255,71,87,0.2); color: #ff4757; }
+  </style>
+</head>
+<body>
+  <h1>🔗 Test de CORS</h1>
+  <p style="text-align: center; color: #888;">Verifica la conexión entre Frontend y Backend</p>
+
+  <div class="config">
+    <label for="backendUrl">URL del Backend (con /api):</label>
+    <input type="text" id="backendUrl" value="https://prueba-back.vercel.app/api" placeholder="https://tu-backend.vercel.app/api">
+    
+    <label for="frontendUrl">URL del Frontend (origen actual):</label>
+    <input type="text" id="frontendUrl" readonly>
+    
+    <button onclick="runTests()" id="testBtn">🚀 Ejecutar Tests de CORS</button>
+  </div>
+
+  <div class="results" id="results" style="display: none;">
+    <h3>📋 Resultados:</h3>
+    <div id="testResults"></div>
+  </div>
+
+  <div id="summary"></div>
+
+  <script>
+    // Detectar origen actual
+    document.getElementById('frontendUrl').value = window.location.origin || 'file:// (local)';
+
+    async function runTests() {
+      const backendUrl = document.getElementById('backendUrl').value.trim();
+      const resultsDiv = document.getElementById('results');
+      const testResultsDiv = document.getElementById('testResults');
+      const summaryDiv = document.getElementById('summary');
+      const testBtn = document.getElementById('testBtn');
+
+      if (!backendUrl) {
+        alert('Por favor ingresa la URL del backend');
+        return;
+      }
+
+      // Reset
+      testResultsDiv.innerHTML = '';
+      summaryDiv.innerHTML = '';
+      resultsDiv.style.display = 'block';
+      testBtn.disabled = true;
+      testBtn.textContent = '⏳ Ejecutando tests...';
+
+      const tests = [
+        {
+          name: 'Preflight OPTIONS Request',
+          description: 'Verifica que el servidor responda correctamente a preflight requests',
+          test: () => testPreflight(backendUrl)
+        },
+        {
+          name: 'GET Request Simple',
+          description: 'Petición GET básica al endpoint de health o raíz',
+          test: () => testSimpleGet(backendUrl)
+        },
+        {
+          name: 'GET con Headers de Auth',
+          description: 'Petición GET con header Authorization',
+          test: () => testGetWithAuth(backendUrl)
+        },
+        {
+          name: 'POST con JSON Body',
+          description: 'Petición POST con Content-Type: application/json',
+          test: () => testPostJson(backendUrl)
+        },
+        {
+          name: 'Headers CORS en Response',
+          description: 'Verifica que los headers CORS estén presentes',
+          test: () => testCorsHeaders(backendUrl)
+        }
+      ];
+
+      let passed = 0;
+      let failed = 0;
+
+      for (const test of tests) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'test-item pending';
+        itemDiv.innerHTML = `
+          <div class="test-title"><span class="status-icon">⏳</span>${test.name}</div>
+          <div class="test-details">${test.description}</div>
+        `;
+        testResultsDiv.appendChild(itemDiv);
+
+        try {
+          const result = await test.test();
+          itemDiv.className = 'test-item success';
+          itemDiv.innerHTML = `
+            <div class="test-title"><span class="status-icon">✅</span>${test.name}</div>
+            <div class="test-details">
+              ${test.description}
+              <pre>${JSON.stringify(result, null, 2)}</pre>
+            </div>
+          `;
+          passed++;
+        } catch (error) {
+          itemDiv.className = 'test-item error';
+          itemDiv.innerHTML = `
+            <div class="test-title"><span class="status-icon">❌</span>${test.name}</div>
+            <div class="test-details">
+              ${test.description}
+              <pre>Error: ${error.message}\n\n${error.details || 'Posible bloqueo de CORS'}</pre>
+            </div>
+          `;
+          failed++;
+        }
+
+        // Pequeña pausa entre tests
+        await new Promise(r => setTimeout(r, 300));
+      }
+
+      // Summary
+      if (failed === 0) {
+        summaryDiv.innerHTML = `<div class="summary success">🎉 ¡Todos los tests pasaron! (${passed}/${tests.length})<br>No hay problemas de CORS</div>`;
+      } else {
+        summaryDiv.innerHTML = `<div class="summary error">⚠️ ${failed} test(s) fallaron de ${tests.length}<br>Revisa la configuración de CORS en el backend</div>`;
+      }
+
+      testBtn.disabled = false;
+      testBtn.textContent = '🚀 Ejecutar Tests de CORS';
+    }
+
+    async function testPreflight(baseUrl) {
+      const response = await fetch(baseUrl + '/auth/login', {
+        method: 'OPTIONS',
+        headers: {
+          'Origin': window.location.origin,
+          'Access-Control-Request-Method': 'POST',
+          'Access-Control-Request-Headers': 'Content-Type, Authorization'
+        }
+      });
+      
+      return {
+        status: response.status,
+        corsHeaders: {
+          'access-control-allow-origin': response.headers.get('access-control-allow-origin'),
+          'access-control-allow-methods': response.headers.get('access-control-allow-methods'),
+          'access-control-allow-headers': response.headers.get('access-control-allow-headers')
+        }
+      };
+    }
+
+    async function testSimpleGet(baseUrl) {
+      // Intentar varios endpoints comunes
+      const endpoints = ['/tienda/productos', '/health', '/'];
+      let lastError;
+      
+      for (const endpoint of endpoints) {
+        try {
+          const response = await fetch(baseUrl + endpoint, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+          
+          return {
+            endpoint: endpoint,
+            status: response.status,
+            statusText: response.statusText,
+            ok: response.ok
+          };
+        } catch (e) {
+          lastError = e;
+        }
+      }
+      
+      throw { message: lastError.message, details: 'No se pudo conectar a ningún endpoint' };
+    }
+
+    async function testGetWithAuth(baseUrl) {
+      const response = await fetch(baseUrl + '/usuarios/perfil', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer test-token-invalid'
+        }
+      });
+      
+      // Esperamos 401 porque el token no es válido, pero eso significa que CORS funciona
+      return {
+        status: response.status,
+        corsWorking: response.status === 401 || response.status === 403 || response.status === 200,
+        message: response.status === 401 ? 'CORS OK - Auth requerida (esperado)' : `Status: ${response.status}`
+      };
+    }
+
+    async function testPostJson(baseUrl) {
+      const response = await fetch(baseUrl + '/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email: 'test@test.com',
+          password: 'test123'
+        })
+      });
+      
+      // Cualquier respuesta (incluso 401/400) significa que CORS funciona
+      const data = await response.json().catch(() => ({}));
+      
+      return {
+        status: response.status,
+        corsWorking: true,
+        message: response.status === 401 ? 'CORS OK - Credenciales inválidas (esperado)' : 
+                 response.status === 400 ? 'CORS OK - Validación fallida (esperado)' :
+                 `Respuesta recibida con status ${response.status}`
+      };
+    }
+
+    async function testCorsHeaders(baseUrl) {
+      const response = await fetch(baseUrl + '/tienda/productos', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      const headers = {
+        'access-control-allow-origin': response.headers.get('access-control-allow-origin'),
+        'access-control-allow-credentials': response.headers.get('access-control-allow-credentials'),
+        'access-control-expose-headers': response.headers.get('access-control-expose-headers')
+      };
+      
+      // Verificar que al menos allow-origin esté presente
+      if (!headers['access-control-allow-origin']) {
+        throw { 
+          message: 'Header Access-Control-Allow-Origin no encontrado',
+          details: 'El backend debe incluir este header en las respuestas'
+        };
+      }
+      
+      return {
+        status: response.status,
+        corsHeaders: headers,
+        message: 'Headers CORS presentes correctamente'
+      };
+    }
+  </script>
+</body>
+</html>

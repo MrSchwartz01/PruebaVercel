@@ -166,8 +166,8 @@ export default {
         this.subiendoImagen = true;
         const formData = new FormData();
         formData.append('file', this.archivoSeleccionado);
-        formData.append('es_principal', this.imagenPrincipal ? 'true' : 'false');
-        formData.append('orden', (this.imagenes.length + 1).toString());
+        formData.append('es_principal', this.imagenPrincipal);
+        formData.append('orden', this.imagenes.length);
 
         await apiClient.post(`/images/upload/${this.productoActual.id}`,
           formData

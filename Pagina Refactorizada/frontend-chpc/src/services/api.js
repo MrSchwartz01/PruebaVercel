@@ -20,8 +20,12 @@ apiClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`
     }
     
-    // Para requests que NO son FormData, establecer Content-Type JSON
-    if (!(config.data instanceof FormData)) {
+    // Para FormData, ELIMINAR Content-Type para que el navegador lo establezca
+    // automáticamente con el boundary correcto
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type']
+      console.log('📎 FormData detectado - Content-Type será establecido automáticamente')
+    } else {
       config.headers['Content-Type'] = 'application/json'
     }
     

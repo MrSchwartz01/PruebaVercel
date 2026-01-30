@@ -122,6 +122,7 @@ import ProductosTop from './DashboardCharts/ProductosTop.vue';
 import VentasPorCategoria from './DashboardCharts/VentasPorCategoria.vue';
 import NotificationsBell from '../NotificationsPanel/NotificationsBell.vue';
 import axios from 'axios';
+import { API_BASE_URL } from '@/config/api';
 
 export default {
   name: 'DashboardMain',

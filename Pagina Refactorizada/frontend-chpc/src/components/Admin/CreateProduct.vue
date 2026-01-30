@@ -58,6 +58,7 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config/api';
 
 export default {
   name: 'CreateProduct',
@@ -90,7 +91,7 @@ export default {
           throw new Error('No estás autenticado');
         }
 
-        await axios.post('https://prueba-back.vercel.app/api/tienda/productos', this.product, {
+        await axios.post(`${API_BASE_URL}/tienda/productos`, this.product, {
           headers: {
             Authorization: `Bearer ${token}`
           }

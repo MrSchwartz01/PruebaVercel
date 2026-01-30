@@ -1,4 +1,5 @@
 import apiClient from '@/services/api';
+import { API_BASE_URL } from '@/config/api';
 
 export default {
   name: "CarouselBanner",
@@ -19,8 +20,8 @@ export default {
   methods: {
     async fetchBanners() {
       try {
-        const response = await axios.get("/Banners");
-        this.banners = response.data.data;
+        const response = await apiClient.get("/tienda/banners");
+        this.banners = response.data.data || response.data;
       } catch (error) {
         
         console.error("Error al obtener los banners:", error);
@@ -37,7 +38,7 @@ export default {
       if (this.intervalId) clearInterval(this.intervalId);
     },
     getFullImageUrl(relativeUrl) {
-      return `https://prueba-back.vercel.app${relativeUrl}`;
+      return `${API_BASE_URL.replace('/api', '')}${relativeUrl}`;
     },
     prevBanner() {
       this.activeBanner =

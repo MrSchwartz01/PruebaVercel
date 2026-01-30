@@ -97,6 +97,11 @@ export default {
       const token = localStorage.getItem('access_token');
       if (!token) return;
 
+      // TEMPORALMENTE DESACTIVADO - El endpoint /notifications/stream no existe en el backend
+      // TODO: Reactivar cuando se implemente el endpoint de notificaciones en tiempo real
+      console.log('Stream de notificaciones desactivado temporalmente');
+      return;
+      
       // Conectar a Server-Sent Events
       this.eventSource = new EventSource(
         `${API_BASE_URL}/notifications/stream`,

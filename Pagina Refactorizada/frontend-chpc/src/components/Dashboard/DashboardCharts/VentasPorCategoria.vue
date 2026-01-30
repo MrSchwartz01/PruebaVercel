@@ -19,7 +19,6 @@ import {
   Legend
 } from 'chart.js';
 import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -98,7 +97,7 @@ export default {
       try {
         const token = localStorage.getItem('access_token');
         const response = await axios.get(
-          `${API_BASE_URL}/analytics/ventas/por-categoria`,
+          'https://prueba-back.vercel.app/api/analytics/ventas/por-categoria',
           { headers: { Authorization: `Bearer ${token}` } }
         );
         

@@ -75,7 +75,13 @@ export default {
         return;
       }
       try {
-        await apiClient.delete(`/ordenes/${pedidoId}/desasignar`);
+        const token = localStorage.getItem('access_token');
+        await axios.delete(
+          `${process.env.VUE_APP_API_URL || ''}/ordenes/${pedidoId}/desasignar`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         await this.cargarPedidos();
         this.$toast?.success('Pedido liberado exitosamente');
       } catch (err) {
@@ -85,12 +91,13 @@ export default {
     },
     async cambiarEstado(pedidoId, nuevoEstado) {
       try {
-        await apiClient.patch(
-          `/ordenes/${pedidoId}/estado-gestion`,
+        const token = localStorage.getItem('access_token');
+        await axios.patch(
+          `${process.env.VUE_APP_API_URL || ''}/ordenes/${pedidoId}/estado-gestion`,
           {
             estado_gestion: nuevoEstado,
-          }
-        );
+          },
+          {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
@@ -132,7 +139,13 @@ export default {
 
       // Si no está en localStorage, cargar desde la API
       try {
-        const response = await apiClient.get('/usuarios/perfil');
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get(
+          `${process.env.VUE_APP_API_URL || ''}/usuarios/perfil`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         
         const usuario = response.data;
         this.usuarioId = usuario.id;

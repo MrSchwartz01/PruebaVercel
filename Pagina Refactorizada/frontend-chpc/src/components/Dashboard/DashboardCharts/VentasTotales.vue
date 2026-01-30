@@ -32,7 +32,6 @@ import {
   Filler
 } from 'chart.js';
 import axios from 'axios';
-import { API_BASE_URL } from '@/config/api';
 
 ChartJS.register(
   CategoryScale,
@@ -127,7 +126,7 @@ export default {
       try {
         const token = localStorage.getItem('access_token');
         const response = await axios.get(
-          `${API_BASE_URL}/analytics/ventas/por-periodo?periodo=${this.periodo}`,
+          `https://prueba-back.vercel.app/api/analytics/ventas/por-periodo?periodo=${this.periodo}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         

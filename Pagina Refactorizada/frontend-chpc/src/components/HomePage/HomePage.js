@@ -1,5 +1,4 @@
 import apiClient from '@/services/api';
-import { API_BASE_URL } from '@/config/api';
 import HeaderAnth from "../HeaderAnth/HeaderAnth.vue";
 import FooterAnth from "../FooterAnth/FooterAnth.vue";
 import CarouselBanner from "../CarouselBanner/CarouselBanner.vue";
@@ -113,7 +112,7 @@ export default {
         ...producto,
         imagen_url:
           producto.media?.length > 0
-            ? `${API_BASE_URL.replace('/api', '')}${producto.media[0].url}`
+            ? `https://prueba-back.vercel.app${producto.media[0].url}`
             : producto.imagen_url || "ruta-imagen-default.png",
       }));
       

@@ -2,8 +2,6 @@
 node_modules
 /dist
 
-# Backend (repositorio separado en C:\Users\Contabilidad\Documents\GitHub\backend-chpc)
-backend/
 
 # local env files
 .env.local

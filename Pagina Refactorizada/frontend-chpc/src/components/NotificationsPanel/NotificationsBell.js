@@ -31,7 +31,10 @@ export default {
     async loadNotifications() {
       this.loading = true;
       try {
-        const response = await apiClient.get('/notifications');
+        const token = localStorage.getItem('access_token');
+        const response = await apiClient.get('/notifications', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         
         this.notifications = response.data;
         this.updateUnreadCount();
@@ -48,7 +51,13 @@ export default {
 
     async markAllAsRead() {
       try {
-        await apiClient.post('/notifications/mark-all-read', {});
+        const token = localStorage.getItem('access_token');
+        await apiClient.post('/notifications/mark-all-read',
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         
         this.notifications.forEach(n => n.leida = true);
         this.updateUnreadCount();
@@ -60,7 +69,7 @@ export default {
     async markAsRead(notificationId) {
       try {
         const token = localStorage.getItem('access_token');
-        await apiClient.patch(`/notifications/${notificationId}/read`,
+        await apiClient.patch('/notifications/${notificationId}/read',
           {},
           {
             headers: { Authorization: `Bearer ${token}` },

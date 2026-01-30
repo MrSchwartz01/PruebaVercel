@@ -5,7 +5,7 @@
 // Detectar automáticamente si se está accediendo desde red local
 function getApiBaseUrl() {
   // SIEMPRE usar la URL absoluta de Vercel para evitar problemas de URL relativas
-  const backendUrl = 'https://backend-chpc.vercel.app/api';
+  const backendUrl = 'https://prueba-back.vercel.app/api';
   
   // Si hay variable de entorno definida, usarla (debe ser una URL completa)
   if (process.env.VUE_APP_API_URL) {

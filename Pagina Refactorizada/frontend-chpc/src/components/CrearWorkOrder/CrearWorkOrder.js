@@ -1,5 +1,3 @@
-import { API_BASE_URL } from '@/config/api';
-
 export default {
   name: 'CrearWorkOrder',
   data() {
@@ -65,7 +63,8 @@ export default {
         }
 
         // Obtener URL base de la API
-        const endpoint = `${API_BASE_URL}/work-orders`;
+        const apiUrl = process.env.VUE_APP_API_URL || 'https://prueba-back.vercel.app/api';
+        const endpoint = `${apiUrl}/work-orders`;
 
         console.log('Enviando orden de trabajo a:', endpoint);
         console.log('Datos:', datos);

@@ -47,7 +47,10 @@ export default {
     async cargarProductos() {
       try {
         this.cargando = true;
-        const response = await apiClient.get('/tienda/productos');
+        const token = localStorage.getItem('access_token');
+        const response = await apiClient.get('/tienda/productos', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         // Mostrar todos los productos, incluso inactivos
         this.productos = response.data;
       } catch (error) {
@@ -68,17 +71,22 @@ export default {
     async guardarProducto() {
       try {
         this.guardando = true;
+        const token = localStorage.getItem('access_token');
+        const headers = { Authorization: `Bearer ${token}` };
 
         if (this.editando) {
           // Actualizar producto existente
           await apiClient.put(
             `/tienda/productos/${this.productoActual.id}`,
-            this.formProducto
+            this.formProducto,
+            { headers }
           );
           alert('Producto actualizado correctamente');
         } else {
           // Crear nuevo producto
-          await apiClient.post('/tienda/productos', this.formProducto);
+          await apiClient.post('/tienda/productos', this.formProducto, {
+            headers,
+          });
           alert('Producto creado correctamente');
         }
 
@@ -97,9 +105,11 @@ export default {
       if (!confirm(`¿Está seguro de ${accion} este producto?`)) return;
 
       try {
+        const token = localStorage.getItem('access_token');
         await apiClient.put(
           `/tienda/productos/${producto.id}`,
-          { activo: !producto.activo }
+          { activo: !producto.activo },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         await this.cargarProductos();
         alert(`Producto ${accion === 'desactivar' ? 'desactivado' : 'activado'} correctamente`);
@@ -118,7 +128,10 @@ export default {
     async cargarImagenes(productoId) {
       try {
         this.cargandoImagenes = true;
-        const response = await apiClient.get(`/images/producto/${productoId}`);
+        const token = localStorage.getItem('access_token');
+        const response = await apiClient.get(`/images/producto/${productoId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         this.imagenes = response.data;
       } catch (error) {
         console.error('Error al cargar imágenes:', error);
@@ -154,6 +167,7 @@ export default {
 
       try {
         this.subiendoImagen = true;
+        const token = localStorage.getItem('access_token');
         const formData = new FormData();
         formData.append('file', this.archivoSeleccionado);
         formData.append('es_principal', this.imagenPrincipal);
@@ -163,6 +177,7 @@ export default {
           formData,
           {
             headers: {
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'multipart/form-data',
             },
           }
@@ -183,9 +198,11 @@ export default {
 
     async marcarPrincipal(imagen) {
       try {
+        const token = localStorage.getItem('access_token');
         await apiClient.put(
           `/images/${imagen.id}/principal`,
-          {}
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         await this.cargarImagenes(this.productoActual.id);
         alert('Imagen marcada como principal');
@@ -199,7 +216,10 @@ export default {
       if (!confirm('¿Está seguro de eliminar esta imagen?')) return;
 
       try {
-        await apiClient.delete(`/images/${imagen.id}`);
+        const token = localStorage.getItem('access_token');
+        await apiClient.delete(`/images/${imagen.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         await this.cargarImagenes(this.productoActual.id);
         alert('Imagen eliminada correctamente');
       } catch (error) {

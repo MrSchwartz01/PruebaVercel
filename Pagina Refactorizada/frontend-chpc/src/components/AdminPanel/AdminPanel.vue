@@ -806,7 +806,7 @@ export default {
     async submitPromotion() {
       try {
         if (this.editingPromotion) {
-          await apiClient.patch('/promociones/${this.editingPromotion.id}',
+          await apiClient.patch(`/promociones/${this.editingPromotion.id}`,
             this.promotionForm,
             this.getAuthHeaders()
           );
@@ -892,7 +892,7 @@ export default {
     async submitBanner() {
       try {
         if (this.editingBanner) {
-          await apiClient.patch('/tienda/banners/${this.editingBanner.id}',
+          await apiClient.patch(`/tienda/banners/${this.editingBanner.id}`,
             this.bannerForm,
             this.getAuthHeaders()
           );
@@ -1030,7 +1030,7 @@ export default {
           // Actualizar usuario (sin password)
           // eslint-disable-next-line no-unused-vars
           const { password, ...updateData } = this.userForm;
-          await apiClient.patch('/usuarios/${this.editingUser.id}',
+          await apiClient.patch(`/usuarios/${this.editingUser.id}`,
             updateData,
             this.getAuthHeaders()
           );
@@ -1192,7 +1192,7 @@ export default {
     async submitPermiso() {
       try {
         if (this.editingPermiso) {
-          await apiClient.patch('/permisos-temporales/${this.editingPermiso.id}',
+          await apiClient.patch(`/permisos-temporales/${this.editingPermiso.id}`,
             {
               fecha_expiracion: this.permisoForm.fecha_expiracion,
               activo: this.permisoForm.activo,

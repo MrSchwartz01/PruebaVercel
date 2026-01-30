@@ -37,7 +37,7 @@ export default {
       if (this.intervalId) clearInterval(this.intervalId);
     },
     getFullImageUrl(relativeUrl) {
-      return `https://prueba-back.vercel.app${relativeUrl}`;
+      return `https://backend-chpc.vercel.app${relativeUrl}`;
     },
     prevBanner() {
       this.activeBanner =

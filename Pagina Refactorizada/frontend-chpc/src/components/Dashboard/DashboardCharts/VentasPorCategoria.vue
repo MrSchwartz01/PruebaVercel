@@ -97,7 +97,7 @@ export default {
       try {
         const token = localStorage.getItem('access_token');
         const response = await axios.get(
-          'https://prueba-back.vercel.app/api/analytics/ventas/por-categoria',
+          'https://backend-chpc.vercel.app/api/analytics/ventas/por-categoria',
           { headers: { Authorization: `Bearer ${token}` } }
         );
         

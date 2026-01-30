@@ -165,13 +165,24 @@ export default {
       try {
         this.subiendoImagen = true;
         const formData = new FormData();
+        
+        // Agregar archivo - probar con diferentes nombres de campo comunes
         formData.append('file', this.archivoSeleccionado);
         formData.append('es_principal', this.imagenPrincipal ? 'true' : 'false');
         formData.append('orden', (this.imagenes.length + 1).toString());
+        
+        // Debug: mostrar contenido del FormData
+        console.log('📦 FormData contenido:');
+        for (let [key, value] of formData.entries()) {
+          console.log(`   ${key}:`, value);
+        }
+        console.log('📦 Producto ID:', this.productoActual.id);
 
-        await apiClient.post(`/images/upload/${this.productoActual.id}`,
+        const response = await apiClient.post(`/images/upload/${this.productoActual.id}`,
           formData
         );
+        
+        console.log('✅ Respuesta:', response.data);
 
         alert('Imagen subida correctamente');
         this.archivoSeleccionado = null;
@@ -180,7 +191,8 @@ export default {
         await this.cargarImagenes(this.productoActual.id);
       } catch (error) {
         console.error('Error al subir imagen:', error);
-        alert('Error al subir imagen: ' + (error.response?.data?.message || error.message));
+        console.error('Respuesta del servidor:', error.response?.data);
+        alert('Error al subir imagen: ' + (error.response?.data?.message || error.response?.data?.detail || error.message));
       } finally {
         this.subiendoImagen = false;
       }

@@ -99,8 +99,12 @@ export default {
 
       // TEMPORALMENTE DESACTIVADO - El endpoint /notifications/stream no existe en el backend
       // TODO: Reactivar cuando se implemente el endpoint de notificaciones en tiempo real
-      console.log('Stream de notificaciones desactivado temporalmente');
-      return;
+      const streamEnabled = false;
+      
+      if (!streamEnabled) {
+        console.log('Stream de notificaciones desactivado temporalmente');
+        return;
+      }
       
       // Conectar a Server-Sent Events
       this.eventSource = new EventSource(

@@ -12,7 +12,7 @@ module.exports = defineConfig({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'https://backend-chpc.vercel.app',
+        target: process.env.VUE_APP_API_URL || 'http://localhost:3001',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

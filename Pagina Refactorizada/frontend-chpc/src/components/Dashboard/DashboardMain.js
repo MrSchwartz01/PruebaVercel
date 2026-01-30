@@ -4,7 +4,7 @@ import VentasTotales from './DashboardCharts/VentasTotales.vue';
 import ProductosTop from './DashboardCharts/ProductosTop.vue';
 import VentasPorCategoria from './DashboardCharts/VentasPorCategoria.vue';
 import NotificationsBell from '../NotificationsPanel/NotificationsBell.vue';
-import axios from 'axios';
+import apiClient from '@/services/api';
 
 export default {
   name: 'DashboardMain',
@@ -43,10 +43,7 @@ export default {
   methods: {
     async cargarDatosKPI() {
       try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get('https://backend-chpc.vercel.app/api/analytics/kpis', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await apiClient.get('/analytics/kpis');
         
         this.ventasTotales = response.data.ventasTotales || this.ventasTotales;
         this.totalOrdenes = response.data.totalOrdenes || this.totalOrdenes;
@@ -58,10 +55,7 @@ export default {
     },
     async cargarOrdenesRecientes() {
       try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get('https://backend-chpc.vercel.app/api/analytics/ordenes/recientes', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await apiClient.get('/analytics/ordenes/recientes');
         
         this.ordenesRecientes = response.data;
       } catch (error) {

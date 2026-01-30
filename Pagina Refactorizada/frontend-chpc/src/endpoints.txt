@@ -1,0 +1,70 @@
+endpoints de autenticacion
+
+POST /api/auth/registro      // Registro de usuario
+POST /api/auth/login         // Login de usuario  
+POST /api/auth/logout        // Logout
+POST /api/auth/refresh       // Refrescar token
+POST /api/auth/forgot-password   // Recuperar contraseña
+POST /api/auth/reset-password    // Resetear contraseña
+
+endpoints de usuarios
+GET    /api/usuarios          // Obtener perfil (requiere autenticación)
+PATCH  /api/usuarios/perfil   // Actualizar perfil
+PATCH  /api/usuarios/password // Cambiar contraseña
+GET    /api/usuarios/admin    // Listar usuarios (solo admin)
+POST   /api/usuarios/admin    // Crear usuario (solo admin)
+PATCH  /api/usuarios/admin/:id // Actualizar usuario (solo admin)
+DELETE /api/usuarios/:id      // Eliminar usuario (solo admin)
+
+endpoints de productos
+GET    /api/tienda/productos              // Listar productos (público)
+GET    /api/tienda/productos?categoria=X  // Filtrar por categoría
+GET    /api/tienda/productos?destacado=true // Productos destacados
+GET    /api/tienda/productos/:id          // Obtener producto por ID
+POST   /api/tienda/productos              // Crear producto (admin/vendedor)
+PUT    /api/tienda/productos/:id          // Actualizar producto
+DELETE /api/tienda/productos/:id          // Eliminar producto (admin)
+
+endpoints de imagenes
+GET    /api/images/producto/:productId    // Obtener imágenes de producto
+GET    /api/images/:id                    // Obtener imagen por ID
+POST   /api/images/upload/:productId      // Subir imagen (admin/vendedor)
+PUT    /api/images/:id                    // Actualizar imagen
+DELETE /api/images/:id                    // Eliminar imagen
+
+endpoints de banners
+GET    /api/tienda/banners        // Obtener banners (público)
+GET    /api/tienda/banners/:id    // Obtener banner por ID
+POST   /api/tienda/banners        // Crear banner (admin)
+PATCH  /api/tienda/banners/:id    // Actualizar banner (admin)
+DELETE /api/tienda/banners/:id    // Eliminar banner (admin)
+
+endpoints de ordenes
+GET    /api/ordenes              // Mis órdenes
+GET    /api/ordenes/:id          // Obtener orden por ID
+POST   /api/ordenes              // Crear orden
+PATCH  /api/ordenes/:id/status   // Actualizar estado (admin)
+GET    /api/ordenes/vendedor     // Órdenes asignadas (vendedor)
+PATCH  /api/ordenes/:id/asignar  // Asignar orden (admin)
+
+endpoints de promociones
+GET    /api/promociones              // Todas las promociones
+GET    /api/promociones/activas      // Promociones activas
+GET    /api/promociones/producto/:id // Promoción de producto
+GET    /api/promociones/:id          // Promoción por ID
+POST   /api/promociones              // Crear promoción (admin)
+PATCH  /api/promociones/:id          // Actualizar promoción (admin)
+DELETE /api/promociones/:id          // Eliminar promoción (admin)
+
+endpoints de configuracion
+GET    /api/configuracion           // Toda la configuración
+GET    /api/configuracion/:clave    // Configuración por clave
+GET    /api/configuracion/logo/url  // URL del logo
+POST   /api/configuracion           // Actualizar configuración (admin)
+
+enpoints de api/analytics
+GET    /api/analytics/kpis                  // KPIs principales (admin)
+GET    /api/analytics/ventas/por-periodo    // Ventas por período (admin)
+GET    /api/analytics/productos/top        // Productos top (admin)
+GET    /api/analytics/ventas/por-categoria // Ventas por categoría (admin)
+GET    /api/analytics/ordenes/recientes    // Órdenes recientes (admin)

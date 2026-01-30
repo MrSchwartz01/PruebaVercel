@@ -128,10 +128,7 @@ export default {
     async cargarImagenes(productoId) {
       try {
         this.cargandoImagenes = true;
-        const token = localStorage.getItem('access_token');
-        const response = await apiClient.get(`/images/producto/${productoId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await apiClient.get(`/images/producto/${productoId}`);
         this.imagenes = response.data;
       } catch (error) {
         console.error('Error al cargar imágenes:', error);
@@ -167,20 +164,13 @@ export default {
 
       try {
         this.subiendoImagen = true;
-        const token = localStorage.getItem('access_token');
         const formData = new FormData();
         formData.append('file', this.archivoSeleccionado);
         formData.append('es_principal', this.imagenPrincipal ? 'true' : 'false');
         formData.append('orden', (this.imagenes.length + 1).toString());
 
         await apiClient.post(`/images/upload/${this.productoActual.id}`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+          formData
         );
 
         alert('Imagen subida correctamente');
@@ -216,10 +206,7 @@ export default {
       if (!confirm('¿Está seguro de eliminar esta imagen?')) return;
 
       try {
-        const token = localStorage.getItem('access_token');
-        await apiClient.delete(`/images/${imagen.id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await apiClient.delete(`/images/${imagen.id}`);
         await this.cargarImagenes(this.productoActual.id);
         alert('Imagen eliminada correctamente');
       } catch (error) {

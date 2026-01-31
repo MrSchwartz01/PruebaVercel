@@ -119,14 +119,13 @@
                 <transition name="dropdown-fade">
                   <div v-if="showProductsMenu" class="dropdown-wrapper">
                   <ul class="dropdown-content">
-                    <li class="divider"></li>
                     <li><a href="/productos/categoria/laptops">Laptops</a></li>
                     <li><a href="/productos/categoria/componentes">Componentes</a></li>
                     <li><a href="/productos/categoria/perifericos">Periféricos</a></li>
                     <li><a href="/productos/categoria/almacenamiento">Almacenamiento</a></li>
                     <li><a href="/productos/categoria/redes">Redes</a></li>
                     <li><a href="/productos/categoria/audio">Audio</a></li>
-                    <li><a href="/productos/categoria/redes">Equipos de Red</a></li>
+                    <li><a href="/productos/categoria/accesorios">Accesorios</a></li>
                   </ul>
                   </div>  
                 </transition>
@@ -141,18 +140,14 @@
               <a href="#" @click.prevent>Marcas</a>
               <transition name="dropdown-fade">
                 <div v-if="showMarcasMenu" class="dropdown-wrapper">
-                <ul class="dropdown-content">
-                  <li class="ver-todos-item"><a href="/marcas"><strong>Ver Todas las Marcas</strong></a></li>
-                  <li class="divider"></li>
-                  <li v-if="marcasDisponibles.length === 0" style="padding: 4px 12px; color: #999; font-size: 12px;">
-                    Cargando marcas...
-                  </li>
-                  <li v-for="marca in marcasDisponibles" :key="marca" class="marca-item">
-                    <a :href="`/productos/marca/${marca}`">
-                      <span class="marca-nombre">{{ marca }}</span>
-                    </a>
-                  </li>
-                </ul>
+                  <ul class="dropdown-content">
+                    <li v-if="marcasDisponibles.length === 0" style="padding: 8px 12px; color: #999; font-size: 12px;">
+                      Cargando marcas...
+                    </li>
+                    <li v-for="marca in marcasDisponibles" :key="marca">
+                      <a :href="`/productos/marca/${marca}`">{{ marca }}</a>
+                    </li>
+                  </ul>
                 </div>
               </transition>
             </li>

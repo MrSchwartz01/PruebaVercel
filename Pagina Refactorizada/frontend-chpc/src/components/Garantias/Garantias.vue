@@ -1,5 +1,5 @@
 <template>
-  <div class="garantias-page-container">
+  <div class="page-layout">
     <HeaderAnth
       :searchQuery="searchQuery"
       :isAuthenticated="isAuthenticated"
@@ -13,9 +13,9 @@
       </div>
     </section>
 
-    <div class="content-container">
-      <section class="section-card">
-        <h2 class="section-title">Garantía del Local</h2>
+    <div class="content-container narrow">
+      <section class="section-card card-accent">
+        <h2 class="section-title title-accent">Garantía del Local</h2>
         <div class="section-content">
           <p>
             Nuestros productos cuentan con una vigencia de <strong>6 meses a un año</strong> a partir de la fecha de factura, cubriendo defectos de fabricación bajo condiciones normales de uso.
@@ -23,8 +23,8 @@
         </div>
       </section>
 
-      <section class="section-card">
-        <h2 class="section-title">Garantía del Fabricante</h2>
+      <section class="section-card card-accent">
+        <h2 class="section-title title-accent">Garantía del Fabricante</h2>
         <div class="section-content">
           <p>
             Cada producto cuenta con la garantía oficial del fabricante. Para hacerla efectiva, es necesario conservar la factura original y seguir los protocolos de soporte oficial de la marca.

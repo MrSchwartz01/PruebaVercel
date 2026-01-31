@@ -1,16 +1,20 @@
 <template>
-    <div>
+    <div class="page-layout">
       <HeaderAnth
         :isAuthenticated="isAuthenticated"
         @cerrar-sesion="cerrarSesion"
       />
   
-      <div class="service-container">
-        <h1 class="main-title">Servicio Técnico Especializado</h1>
-        <p class="description">
-          Descubre los servicios que ofrecemos para garantizar el funcionamiento óptimo de tus equipos.
-        </p>
-  
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title">Servicio Técnico Especializado</h1>
+          <p class="hero-subtitle">
+            Descubre los servicios que ofrecemos para garantizar el funcionamiento óptimo de tus equipos.
+          </p>
+        </div>
+      </section>
+
+      <div class="content-container">
         <div class="services-grid">
           <!-- Ejemplo con VIDEO LOCAL -->
           <div class="service-card" @click="showVideoModal('/Videos/video prueba ensamblaje.mp4')">

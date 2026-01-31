@@ -1,5 +1,5 @@
 <template>
-  <div class="mision-vision-page">
+  <div class="page-layout">
     <!-- Header -->
     <HeaderAnth
       :searchQuery="searchQuery"
@@ -19,12 +19,10 @@
     </section>
 
     <!-- Contenido Principal -->
-    <div class="content-container">
+    <div class="content-container narrow">
       <!-- Misión -->
-      <section class="section-card mision-section">
-        <div class="icon-wrapper">
-        </div>
-        <h2 class="section-title">Nuestra Misión</h2>
+      <section class="section-card card-accent">
+        <h2 class="section-title title-accent">Nuestra Misión</h2>
         <div class="section-content">
           <p>
             En CHPC Tecnología, nuestra misión es ir más allá de la simple venta de equipos tecnológicos. Nos dedicamos a crear
@@ -39,10 +37,8 @@
       </section>
 
       <!-- Visión -->
-      <section class="section-card vision-section">
-        <div class="icon-wrapper">
-        </div>
-        <h2 class="section-title">Nuestra Visión</h2>
+      <section class="section-card card-accent">
+        <h2 class="section-title title-accent">Nuestra Visión</h2>
         <div class="section-content">
           <p>
             Convertirnos en la referencia global en soluciones tecnológicas integrales, distinguiéndonos por nuestra capacidad

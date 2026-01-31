@@ -1,5 +1,5 @@
 <template>
-  <div class="encuentranos-layout">
+  <div class="page-layout">
     <HeaderAnth
       :searchQuery="searchQuery"
       :isAuthenticated="isAuthenticated"
@@ -14,28 +14,28 @@
       </div>
     </section>
 
-    <div class="encuentranos-container-original">
-      <div class="content-wrapper">
-        <div class="info-section">
-          <div class="info-card-item">
+    <div class="content-container">
+      <div class="flex-row">
+        <div class="flex-col info-column">
+          <div class="info-card">
             <h3 class="card-title">Dirección</h3>
             <p>{{ direccion }}</p>
           </div>
 
-          <div class="info-card-item">
+          <div class="info-card">
             <h3 class="card-title">Horario de Atención</h3>
             <p>{{ horario }}</p>
           </div>
 
-          <div class="info-card-item">
+          <div class="info-card">
             <h3 class="card-title">Contacto</h3>
             <p>{{ telefono }}<br>{{ email }}</p>
           </div>
         </div>
 
-        <div class="map-section">
-          <div class="map-card-container">
-            <h2 class="section-title-map">Cómo llegar</h2>
+        <div class="flex-col-2">
+          <div class="section-card map-card">
+            <h2 class="section-title">Cómo llegar</h2>
             <div class="map-frame">
               <iframe
                 :src="googleMapsEmbedUrl"
@@ -46,7 +46,7 @@
                 loading="lazy"
               ></iframe>
             </div>
-            <a :href="googleMapsLink" target="_blank" class="btn-directions">
+            <a :href="googleMapsLink" target="_blank" class="btn-primary btn-directions">
               🧭 Ver en Google Maps
             </a>
           </div>

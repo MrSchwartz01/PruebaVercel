@@ -1,175 +1,236 @@
-/* Login Container */
-.login-container {
-    max-width: 420px;
-    margin: 60px auto;
-    padding: 40px 35px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
+/* ===== Layout Global ===== */
+.page-layout {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+  background: linear-gradient(135deg, #FF6000 0%, #FF8000 100%);
+  padding: 50px 20px;
+  text-align: center;
+  color: white;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.95;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ===== Content Container ===== */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.content-container.narrow {
+  max-width: 480px;
+}
+
+/* ===== Auth Card ===== */
+.auth-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 40px 35px;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* ===== Mensaje de error destacado ===== */
+.error-message-box {
+  background-color: #fee;
+  border: 2px solid #e74c3c;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+  color: #c0392b;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  animation: shake 0.5s ease-in-out;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* ===== Input Groups ===== */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-size: 13px;
+  color: #34495e;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #FF6000;
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 96, 0, 0.1);
+}
+
+/* ===== Password Toggle ===== */
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+  color: #FF6000;
+}
+
+.toggle-password:focus {
+  outline: none;
+  color: #FF6000;
+}
+
+.toggle-password svg {
+  display: block;
+}
+
+/* ===== Login Button ===== */
+.login-button {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #FF6000 0%, #FF8000 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 24px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(255, 96, 0, 0.3);
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #e55500 0%, #FF6000 100%);
+  box-shadow: 0 6px 16px rgba(255, 96, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+/* ===== Forgot Password Link ===== */
+.forgot-password-container {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.forgot-password-link {
+  color: #FF6000;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.forgot-password-link:hover {
+  color: #e55500;
+  text-decoration: underline;
+}
+
+/* ===== Account Info ===== */
+.account-info {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+.create-account-link {
+  color: #FF6000;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.create-account-link:hover {
+  color: #e55500;
+  text-decoration: underline;
+}
+
+/* ===== Error Messages ===== */
+.error {
+  color: #e74c3c;
+  font-size: 13px;
+  text-align: left;
+  margin-top: 6px;
+  font-weight: 500;
+  background-color: #fadbd8;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border-left: 3px solid #e74c3c;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
   }
   
-  .login-container h2 {
-    text-align: center;
-    color: #2c3e50;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    letter-spacing: -0.5px;
+  .hero-section {
+    padding: 40px 20px;
   }
   
-  /* Mensaje de error destacado */
-  .error-message-box {
-    background-color: #fee;
-    border: 2px solid #e74c3c;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 24px;
-    color: #c0392b;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    animation: shake 0.5s ease-in-out;
-    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+  .auth-card {
+    padding: 30px 25px;
   }
   
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  .content-container.narrow {
+    padding: 30px 15px 50px;
   }
-  
-  .input-group {
-    margin-bottom: 20px;
-  }
-  
-  .input-group label {
-    font-size: 13px;
-    color: #34495e;
-    margin-bottom: 8px;
-    display: block;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .input-group input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background-color: #fafafa;
-  }
-  
-  .input-group input:focus {
-    border-color: #3498db;
-    outline: none;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  }
-  
-  .password-container {
-    position: relative;
-  }
-  
-  .toggle-password {
-    position: absolute;
-    top: 50%;
-    right: 16px;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #7f8c8d;
-    cursor: pointer;
-    transition: color 0.3s;
-    user-select: none;
-  }
-  
-  .toggle-password:hover {
-    color: #3498db;
-  }
-  
-  .login-button {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #db9e34 0%, #b98429 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    margin-top: 24px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(219, 138, 52, 0.509);
-  }
-  
-  .login-button:hover {
-    background: linear-gradient(135deg, #ffa726 0%, #a9701b 100%);
-    box-shadow: 0 6px 16px rgba(219, 138, 52, 0.4);
-    transform: translateY(-2px);
-  }
-  
-  .login-button:active {
-    transform: translateY(0);
-  }
-  
-  /* Forgot Password Link */
-  .forgot-password-container {
-    text-align: center;
-    margin-top: 16px;
-    margin-bottom: 8px;
-  }
-  
-  .forgot-password-link {
-    color: #3498db;
-    font-size: 13px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-block;
-    font-weight: 500;
-  }
-  
-  .forgot-password-link:hover {
-    color: #2980b9;
-    text-decoration: underline;
-  }
-  
-  .account-info {
-    margin-top: 24px;
-    text-align: center;
-    font-size: 14px;
-    color: #7f8c8d;
-  }
-  
-  .create-account-link {
-    background: none;
-    border: none;
-    color: #3498db;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 0;
-    transition: color 0.3s;
-  }
-  
-  .create-account-link:hover {
-    color: #2980b9;
-    text-decoration: underline;
-  }
-  
-  .error {
-    color: #e74c3c;
-    font-size: 13px;
-    text-align: left;
-    margin-top: 6px;
-    font-weight: 500;
-    background-color: #fadbd8;
-    padding: 8px 12px;
-    border-radius: 4px;
-    border-left: 3px solid #e74c3c;
-  }
+}

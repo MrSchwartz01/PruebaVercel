@@ -1,5 +1,5 @@
 <template>
-  <div class="redes-sociales-page-layout">
+  <div class="page-layout">
     <HeaderAnth
       :isAuthenticated="isAuthenticated"
       @cerrar-sesion="cerrarSesion"

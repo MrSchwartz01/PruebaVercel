@@ -29,7 +29,7 @@
             >
               <div class="product-image">
                 <img
-                  :src="producto.imagen_url"
+                  :src="producto.imagen_url || '/placeholder.jpg'"
                   :alt="producto.producto"
                   loading="lazy"
                 />

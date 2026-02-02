@@ -42,7 +42,7 @@
                 class="producto-item"
               >
                 <div class="item-image-wrapper">
-                  <img :src="item.imagen_url" :alt="item.producto" class="item-image" />
+                  <img :src="item.imagen_url || '/placeholder.jpg'" :alt="item.producto" class="item-image" />
                 </div>
 
                 <div class="item-details">

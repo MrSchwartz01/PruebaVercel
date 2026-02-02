@@ -30,7 +30,7 @@ export default {
         // Usar el índice actual del carousel
         return this.imagenes[this.currentImageIndex].ruta_imagen;
       }
-      return '/Productos/placeholder-product.png';
+      return '/placeholder.jpg';
     },
     mostrarStock() {
       if (!this.producto) return '';

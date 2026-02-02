@@ -94,7 +94,7 @@
     <!-- Contenedor de imagen -->
     <div class="product-image-wrapper">
       <img
-        :src="producto.imagen_url || 'ruta-imagen-default.png'"
+        :src="producto.imagen_url || '/placeholder.jpg'"
         :alt="producto.producto"
       />
     </div>

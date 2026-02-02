@@ -112,7 +112,9 @@ export default {
           console.warn('⚠️ No se encontraron productos para esta marca');
           // Intentar cargar TODOS los productos para ver qué marcas existen
           const todosResponse = await apiClient.get('/tienda/productos');
-          const marcasExistentes = [...new Set(todosResponse.data.map(p => p.marca))];
+          // La API devuelve { data: [...], total, page, limit, totalPages }
+          const todosProductos = todosResponse.data.data || todosResponse.data;
+          const marcasExistentes = [...new Set(todosProductos.map(p => p.marca))];
           console.log('📋 Marcas disponibles en la BD:', marcasExistentes);
         }
       } catch (error) {

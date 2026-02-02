@@ -188,7 +188,8 @@ export default {
     async loadProductos() {
       try {
         const response = await apiClient.get('/tienda/productos');
-        this.productos = response.data;
+        // La API devuelve { data: [...], total, page, limit, totalPages }
+        this.productos = response.data.data || response.data;
       } catch (error) {
         console.error('Error al cargar productos:', error);
       }

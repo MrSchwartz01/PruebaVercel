@@ -43,7 +43,9 @@ export default {
       try {
         this.cargando = true;
         const response = await apiClient.get('/tienda/productos');
-        const productos = Array.isArray(response.data) ? response.data : [];
+        // La API devuelve { data: [...], total, page, limit, totalPages }
+        const productosArray = response.data.data || response.data;
+        const productos = Array.isArray(productosArray) ? productosArray : [];
         
         // Extraer marcas únicas de los productos
         const marcasSet = new Set();

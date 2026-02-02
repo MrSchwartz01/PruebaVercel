@@ -80,7 +80,8 @@ export default {
       try {
         this.cargando = true;
         const response = await apiClient.get('/tienda/productos');
-        this.productos = response.data;
+        // La API devuelve { data: [...], total, page, limit, totalPages }
+        this.productos = response.data.data || response.data;
         this.productosFiltrados = [...this.productos];
         
         this.extraerOpcionesFiltros();

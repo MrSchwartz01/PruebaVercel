@@ -152,7 +152,9 @@ export default {
           const response = await apiClient.get('/tienda/productos');
           console.log('Respuesta de API:', response.data);
           
-          const productos = Array.isArray(response.data) ? response.data : [];
+          // La API devuelve { data: [...], total, page, limit, totalPages }
+          const productosArray = response.data.data || response.data;
+          const productos = Array.isArray(productosArray) ? productosArray : [];
           console.log('Total de productos:', productos.length);
           
           // Debug: Verificar si los productos tienen el campo marca

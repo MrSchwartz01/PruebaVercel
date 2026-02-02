@@ -108,12 +108,14 @@ export default {
 
       // Cargar Productos
       const productosResponse = await apiClient.get('/tienda/productos');
-      this.productos = productosResponse.data.map((producto) => ({
+      // La API devuelve { data: [...], total, page, limit, totalPages }
+      const productosArray = productosResponse.data.data || productosResponse.data;
+      this.productos = productosArray.map((producto) => ({
         ...producto,
         imagen_url:
           producto.media?.length > 0
             ? `https://backend-chpc.vercel.app${producto.media[0].url}`
-            : producto.imagen_url || "ruta-imagen-default.png",
+            : producto.imagen_url || "/placeholder.jpg",
       }));
       
       console.log('Total de productos cargados:', this.productos.length);

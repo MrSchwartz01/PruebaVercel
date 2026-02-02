@@ -18,14 +18,6 @@ export default {
       archivoSeleccionado: null,
       imagenPrincipal: false,
       formProducto: this.getEmptyForm(),
-      // Paginación
-      currentPage: 1,
-      totalPages: 1,
-      totalProductos: 0,
-      limit: 28,
-      // Búsqueda
-      searchQuery: '',
-      searchTimeout: null,
     };
   },
   async mounted() {
@@ -49,71 +41,17 @@ export default {
       try {
         this.cargando = true;
         const token = localStorage.getItem('access_token');
-        
-        const params = {
-          page: this.currentPage,
-          limit: this.limit,
-        };
-        
-        if (this.searchQuery.trim()) {
-          params.search = this.searchQuery.trim();
-        }
-        
         const response = await apiClient.get('/tienda/productos', {
           headers: { Authorization: `Bearer ${token}` },
-          params,
         });
-        
-        // Respuesta paginada: { data, total, page, limit, totalPages }
-        this.productos = response.data.data;
-        this.totalProductos = response.data.total;
-        this.totalPages = response.data.totalPages;
-        this.currentPage = response.data.page;
+        // Mostrar todos los productos, incluso inactivos
+        this.productos = response.data;
       } catch (error) {
         console.error('Error al cargar productos:', error);
         alert('Error al cargar productos');
       } finally {
         this.cargando = false;
       }
-    },
-
-    // Métodos de paginación
-    irAPagina(pagina) {
-      if (pagina >= 1 && pagina <= this.totalPages) {
-        this.currentPage = pagina;
-        this.cargarProductos();
-      }
-    },
-
-    paginaAnterior() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-        this.cargarProductos();
-      }
-    },
-
-    paginaSiguiente() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.cargarProductos();
-      }
-    },
-
-    // Búsqueda con debounce
-    onSearchInput() {
-      if (this.searchTimeout) {
-        clearTimeout(this.searchTimeout);
-      }
-      this.searchTimeout = setTimeout(() => {
-        this.currentPage = 1; // Resetear a página 1 al buscar
-        this.cargarProductos();
-      }, 400);
-    },
-
-    limpiarBusqueda() {
-      this.searchQuery = '';
-      this.currentPage = 1;
-      this.cargarProductos();
     },
 
     editarProducto(producto) {
@@ -296,25 +234,6 @@ export default {
       this.imagenes = [];
       this.archivoSeleccionado = null;
       this.imagenPrincipal = false;
-    },
-  },
-  computed: {
-    // Calcula qué números de página mostrar (máximo 5)
-    paginasVisibles() {
-      const pages = [];
-      const maxVisible = 5;
-      let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
-      let end = Math.min(this.totalPages, start + maxVisible - 1);
-      
-      // Ajustar start si estamos cerca del final
-      if (end - start < maxVisible - 1) {
-        start = Math.max(1, end - maxVisible + 1);
-      }
-      
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-      return pages;
     },
   },
   watch: {

@@ -82,8 +82,7 @@ export default {
       try {
         this.cargando = true;
         const response = await apiClient.get('/tienda/productos');
-        // Soportar tanto respuesta paginada como array directo
-        this.productos = response.data.data || response.data;
+        this.productos = response.data;
         this.productosFiltrados = [...this.productos];
         
         this.extraerOpcionesFiltros();

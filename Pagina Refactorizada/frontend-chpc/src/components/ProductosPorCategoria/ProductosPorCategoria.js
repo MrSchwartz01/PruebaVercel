@@ -93,16 +93,13 @@ export default {
         
         const response = await apiClient.get(url);
         
-        // Soportar tanto respuesta paginada como array directo
-        const productosData = response.data.data || response.data;
-        
         console.log('✅ [DEBUG] Respuesta del servidor:', {
           status: response.status,
-          totalProductos: productosData.length,
-          primerProducto: productosData[0]
+          totalProductos: response.data.length,
+          primerProducto: response.data[0]
         });
         
-        this.productos = productosData.map(producto => ({
+        this.productos = response.data.map(producto => ({
           ...producto,
           imagen_url: producto.productImages?.length > 0
             ? producto.productImages.find(img => img.es_principal)?.ruta_imagen || producto.productImages[0].ruta_imagen
@@ -115,8 +112,7 @@ export default {
           console.warn('⚠️ No se encontraron productos para esta marca');
           // Intentar cargar TODOS los productos para ver qué marcas existen
           const todosResponse = await apiClient.get('/tienda/productos');
-          const todosProductos = todosResponse.data.data || todosResponse.data;
-          const marcasExistentes = [...new Set(todosProductos.map(p => p.marca))];
+          const marcasExistentes = [...new Set(todosResponse.data.map(p => p.marca))];
           console.log('📋 Marcas disponibles en la BD:', marcasExistentes);
         }
       } catch (error) {

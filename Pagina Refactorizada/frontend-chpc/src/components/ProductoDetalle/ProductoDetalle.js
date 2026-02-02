@@ -94,13 +94,10 @@ export default {
           }
         });
         
-        // Soportar tanto respuesta paginada como array directo
-        const productosData = response.data.data || response.data;
-        
-        console.log('Productos obtenidos:', productosData.length);
+        console.log('Productos obtenidos:', response.data.length);
         
         // Filtrar el producto actual y limitar a 3
-        this.productosRelacionados = productosData
+        this.productosRelacionados = response.data
           .filter(p => p.codigo !== this.producto.codigo)
           .slice(0, 3);
           

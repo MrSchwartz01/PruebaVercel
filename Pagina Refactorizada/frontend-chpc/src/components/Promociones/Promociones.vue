@@ -39,32 +39,32 @@
           v-for="promo in promocionesActivas" 
           :key="promo.id"
           class="promo-card"
-          @click="verDetalleProducto(promo.producto.id)"
+          @click="verDetalleProducto(promo.producto.codigo)"
           style="cursor: pointer;"
         >
           <div class="promo-badge">{{ promo.porcentaje_descuento }}% OFF</div>
           <img
               :src="obtenerImagenProducto(promo.producto)" 
-              :alt="promo.producto.nombre_producto" 
+              :alt="promo.producto.producto" 
               class="promo-img"
               @error="manejarErrorImagen"
             />
           <div class="promo-info">
-            <h3>{{ promo.producto.nombre_producto }}</h3>
-            <p class="promo-descripcion">{{ promo.producto.descripcion || 'Oferta especial por tiempo limitado' }}</p>
+            <h3>{{ promo.producto.producto }}</h3>
+            <p class="promo-descripcion">{{ promo.producto.medida || 'Oferta especial por tiempo limitado' }}</p>
             
             <!-- Precios -->
             <div v-if="isAuthenticated" class="precios-container">
               <div class="precio-original">
                 <span class="label-precio">Antes:</span>
-                <span class="valor-tachado">USD ${{ formatPrice(promo.producto.precio) }}</span>
+                <span class="valor-tachado">USD ${{ formatPrice(promo.producto.costoTotal) }}</span>
               </div>
               <div class="precio-promo">
                 <span class="label-precio">Ahora:</span>
-                <span class="valor-descuento">USD ${{ calcularPrecioConDescuento(promo.producto.precio, promo.porcentaje_descuento) }}</span>
+                <span class="valor-descuento">USD ${{ calcularPrecioConDescuento(promo.producto.costoTotal, promo.porcentaje_descuento) }}</span>
               </div>
               <div class="ahorro">
-                <span class="label-ahorro">Ahorras: USD ${{ calcularAhorro(promo.producto.precio, promo.porcentaje_descuento) }}</span>
+                <span class="label-ahorro">Ahorras: USD ${{ calcularAhorro(promo.producto.costoTotal, promo.porcentaje_descuento) }}</span>
               </div>
             </div>
             <div v-else class="login-mensaje">

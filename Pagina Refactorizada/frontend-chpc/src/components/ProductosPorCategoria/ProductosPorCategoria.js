@@ -80,15 +80,15 @@ export default {
     async cargarProductos(categoria) {
       try {
         console.log('🔍 [DEBUG] Categoría slug recibida:', categoria);
-        console.log('🔍 [DEBUG] categoriasInfo disponibles:', Object.keys(this.categoriasInfo));
         
-        // Obtener el nombre de categoría formateado del mapping
+        // Obtener el nombre de categoría formateado del mapping (ahora buscaremos por marca)
         const categoriaFormateada = this.categoriasInfo[categoria] || 
           categoria.charAt(0).toUpperCase() + categoria.slice(1);
         
-        console.log('📦 [DEBUG] Categoría formateada para buscar:', categoriaFormateada);
+        console.log('📦 [DEBUG] Buscando por marca:', categoriaFormateada);
         
-        const url = `/tienda/productos?categoria=${categoriaFormateada}`;
+        // Ahora buscamos por marca ya que el nuevo esquema no tiene categoría
+        const url = `/tienda/productos?marca=${encodeURIComponent(categoriaFormateada)}`;
         console.log('🌐 [DEBUG] URL de petición:', url);
         
         const response = await apiClient.get(url);
@@ -109,11 +109,11 @@ export default {
         console.log(`✅ Productos cargados para ${categoriaFormateada}:`, this.productos.length);
         
         if (this.productos.length === 0) {
-          console.warn('⚠️ No se encontraron productos para esta categoría');
-          // Intentar cargar TODOS los productos para ver qué categorías existen
+          console.warn('⚠️ No se encontraron productos para esta marca');
+          // Intentar cargar TODOS los productos para ver qué marcas existen
           const todosResponse = await apiClient.get('/tienda/productos');
-          const categoriasExistentes = [...new Set(todosResponse.data.map(p => p.categoria))];
-          console.log('📋 Categorías disponibles en la BD:', categoriasExistentes);
+          const marcasExistentes = [...new Set(todosResponse.data.map(p => p.marca))];
+          console.log('📋 Marcas disponibles en la BD:', marcasExistentes);
         }
       } catch (error) {
         console.error("❌ Error al cargar productos:", error);
@@ -127,8 +127,8 @@ export default {
     toggleSection(section) {
       this.sectionsOpen[section] = !this.sectionsOpen[section];
     },
-    verDetalle(id) {
-      this.$router.push({ name: "ProductoDetalle", params: { id } });
+    verDetalle(codigo) {
+      this.$router.push({ name: "ProductoDetalle", params: { id: codigo } });
     },
     obtenerTextoStock(stock) {
       if (stock === 0) {

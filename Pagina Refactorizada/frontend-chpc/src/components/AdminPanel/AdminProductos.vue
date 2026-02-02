@@ -13,24 +13,22 @@
     <div v-else class="productos-grid">
       <div
         v-for="producto in productos"
-        :key="producto.id"
+        :key="producto.codigo"
         class="producto-card"
-        :class="{ inactivo: !producto.activo }"
       >
         <div class="producto-imagen">
           <img
             :src="producto.imagen_url || '/placeholder.jpg'"
-            :alt="producto.nombre_producto"
+            :alt="producto.producto"
           />
-          <span v-if="!producto.activo" class="badge-inactivo">Inactivo</span>
         </div>
 
         <div class="producto-info">
-          <h3>{{ producto.nombre_producto }}</h3>
-          <p class="categoria">{{ producto.categoria }} - {{ producto.subcategoria }}</p>
-          <p class="precio">${{ producto.precio }}</p>
+          <h3>{{ producto.producto }}</h3>
+          <p class="categoria">{{ producto.marca }} - {{ producto.medida }}</p>
+          <p class="precio">${{ producto.costoTotal }}</p>
           <p class="stock">
-            Stock: <strong>{{ producto.stock }}</strong>
+            Stock: <strong>{{ producto.existenciaTotal }}</strong>
           </p>
         </div>
 
@@ -44,13 +42,6 @@
             title="Gestionar Imágenes"
           >
             🖼️
-          </button>
-          <button
-            @click="toggleActivo(producto)"
-            :class="['btn-icon', producto.activo ? 'btn-danger' : 'btn-success']"
-            :title="producto.activo ? 'Desactivar' : 'Activar'"
-          >
-            {{ producto.activo ? '🚫' : '✅' }}
           </button>
         </div>
       </div>
@@ -67,54 +58,23 @@
         <form @submit.prevent="guardarProducto" class="producto-form">
           <div class="form-row">
             <div class="form-group">
+              <label>Código del Producto *</label>
+              <input
+                v-model="formProducto.codigo"
+                type="text"
+                required
+                placeholder="Código único"
+                :disabled="editando"
+              />
+            </div>
+
+            <div class="form-group">
               <label>Nombre del Producto *</label>
               <input
-                v-model="formProducto.nombre_producto"
+                v-model="formProducto.producto"
                 type="text"
                 required
                 placeholder="Ej: Laptop ASUS ROG"
-              />
-            </div>
-
-            <div class="form-group">
-              <label>SKU</label>
-              <input
-                v-model="formProducto.sku"
-                type="text"
-                placeholder="Código único"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Descripción *</label>
-            <textarea
-              v-model="formProducto.descripcion"
-              rows="4"
-              required
-              placeholder="Descripción detallada del producto"
-            ></textarea>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Precio *</label>
-              <input
-                v-model.number="formProducto.precio"
-                type="number"
-                step="0.01"
-                min="0"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label>Stock *</label>
-              <input
-                v-model.number="formProducto.stock"
-                type="number"
-                min="0"
-                required
               />
             </div>
           </div>
@@ -126,35 +86,15 @@
             </div>
 
             <div class="form-group">
-              <label>Color</label>
-              <input v-model="formProducto.color" type="text" />
+              <label>Medida</label>
+              <input v-model="formProducto.medida" type="text" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Categoría</label>
-              <select v-model="formProducto.categoria">
-                <option value="">Seleccione...</option>
-                <option value="Laptops">Laptops</option>
-                <option value="Componentes">Componentes</option>
-                <option value="Perifericos">Periféricos</option>
-                <option value="Almacenamiento">Almacenamiento</option>
-                <option value="Redes">Redes</option>
-                <option value="Audio">Audio</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Subcategoría</label>
-              <input v-model="formProducto.subcategoria" type="text" />
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Modelo</label>
-              <input v-model="formProducto.modelo" type="text" />
+              <label>Almacén</label>
+              <input v-model="formProducto.almacen" type="text" />
             </div>
 
             <div class="form-group">
@@ -163,31 +103,27 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Especificaciones Técnicas</label>
-            <textarea
-              v-model="formProducto.especificaciones"
-              rows="3"
-              placeholder="Detalles técnicos del producto"
-            ></textarea>
-          </div>
-
           <div class="form-row">
-            <div class="form-group checkbox-group">
-              <label>
-                <input v-model="formProducto.destacado" type="checkbox" />
-                Producto Destacado
-              </label>
+            <div class="form-group">
+              <label>Costo Total *</label>
+              <input
+                v-model.number="formProducto.costoTotal"
+                type="number"
+                step="0.01"
+                min="0"
+                required
+              />
             </div>
 
-            <div class="form-group checkbox-group">
-              <label>
-                <input v-model="formProducto.activo" type="checkbox" />
-                Producto Activo
-              </label>
+            <div class="form-group">
+              <label>Existencia Total *</label>
+              <input
+                v-model="formProducto.existenciaTotal"
+                type="text"
+                required
+              />
             </div>
           </div>
-
           <div class="modal-actions">
             <button type="submit" class="btn btn-primary" :disabled="guardando">
               {{ guardando ? 'Guardando...' : 'Guardar Producto' }}
@@ -204,7 +140,7 @@
     <div v-if="showImagenesModal" class="modal-overlay" @click.self="cerrarImagenesModal">
       <div class="modal-content large">
         <div class="modal-header">
-          <h3>Imágenes de {{ productoActual?.nombre_producto }}</h3>
+          <h3>Imágenes de {{ productoActual?.producto }}</h3>
           <button class="btn-close" @click="cerrarImagenesModal">×</button>
         </div>
 

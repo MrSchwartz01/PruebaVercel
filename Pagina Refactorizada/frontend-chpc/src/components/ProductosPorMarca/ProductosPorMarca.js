@@ -57,8 +57,8 @@ export default {
       this.isAuthenticated = false;
       this.$router.replace("/login");
     },
-    verDetalle(id) {
-      this.$router.push({ name: "ProductoDetalle", params: { id } });
+    verDetalle(codigo) {
+      this.$router.push({ name: "ProductoDetalle", params: { id: codigo } });
     },
     async cargarProductosPorMarca(marca) {
       try {

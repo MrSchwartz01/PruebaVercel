@@ -29,7 +29,7 @@ export default {
     subtotalConIVA() {
       // Total de productos con IVA incluido
       return this.productosCarrito.reduce((total, item) => {
-        return total + (parseFloat(item.precio) * item.cantidad);
+        return total + (parseFloat(item.costoTotal) * item.cantidad);
       }, 0);
     },
     subtotal() {
@@ -90,24 +90,24 @@ export default {
       localStorage.setItem("carrito", JSON.stringify(this.productosCarrito));
     },
     calcularSubtotal(item) {
-      return (parseFloat(item.precio) * item.cantidad).toFixed(2);
+      return (parseFloat(item.costoTotal) * item.cantidad).toFixed(2);
     },
-    aumentarCantidad(id) {
-      const producto = this.productosCarrito.find((p) => p.id === id);
+    aumentarCantidad(codigo) {
+      const producto = this.productosCarrito.find((p) => p.codigo === codigo);
       if (producto) {
         producto.cantidad++;
         this.guardarCarrito();
       }
     },
-    disminuirCantidad(id) {
-      const producto = this.productosCarrito.find((p) => p.id === id);
+    disminuirCantidad(codigo) {
+      const producto = this.productosCarrito.find((p) => p.codigo === codigo);
       if (producto && producto.cantidad > 1) {
         producto.cantidad--;
         this.guardarCarrito();
       }
     },
-    eliminarProducto(id) {
-      this.productosCarrito = this.productosCarrito.filter((p) => p.id !== id);
+    eliminarProducto(codigo) {
+      this.productosCarrito = this.productosCarrito.filter((p) => p.codigo !== codigo);
       this.guardarCarrito();
     },
     vaciarCarrito() {
@@ -139,7 +139,7 @@ export default {
         
         // Preparar items para el backend
         const items = this.productosCarrito.map(producto => ({
-          productId: parseInt(producto.id),
+          productId: producto.codigo, // Ahora es código tipo string
           cantidad: producto.cantidad
         }));
 

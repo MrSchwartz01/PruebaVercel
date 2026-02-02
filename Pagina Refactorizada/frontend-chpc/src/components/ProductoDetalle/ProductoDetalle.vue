@@ -39,7 +39,7 @@
         <div class="carousel-container">
           <img
             :src="imagenPrincipal"
-            :alt="producto.nombre_producto"
+            :alt="producto.producto"
             class="imagen-producto-principal"
             @click="abrirZoom"
             style="cursor: zoom-in;"
@@ -83,13 +83,13 @@
 
       <!-- Información del producto (Derecha) -->
       <div class="informacion-producto">
-        <h1 class="nombre-producto">{{ producto.nombre_producto }}</h1>
+        <h1 class="nombre-producto">{{ producto.producto }}</h1>
         
         <!-- Recuadro unificado de detalles -->
         <div class="detalles-compactos">
-          <div class="detalle-item-compacto">
-            <strong>Descripción:</strong>
-            <p class="descripcion-texto">{{ producto.descripcion }}</p>
+          <div class="detalle-item-compacto" v-if="producto.codigo">
+            <strong>Código:</strong>
+            <span>{{ producto.codigo }}</span>
           </div>
 
           <div class="detalle-item-compacto" v-if="producto.marca">
@@ -97,19 +97,14 @@
             <span>{{ producto.marca }}</span>
           </div>
 
-          <div class="detalle-item-compacto" v-if="producto.categoria">
-            <strong>Categoría:</strong>
-            <span>{{ producto.categoria }}</span>
+          <div class="detalle-item-compacto" v-if="producto.medida">
+            <strong>Medida:</strong>
+            <span>{{ producto.medida }}</span>
           </div>
 
-          <div class="detalle-item-compacto" v-if="producto.modelo">
-            <strong>Modelo:</strong>
-            <span>{{ producto.modelo }}</span>
-          </div>
-
-          <div class="detalle-item-compacto" v-if="producto.especificaciones">
-            <strong>Especificaciones:</strong>
-            <p class="especificaciones-texto">{{ producto.especificaciones }}</p>
+          <div class="detalle-item-compacto" v-if="producto.almacen">
+            <strong>Almacén:</strong>
+            <span>{{ producto.almacen }}</span>
           </div>
 
           <div class="detalle-item-compacto" v-if="producto.garantia">
@@ -119,7 +114,7 @@
 
           <div class="detalle-item-compacto stock-info">
             <strong>Stock:</strong>
-            <span :class="{'stock-disponible': producto.stock > 0, 'stock-agotado': producto.stock === 0, 'pocas-unidades': producto.stock > 0 && producto.stock <= 5}">
+            <span :class="{'stock-disponible': parseInt(producto.existenciaTotal) > 0, 'stock-agotado': parseInt(producto.existenciaTotal) === 0, 'pocas-unidades': parseInt(producto.existenciaTotal) > 0 && parseInt(producto.existenciaTotal) <= 5}">
               {{ mostrarStock }}
             </span>
           </div>
@@ -131,7 +126,7 @@
           <div class="precio-contenedor">
             <div class="precio-wrapper">
               <span class="precio-label">Precio:</span>
-              <span class="precio-valor">USD ${{ formatPrice(producto.precio) }}</span>
+              <span class="precio-valor">USD ${{ formatPrice(producto.costoTotal) }}</span>
             </div>
             <p style="font-size: 0.7em; color: rgba(255,255,255,0.9); margin: 2px 0 0 0; text-align: center;">incluido IVA</p>
           </div>
@@ -141,10 +136,10 @@
           <button 
             @click="agregarAlCarrito" 
             class="boton-agregar-carrito"
-            :disabled="producto.stock <= 0"
+            :disabled="parseInt(producto.existenciaTotal) <= 0"
           >
             <i class="fas fa-shopping-cart"></i> 
-            {{ producto.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}
+            {{ parseInt(producto.existenciaTotal) > 0 ? 'Agregar al Carrito' : 'Sin Stock' }}
           </button>
           <a href="https://wa.me/593995924867" target="_blank" class="boton-whatsapp">
             <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
@@ -160,7 +155,7 @@
     <div v-if="zoomActivo" class="modal-zoom" @click="cerrarZoom">
       <div class="modal-zoom-contenido">
         <button class="btn-cerrar-zoom" @click="cerrarZoom">&times;</button>
-        <img :src="imagenPrincipal" :alt="producto.nombre_producto" class="imagen-zoom" />
+        <img :src="imagenPrincipal" :alt="producto.producto" class="imagen-zoom" />
       </div>
     </div>
 
@@ -174,18 +169,18 @@
         <div class="productos-relacionados-grid">
           <div 
             v-for="productoRel in productosRelacionados" 
-            :key="productoRel.id"
+            :key="productoRel.codigo"
             class="producto-relacionado-card"
-            @click="verProducto(productoRel.id)"
+            @click="verProducto(productoRel.codigo)"
           >
             <img 
               :src="productoRel.imagen_url || '/Productos/placeholder-product.png'" 
-              :alt="productoRel.nombre_producto"
+              :alt="productoRel.producto"
               class="producto-relacionado-img"
             />
             <div class="producto-relacionado-info">
-              <h4 class="producto-relacionado-nombre">{{ productoRel.nombre_producto }}</h4>
-              <p class="producto-relacionado-precio">USD ${{ formatPrice(productoRel.precio) }}</p>
+              <h4 class="producto-relacionado-nombre">{{ productoRel.producto }}</h4>
+              <p class="producto-relacionado-precio">USD ${{ formatPrice(productoRel.costoTotal) }}</p>
             </div>
           </div>
         </div>

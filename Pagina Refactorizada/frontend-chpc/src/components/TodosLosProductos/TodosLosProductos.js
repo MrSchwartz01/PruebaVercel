@@ -21,8 +21,8 @@ export default {
       // Filtros
       filtros: {
         marcas: [],
-        colores: [],
-        subcategorias: [],
+        almacenes: [],
+        medidas: [],
         precioMin: null,
         precioMax: null,
         soloDisponibles: false
@@ -30,8 +30,8 @@ export default {
       
       // Opciones disponibles
       marcasDisponibles: [],
-      coloresDisponibles: [],
-      subcategoriasDisponibles: [],
+      almacenesDisponibles: [],
+      medidasDisponibles: [],
       precioMinimo: 0,
       precioMaximo: 0,
       
@@ -103,25 +103,25 @@ export default {
       });
       this.marcasDisponibles = Array.from(marcasSet).sort();
       
-      // Extraer colores únicos
-      const coloresSet = new Set();
+      // Extraer almacenes únicos
+      const almacenesSet = new Set();
       this.productos.forEach(p => {
-        if (p.color) coloresSet.add(p.color);
+        if (p.almacen) almacenesSet.add(p.almacen);
       });
-      this.coloresDisponibles = Array.from(coloresSet).sort();
+      this.almacenesDisponibles = Array.from(almacenesSet).sort();
       
-      // Extraer subcategorías únicas
-      const subcategoriasSet = new Set();
+      // Extraer medidas únicas
+      const medidasSet = new Set();
       this.productos.forEach(p => {
-        if (p.subcategoria) subcategoriasSet.add(p.subcategoria);
+        if (p.medida) medidasSet.add(p.medida);
       });
-      this.subcategoriasDisponibles = Array.from(subcategoriasSet).sort();
+      this.medidasDisponibles = Array.from(medidasSet).sort();
     },
     
     calcularRangoPrecio() {
       if (this.productos.length === 0) return;
       
-      const precios = this.productos.map(p => parseFloat(p.precio));
+      const precios = this.productos.map(p => parseFloat(p.costoTotal) || 0);
       this.precioMinimo = Math.floor(Math.min(...precios));
       this.precioMaximo = Math.ceil(Math.max(...precios));
       
@@ -139,35 +139,35 @@ export default {
         );
       }
       
-      // Filtro por color
-      if (this.filtros.colores.length > 0) {
+      // Filtro por almacén
+      if (this.filtros.almacenes.length > 0) {
         resultado = resultado.filter(p => 
-          this.filtros.colores.includes(p.color)
+          this.filtros.almacenes.includes(p.almacen)
         );
       }
       
-      // Filtro por subcategoría
-      if (this.filtros.subcategorias.length > 0) {
+      // Filtro por medida
+      if (this.filtros.medidas.length > 0) {
         resultado = resultado.filter(p => 
-          this.filtros.subcategorias.includes(p.subcategoria)
+          this.filtros.medidas.includes(p.medida)
         );
       }
       
       // Filtro por precio
       if (this.filtros.precioMin !== null) {
         resultado = resultado.filter(p => 
-          parseFloat(p.precio) >= this.filtros.precioMin
+          parseFloat(p.costoTotal) >= this.filtros.precioMin
         );
       }
       if (this.filtros.precioMax !== null) {
         resultado = resultado.filter(p => 
-          parseFloat(p.precio) <= this.filtros.precioMax
+          parseFloat(p.costoTotal) <= this.filtros.precioMax
         );
       }
       
       // Filtro por stock
       if (this.filtros.soloDisponibles) {
-        resultado = resultado.filter(p => p.stock > 0);
+        resultado = resultado.filter(p => parseInt(p.existenciaTotal) > 0);
       }
       
       this.productosFiltrados = resultado;
@@ -178,19 +178,19 @@ export default {
     aplicarOrdenamiento() {
       switch (this.ordenamiento) {
         case 'precio-asc':
-          this.productosFiltrados.sort((a, b) => parseFloat(a.precio) - parseFloat(b.precio));
+          this.productosFiltrados.sort((a, b) => parseFloat(a.costoTotal) - parseFloat(b.costoTotal));
           break;
         case 'precio-desc':
-          this.productosFiltrados.sort((a, b) => parseFloat(b.precio) - parseFloat(a.precio));
+          this.productosFiltrados.sort((a, b) => parseFloat(b.costoTotal) - parseFloat(a.costoTotal));
           break;
         case 'nombre-asc':
           this.productosFiltrados.sort((a, b) => 
-            a.nombre_producto.localeCompare(b.nombre_producto)
+            a.producto.localeCompare(b.producto)
           );
           break;
         case 'nombre-desc':
           this.productosFiltrados.sort((a, b) => 
-            b.nombre_producto.localeCompare(a.nombre_producto)
+            b.producto.localeCompare(a.producto)
           );
           break;
         default:
@@ -202,8 +202,8 @@ export default {
     limpiarFiltros() {
       this.filtros = {
         marcas: [],
-        colores: [],
-        subcategorias: [],
+        almacenes: [],
+        medidas: [],
         precioMin: this.precioMinimo,
         precioMax: this.precioMaximo,
         soloDisponibles: false
@@ -219,24 +219,26 @@ export default {
       }
     },
     
-    verDetalle(id) {
-      this.$router.push(`/producto/${id}`);
+    verDetalle(codigo) {
+      this.$router.push(`/producto/${codigo}`);
     },
     
     agregarAlCarrito(producto) {
       const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-      const existente = carrito.find(item => item.id === producto.id);
+      const existente = carrito.find(item => item.codigo === producto.codigo);
       
       if (existente) {
         existente.cantidad += 1;
       } else {
         carrito.push({
-          id: producto.id,
-          nombre_producto: producto.nombre_producto,
-          precio: producto.precio,
+          codigo: producto.codigo,
+          producto: producto.producto,
+          costoTotal: producto.costoTotal,
           imagen_url: producto.imagen_url,
           cantidad: 1,
-          stock: producto.stock
+          existenciaTotal: producto.existenciaTotal,
+          marca: producto.marca,
+          medida: producto.medida
         });
       }
       

@@ -26,21 +26,14 @@ export default {
   methods: {
     getEmptyForm() {
       return {
-        nombre_producto: '',
-        descripcion: '',
-        precio: 0,
-        stock: 0,
+        codigo: '',
+        producto: '',
         marca: '',
-        color: '',
-        categoria: '',
-        subcategoria: '',
-        modelo: '',
-        sku: '',
-        especificaciones: '',
+        medida: '',
+        almacen: '',
         garantia: '',
-        imagen_url: '/placeholder.jpg', // Imagen por defecto
-        destacado: false,
-        activo: true,
+        costoTotal: 0,
+        existenciaTotal: '0',
       };
     },
 
@@ -77,7 +70,7 @@ export default {
         if (this.editando) {
           // Actualizar producto existente
           await apiClient.put(
-            `/tienda/productos/${this.productoActual.id}`,
+            `/tienda/productos/${this.productoActual.codigo}`,
             this.formProducto,
             { headers }
           );
@@ -122,13 +115,13 @@ export default {
     async gestionarImagenes(producto) {
       this.productoActual = producto;
       this.showImagenesModal = true;
-      await this.cargarImagenes(producto.id);
+      await this.cargarImagenes(producto.codigo);
     },
 
-    async cargarImagenes(productoId) {
+    async cargarImagenes(productoCodigo) {
       try {
         this.cargandoImagenes = true;
-        const response = await apiClient.get(`/images/producto/${productoId}`);
+        const response = await apiClient.get(`/images/producto/${productoCodigo}`);
         this.imagenes = response.data;
       } catch (error) {
         console.error('Error al cargar imágenes:', error);
@@ -176,9 +169,9 @@ export default {
         for (let [key, value] of formData.entries()) {
           console.log(`   ${key}:`, value);
         }
-        console.log('📦 Producto ID:', this.productoActual.id);
+        console.log('📦 Producto Codigo:', this.productoActual.codigo);
 
-        const response = await apiClient.post(`/images/upload/${this.productoActual.id}`,
+        const response = await apiClient.post(`/images/upload/${this.productoActual.codigo}`,
           formData
         );
         
@@ -188,7 +181,7 @@ export default {
         this.archivoSeleccionado = null;
         this.imagenPrincipal = false;
         this.$refs.fileInput.value = '';
-        await this.cargarImagenes(this.productoActual.id);
+        await this.cargarImagenes(this.productoActual.codigo);
       } catch (error) {
         console.error('Error al subir imagen:', error);
         console.error('Respuesta del servidor:', error.response?.data);
@@ -206,7 +199,7 @@ export default {
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        await this.cargarImagenes(this.productoActual.id);
+        await this.cargarImagenes(this.productoActual.codigo);
         alert('Imagen marcada como principal');
       } catch (error) {
         console.error('Error al marcar imagen principal:', error);
@@ -219,7 +212,7 @@ export default {
 
       try {
         await apiClient.delete(`/images/${imagen.id}`);
-        await this.cargarImagenes(this.productoActual.id);
+        await this.cargarImagenes(this.productoActual.codigo);
         alert('Imagen eliminada correctamente');
       } catch (error) {
         console.error('Error al eliminar imagen:', error);

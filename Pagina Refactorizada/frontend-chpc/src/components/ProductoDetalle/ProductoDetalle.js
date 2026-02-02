@@ -34,10 +34,11 @@ export default {
     },
     mostrarStock() {
       if (!this.producto) return '';
-      if (this.producto.stock === 0) {
+      const stock = parseInt(this.producto.existenciaTotal) || 0;
+      if (stock === 0) {
         return 'Sin stock';
-      } else if (this.producto.stock <= 5) {
-        return `${this.producto.stock} unidades - Quedan pocas unidades`;
+      } else if (stock <= 5) {
+        return `${stock} unidades - Quedan pocas unidades`;
       } else {
         return 'Disponible';
       }
@@ -48,15 +49,15 @@ export default {
       this.isLoading = true;
       this.errorMessage = "";
 
-      const productoId = this.$route.params.id;
+      const productoCodigo = this.$route.params.id;
       try {
         // Obtener los datos del producto
-        const response = await apiClient.get(`/tienda/productos/${productoId}`);
+        const response = await apiClient.get(`/tienda/productos/${productoCodigo}`);
         this.producto = response.data;
 
         // Cargar imágenes del producto
         try {
-          const imagenesResponse = await apiClient.get(`/images/producto/${productoId}`);
+          const imagenesResponse = await apiClient.get(`/images/producto/${productoCodigo}`);
           this.imagenes = imagenesResponse.data;
         } catch (imgError) {
           console.warn('No se pudieron cargar las imágenes:', imgError);
@@ -68,7 +69,7 @@ export default {
           this.$store.dispatch('registrarProductoVisto', this.producto);
         }
 
-        // Cargar productos relacionados de la misma categoría
+        // Cargar productos relacionados de la misma marca
         await this.cargarProductosRelacionados();
       } catch (error) {
         console.error('Error al cargar producto:', error);
@@ -79,17 +80,17 @@ export default {
       }
     },
     async cargarProductosRelacionados() {
-      if (!this.producto || !this.producto.categoria) {
-        console.log('No se puede cargar productos relacionados: producto o categoría no disponible');
+      if (!this.producto || !this.producto.marca) {
+        console.log('No se puede cargar productos relacionados: producto o marca no disponible');
         return;
       }
 
       try {
-        console.log('Cargando productos relacionados de categoría:', this.producto.categoria);
+        console.log('Cargando productos relacionados de marca:', this.producto.marca);
         
         const response = await apiClient.get('/tienda/productos', {
           params: {
-            categoria: this.producto.categoria,
+            marca: this.producto.marca,
           }
         });
         
@@ -97,7 +98,7 @@ export default {
         
         // Filtrar el producto actual y limitar a 3
         this.productosRelacionados = response.data
-          .filter(p => p.id !== this.producto.id)
+          .filter(p => p.codigo !== this.producto.codigo)
           .slice(0, 3);
           
         console.log('Productos relacionados filtrados:', this.productosRelacionados.length);
@@ -138,7 +139,7 @@ export default {
       }
 
       // Verificar si el producto ya está en el carrito
-      const productoExistente = carrito.find(p => p.id === this.producto.id);
+      const productoExistente = carrito.find(p => p.codigo === this.producto.codigo);
       
       if (productoExistente) {
         // Aumentar cantidad
@@ -147,12 +148,13 @@ export default {
       } else {
         // Agregar nuevo producto
         carrito.push({
-          id: this.producto.id,
-          nombre: this.producto.nombre_producto,
+          codigo: this.producto.codigo,
+          producto: this.producto.producto,
           marca: this.producto.marca,
-          precio: this.producto.precio,
+          costoTotal: this.producto.costoTotal,
           cantidad: 1,
-          imagen_url: this.imagenPrincipal
+          imagen_url: this.imagenPrincipal,
+          medida: this.producto.medida
         });
         alert('Producto agregado al carrito');
       }
@@ -196,10 +198,10 @@ export default {
         this.carouselInterval = null;
       }
     },
-    verProducto(productoId) {
+    verProducto(productoCodigo) {
       this.$router.push({
         name: 'ProductoDetalle',
-        params: { id: productoId }
+        params: { id: productoCodigo }
       });
     },
   },

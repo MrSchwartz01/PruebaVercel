@@ -38,29 +38,29 @@
             <div class="productos-list">
               <div
                 v-for="item in productosCarrito"
-                :key="item.id"
+                :key="item.codigo"
                 class="producto-item"
               >
                 <div class="item-image-wrapper">
-                  <img :src="item.imagen_url" :alt="item.nombre" class="item-image" />
+                  <img :src="item.imagen_url" :alt="item.producto" class="item-image" />
                 </div>
 
                 <div class="item-details">
-                  <h3 class="item-name">{{ item.nombre }}</h3>
+                  <h3 class="item-name">{{ item.producto }}</h3>
                   <p class="item-brand">{{ item.marca }}</p>
                   <p class="item-meta">Disponible</p>
-                  <p class="item-price">${{ item.precio }}</p>
+                  <p class="item-price">${{ item.costoTotal }}</p>
                 </div>
 
                 <div class="item-actions">
                   <div class="quantity-control">
-                    <button @click="disminuirCantidad(item.id)" class="qty-btn" title="Disminuir cantidad">−</button>
+                    <button @click="disminuirCantidad(item.codigo)" class="qty-btn" title="Disminuir cantidad">−</button>
                     <span class="qty-display">{{ item.cantidad }}</span>
-                    <button @click="aumentarCantidad(item.id)" class="qty-btn" title="Aumentar cantidad">+</button>
+                    <button @click="aumentarCantidad(item.codigo)" class="qty-btn" title="Aumentar cantidad">+</button>
                   </div>
 
                   <div class="action-buttons">
-                    <button @click="eliminarProducto(item.id)" class="btn-action delete-btn">
+                    <button @click="eliminarProducto(item.codigo)" class="btn-action delete-btn">
                       Eliminar
                     </button>
                     <button class="btn-action save-btn">

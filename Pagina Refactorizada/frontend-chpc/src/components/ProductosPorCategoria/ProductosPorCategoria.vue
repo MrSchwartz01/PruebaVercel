@@ -24,30 +24,30 @@
           <div class="productos-grid">
         <div
           v-for="producto in productosFiltrados"
-          :key="producto.id"
+          :key="producto.codigo"
           class="producto-card"
         >
           <img 
             :src="producto.imagen_url" 
-            :alt="producto.nombre_producto" 
-            @click="verDetalle(producto.id)"
+            :alt="producto.producto" 
+            @click="verDetalle(producto.codigo)"
             style="cursor: pointer;"
           />
           <div class="producto-info">
             <span class="marca-tag">{{ producto.marca }}</span>
-            <h3>{{ producto.nombre_producto }}</h3>
-            <p class="descripcion">{{ producto.descripcion }}</p>
+            <h3>{{ producto.producto }}</h3>
+            <p class="descripcion">{{ producto.medida }}</p>
             <div class="producto-footer">
               <div>
-                <p class="precio" v-if="isAuthenticated">${{ producto.precio }}</p>
+                <p class="precio" v-if="isAuthenticated">${{ producto.costoTotal }}</p>
                 <p class="precio" v-else>Inicia sesión para ver precio</p>
                 <p v-if="isAuthenticated" style="font-size: 0.75em; color: #999; margin: 0;">incluido IVA</p>
               </div>
-              <p class="stock" :class="{ 'sin-stock': producto.stock === 0, 'pocas-unidades': producto.stock > 0 && producto.stock <= 5 }">
-                {{ obtenerTextoStock(producto.stock) }}
+              <p class="stock" :class="{ 'sin-stock': parseInt(producto.existenciaTotal) === 0, 'pocas-unidades': parseInt(producto.existenciaTotal) > 0 && parseInt(producto.existenciaTotal) <= 5 }">
+                {{ obtenerTextoStock(parseInt(producto.existenciaTotal)) }}
               </p>
             </div>
-            <button @click="verDetalle(producto.id)" class="ver-btn">
+            <button @click="verDetalle(producto.codigo)" class="ver-btn">
               Ver Detalles
             </button>
           </div>

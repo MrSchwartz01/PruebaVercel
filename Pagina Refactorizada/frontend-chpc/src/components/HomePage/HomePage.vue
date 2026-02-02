@@ -83,9 +83,9 @@
 <div class="product-grid">
   <div
     v-for="producto in productosMostrados"
-    :key="producto.id"
+    :key="producto.codigo"
     class="product-card"
-    @click="verDetalle(producto.id)"
+    @click="verDetalle(producto.codigo)"
   >
     <!-- Badge de promoción -->
     <div v-if="producto.tienePromocion" class="promo-badge">
@@ -95,12 +95,12 @@
     <div class="product-image-wrapper">
       <img
         :src="producto.imagen_url || 'ruta-imagen-default.png'"
-        :alt="producto.nombre_producto"
+        :alt="producto.producto"
       />
     </div>
     <!-- Información del producto -->
     <div class="product-info">
-      <h3 class="product-title">{{ producto.nombre_producto }}</h3>
+      <h3 class="product-title">{{ producto.producto }}</h3>
       <!-- Precio -->
       <div v-if="isAuthenticated" class="product-price">
         <div v-if="producto.tienePromocion">
@@ -108,7 +108,7 @@
           <span class="price-current">${{ producto.promocion.precioConDescuento }}</span>
         </div>
         <div v-else>
-          <span class="price-current">${{ producto.precio }}</span>
+          <span class="price-current">${{ producto.costoTotal }}</span>
         </div>
       </div>
       <div v-else class="product-price">
@@ -119,9 +119,9 @@
         v-if="isAuthenticated"
         @click.stop="agregarAlCarrito(producto)" 
         class="btn-add-cart"
-        :disabled="producto.stock <= 0"
+        :disabled="parseInt(producto.existenciaTotal) <= 0"
       >
-        <span v-if="producto.stock > 0">AGREGAR AL CARRITO</span>
+        <span v-if="parseInt(producto.existenciaTotal) > 0">AGREGAR AL CARRITO</span>
         <span v-else>SIN STOCK</span>
       </button>
       <button 

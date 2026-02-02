@@ -6,8 +6,8 @@ export default {
     },
   },
   methods: {
-    verDetalle(id) {
-      this.$router.push({ name: "ProductoDetalle", params: { id } });
+    verDetalle(codigo) {
+      this.$router.push({ name: "ProductoDetalle", params: { id: codigo } });
     },
     formatPrice(price) {
       const value = Number(price);

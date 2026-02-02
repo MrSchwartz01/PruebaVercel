@@ -156,9 +156,9 @@ export default {
     aplicarPromocionesAProductos() {
       // Agregar información de promoción a cada producto
       this.productos = this.productos.map(producto => {
-        const promocion = this.promociones.find(p => p.producto_id === producto.id);
+        const promocion = this.promociones.find(p => p.producto_id === producto.codigo);
         if (promocion) {
-          const precioOriginal = producto.precio;
+          const precioOriginal = producto.costoTotal;
           const precioConDescuento = precioOriginal - (precioOriginal * promocion.porcentaje_descuento / 100);
           return {
             ...producto,
@@ -185,7 +185,7 @@ export default {
       // Filtrado por rango de precio
       if (this.selectedPriceRange) {
         lista = lista.filter((producto) => {
-          const precio = Number(producto.precio ?? 0);
+          const precio = Number(producto.costoTotal ?? 0);
           if (this.selectedPriceRange === "low") {
             return precio < 100;
           }
@@ -203,17 +203,17 @@ export default {
       if (query !== "") {
         lista = lista.filter(
           (producto) => {
-            const nombre = (producto.nombre_producto || "").toLowerCase();
-            const descripcion = (producto.descripcion || "").toLowerCase();
+            const nombre = (producto.producto || "").toLowerCase();
             const marca = (producto.marca || "").toLowerCase();
-            const categoria = (producto.categoria || "").toLowerCase();
-            const sku = (producto.sku || "").toLowerCase();
+            const medida = (producto.medida || "").toLowerCase();
+            const almacen = (producto.almacen || "").toLowerCase();
+            const codigo = (producto.codigo || "").toLowerCase();
             
             return nombre.includes(query) ||
-                   descripcion.includes(query) ||
                    marca.includes(query) ||
-                   categoria.includes(query) ||
-                   sku.includes(query);
+                   medida.includes(query) ||
+                   almacen.includes(query) ||
+                   codigo.includes(query);
           }
         );
       }
@@ -236,8 +236,8 @@ export default {
 
       this.productosMostrados = [...this.productosMostrados, ...siguienteBloque];
     },
-    verDetalle(id) {
-      this.$router.push({ name: "ProductoDetalle", params: { id } });
+    verDetalle(codigo) {
+      this.$router.push({ name: "ProductoDetalle", params: { id: codigo } });
     },
     buscarProductos(query) {
       this.searchQuery = query.trim();
@@ -275,7 +275,7 @@ export default {
       }
 
       // Verificar si el producto ya está en el carrito
-      const productoExistente = carrito.find(p => p.id === producto.id);
+      const productoExistente = carrito.find(p => p.codigo === producto.codigo);
       
       if (productoExistente) {
         // Aumentar cantidad
@@ -284,12 +284,13 @@ export default {
       } else {
         // Agregar nuevo producto
         carrito.push({
-          id: producto.id,
-          nombre: producto.nombre_producto,
+          codigo: producto.codigo,
+          producto: producto.producto,
           marca: producto.marca,
-          precio: producto.precio,
+          costoTotal: producto.costoTotal,
           cantidad: 1,
-          imagen_url: producto.imagen_url
+          imagen_url: producto.imagen_url,
+          medida: producto.medida
         });
         alert('Producto agregado al carrito');
       }
@@ -308,19 +309,19 @@ export default {
       });
     },
     getProductosPorCategoria(nombreCategoria) {
-      // Intentar encontrar productos cuya categoría coincida (insensible a mayúsculas)
+      // Intentar encontrar productos cuya marca coincida (insensible a mayúsculas)
       let productosFiltrados = this.productos.filter((producto) =>
-        producto.categoria?.toLowerCase() === nombreCategoria.toLowerCase()
+        producto.marca?.toLowerCase() === nombreCategoria.toLowerCase()
       );
 
-      // Si no hay coincidencia exacta, probar coincidencia parcial en la categoría
+      // Si no hay coincidencia exacta, probar coincidencia parcial en la marca
       if (productosFiltrados.length === 0) {
         productosFiltrados = this.productos.filter((producto) =>
-          producto.categoria?.toLowerCase().includes(nombreCategoria.toLowerCase())
+          producto.marca?.toLowerCase().includes(nombreCategoria.toLowerCase())
         );
       }
 
-      // Si aún así no hay productos para esa categoría, usamos un fallback
+      // Si aún así no hay productos para esa marca, usamos un fallback
       if (productosFiltrados.length === 0) {
         productosFiltrados = this.productos.slice(0, 6);
       }

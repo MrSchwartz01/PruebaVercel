@@ -24,27 +24,27 @@
           <div v-else-if="productos.length > 0" class="product-grid">
             <div
               v-for="producto in productos"
-              :key="producto.id"
+              :key="producto.codigo"
               class="product-card"
             >
               <div class="product-image">
                 <img
                   :src="producto.imagen_url"
-                  :alt="producto.nombre_producto"
+                  :alt="producto.producto"
                   loading="lazy"
                 />
               </div>
-    <h3>{{ producto.nombre_producto }}</h3>
-    <p>{{ producto.descripcion }}</p>
-    <p class="precio">Precio: ${{ producto.precio }}</p>
+    <h3>{{ producto.producto }}</h3>
+    <p>{{ producto.medida }}</p>
+    <p class="precio">Precio: ${{ producto.costoTotal }}</p>
     <p style="font-size: 0.75em; color: #999; margin: 0;">incluido IVA</p>
     
     <!-- Mostrar stock disponible -->
-    <p class="stock" :class="{ 'sin-stock': producto.stock === 0, 'pocas-unidades': producto.stock > 0 && producto.stock <= 5 }">
-      <strong>Stock:</strong> {{ obtenerTextoStock(producto.stock) }}
+    <p class="stock" :class="{ 'sin-stock': parseInt(producto.existenciaTotal) === 0, 'pocas-unidades': parseInt(producto.existenciaTotal) > 0 && parseInt(producto.existenciaTotal) <= 5 }">
+      <strong>Stock:</strong> {{ obtenerTextoStock(parseInt(producto.existenciaTotal)) }}
     </p>
   
-    <button @click="verDetalle(producto.id)">Ver Detalles</button>
+    <button @click="verDetalle(producto.codigo)">Ver Detalles</button>
   </div>
   
           </div>

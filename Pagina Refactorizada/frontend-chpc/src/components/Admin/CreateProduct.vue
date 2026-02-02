@@ -3,30 +3,13 @@
     <h2>Crear Nuevo Producto</h2>
     <form @submit.prevent="createProduct" class="product-form">
       <div class="form-group">
-        <label for="nombre">Nombre del Producto *</label>
-        <input v-model="product.nombre_producto" id="nombre" type="text" required />
+        <label for="codigo">Código del Producto *</label>
+        <input v-model="product.codigo" id="codigo" type="text" required />
       </div>
 
       <div class="form-group">
-        <label for="descripcion">Descripción *</label>
-        <textarea v-model="product.descripcion" id="descripcion" required></textarea>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="precio">Precio *</label>
-          <input v-model.number="product.precio" id="precio" type="number" step="0.01" min="0" required />
-        </div>
-
-        <div class="form-group">
-          <label for="stock">Stock *</label>
-          <input v-model.number="product.stock" id="stock" type="number" min="0" required />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="imagen_url">URL de la Imagen *</label>
-        <input v-model="product.imagen_url" id="imagen_url" type="text" required />
+        <label for="producto">Nombre del Producto *</label>
+        <input v-model="product.producto" id="producto" type="text" required />
       </div>
 
       <div class="form-row">
@@ -36,14 +19,33 @@
         </div>
 
         <div class="form-group">
-          <label for="color">Color</label>
-          <input v-model="product.color" id="color" type="text" />
+          <label for="medida">Medida</label>
+          <input v-model="product.medida" id="medida" type="text" />
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="erpId">ID ERP</label>
-        <input v-model="product.erpId" id="erpId" type="text" />
+      <div class="form-row">
+        <div class="form-group">
+          <label for="almacen">Almacén</label>
+          <input v-model="product.almacen" id="almacen" type="text" />
+        </div>
+
+        <div class="form-group">
+          <label for="garantia">Garantía</label>
+          <input v-model="product.garantia" id="garantia" type="text" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="costoTotal">Costo Total *</label>
+          <input v-model.number="product.costoTotal" id="costoTotal" type="number" step="0.01" min="0" required />
+        </div>
+
+        <div class="form-group">
+          <label for="existenciaTotal">Existencia Total *</label>
+          <input v-model="product.existenciaTotal" id="existenciaTotal" type="text" required />
+        </div>
       </div>
 
       <div v-if="error" class="error-message">{{ error }}</div>
@@ -64,14 +66,14 @@ export default {
   data() {
     return {
       product: {
-        nombre_producto: '',
-        descripcion: '',
-        precio: 0,
-        stock: 0,
-        imagen_url: '',
+        codigo: '',
+        producto: '',
         marca: '',
-        color: '',
-        erpId: ''
+        medida: '',
+        almacen: '',
+        garantia: '',
+        costoTotal: 0,
+        existenciaTotal: '0'
       },
       loading: false,
       error: '',
@@ -106,14 +108,14 @@ export default {
     },
     resetForm() {
       this.product = {
-        nombre_producto: '',
-        descripcion: '',
-        precio: 0,
-        stock: 0,
-        imagen_url: '',
+        codigo: '',
+        producto: '',
         marca: '',
-        color: '',
-        erpId: ''
+        medida: '',
+        almacen: '',
+        garantia: '',
+        costoTotal: 0,
+        existenciaTotal: '0'
       };
     }
   }

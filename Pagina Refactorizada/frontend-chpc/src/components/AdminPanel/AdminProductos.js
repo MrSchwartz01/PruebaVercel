@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       productos: [],
+      productosFiltrados: [],
       imagenes: [],
       cargando: true,
       cargandoImagenes: false,
@@ -18,6 +19,16 @@ export default {
       archivoSeleccionado: null,
       imagenPrincipal: false,
       formProducto: this.getEmptyForm(),
+      // Filtros
+      filtros: {
+        busqueda: '',
+        marca: '',
+        medida: '',
+        stock: '',
+      },
+      // Opciones disponibles para filtros
+      marcasDisponibles: [],
+      medidasDisponibles: [],
     };
   },
   async mounted() {
@@ -47,12 +58,83 @@ export default {
         // La API devuelve { data: [...], total, page, limit, totalPages }
         // Mostrar todos los productos, incluso inactivos
         this.productos = response.data.data || response.data;
+        this.productosFiltrados = [...this.productos];
+        this.extraerOpcionesFiltros();
       } catch (error) {
         console.error('Error al cargar productos:', error);
         alert('Error al cargar productos');
       } finally {
         this.cargando = false;
       }
+    },
+
+    extraerOpcionesFiltros() {
+      // Extraer marcas únicas
+      const marcasSet = new Set();
+      this.productos.forEach(p => {
+        if (p.marca) marcasSet.add(p.marca);
+      });
+      this.marcasDisponibles = Array.from(marcasSet).sort();
+
+      // Extraer medidas únicas
+      const medidasSet = new Set();
+      this.productos.forEach(p => {
+        if (p.medida) medidasSet.add(p.medida);
+      });
+      this.medidasDisponibles = Array.from(medidasSet).sort();
+    },
+
+    aplicarFiltros() {
+      let resultado = [...this.productos];
+
+      // Filtro por búsqueda de texto
+      if (this.filtros.busqueda) {
+        const busqueda = this.filtros.busqueda.toLowerCase();
+        resultado = resultado.filter(p =>
+          (p.producto && p.producto.toLowerCase().includes(busqueda)) ||
+          (p.codigo && p.codigo.toString().includes(busqueda)) ||
+          (p.marca && p.marca.toLowerCase().includes(busqueda))
+        );
+      }
+
+      // Filtro por marca
+      if (this.filtros.marca) {
+        resultado = resultado.filter(p => p.marca === this.filtros.marca);
+      }
+
+      // Filtro por medida
+      if (this.filtros.medida) {
+        resultado = resultado.filter(p => p.medida === this.filtros.medida);
+      }
+
+      // Filtro por stock
+      if (this.filtros.stock) {
+        resultado = resultado.filter(p => {
+          const stock = parseInt(p.existenciaTotal) || 0;
+          switch (this.filtros.stock) {
+            case 'con-stock':
+              return stock > 0;
+            case 'sin-stock':
+              return stock === 0;
+            case 'bajo-stock':
+              return stock > 0 && stock < 10;
+            default:
+              return true;
+          }
+        });
+      }
+
+      this.productosFiltrados = resultado;
+    },
+
+    limpiarFiltros() {
+      this.filtros = {
+        busqueda: '',
+        marca: '',
+        medida: '',
+        stock: '',
+      };
+      this.productosFiltrados = [...this.productos];
     },
 
     editarProducto(producto) {

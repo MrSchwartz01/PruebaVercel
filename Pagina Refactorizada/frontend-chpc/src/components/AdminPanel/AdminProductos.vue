@@ -7,12 +7,64 @@
       </button>
     </div>
 
+    <!-- Barra de filtros -->
+    <div class="filtros-bar">
+      <div class="filtro-grupo">
+        <label>Buscar:</label>
+        <input
+          type="text"
+          v-model="filtros.busqueda"
+          placeholder="Nombre, código o marca..."
+          @input="aplicarFiltros"
+          class="filtro-input"
+        />
+      </div>
+
+      <div class="filtro-grupo">
+        <label>Marca:</label>
+        <select v-model="filtros.marca" @change="aplicarFiltros" class="filtro-select">
+          <option value="">Todas</option>
+          <option v-for="marca in marcasDisponibles" :key="marca" :value="marca">
+            {{ marca }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filtro-grupo">
+        <label>Medida:</label>
+        <select v-model="filtros.medida" @change="aplicarFiltros" class="filtro-select">
+          <option value="">Todas</option>
+          <option v-for="medida in medidasDisponibles" :key="medida" :value="medida">
+            {{ medida }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filtro-grupo">
+        <label>Stock:</label>
+        <select v-model="filtros.stock" @change="aplicarFiltros" class="filtro-select">
+          <option value="">Todos</option>
+          <option value="con-stock">Con stock</option>
+          <option value="sin-stock">Sin stock</option>
+          <option value="bajo-stock">Bajo stock (&lt;10)</option>
+        </select>
+      </div>
+
+      <button @click="limpiarFiltros" class="btn btn-secondary btn-sm">
+        Limpiar filtros
+      </button>
+    </div>
+
+    <div class="resultados-info">
+      <span>Mostrando {{ productosFiltrados.length }} de {{ productos.length }} productos</span>
+    </div>
+
     <!-- Lista de productos -->
     <div v-if="cargando" class="loading">⏳ Cargando productos...</div>
 
     <div v-else class="productos-grid">
       <div
-        v-for="producto in productos"
+        v-for="producto in productosFiltrados"
         :key="producto.codigo"
         class="producto-card"
       >

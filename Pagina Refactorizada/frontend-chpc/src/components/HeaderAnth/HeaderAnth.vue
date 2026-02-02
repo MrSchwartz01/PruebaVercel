@@ -109,27 +109,7 @@
         <nav class="main-menu">
           <ul>
             <li><a href="/home">Inicio</a></li>
-            <li 
-              class="dropdown-menu"
-              @mouseenter="showProductsMenu = true"
-              @mouseleave="showProductsMenu = false"
-              @dblclick="goToCategorias"
-            >
-                <a href="#" @click.prevent>Productos</a>
-                <transition name="dropdown-fade">
-                  <div v-if="showProductsMenu" class="dropdown-wrapper">
-                  <ul class="dropdown-content">
-                    <li><a href="/productos/categoria/laptops">Laptops</a></li>
-                    <li><a href="/productos/categoria/componentes">Componentes</a></li>
-                    <li><a href="/productos/categoria/perifericos">Periféricos</a></li>
-                    <li><a href="/productos/categoria/almacenamiento">Almacenamiento</a></li>
-                    <li><a href="/productos/categoria/redes">Redes</a></li>
-                    <li><a href="/productos/categoria/audio">Audio</a></li>
-                    <li><a href="/productos/categoria/accesorios">Accesorios</a></li>
-                  </ul>
-                  </div>  
-                </transition>
-              </li> 
+            <li><a href="/productos">Productos</a></li>
             <li><a href="/promociones">Promociones</a></li>
             <li 
               class="dropdown-menu"

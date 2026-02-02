@@ -21,7 +21,6 @@ export default {
       // Filtros
       filtros: {
         marcas: [],
-        almacenes: [],
         medidas: [],
         precioMin: null,
         precioMax: null,
@@ -30,7 +29,6 @@ export default {
       
       // Opciones disponibles
       marcasDisponibles: [],
-      almacenesDisponibles: [],
       medidasDisponibles: [],
       precioMinimo: 0,
       precioMaximo: 0,
@@ -103,13 +101,6 @@ export default {
       });
       this.marcasDisponibles = Array.from(marcasSet).sort();
       
-      // Extraer almacenes únicos
-      const almacenesSet = new Set();
-      this.productos.forEach(p => {
-        if (p.almacen) almacenesSet.add(p.almacen);
-      });
-      this.almacenesDisponibles = Array.from(almacenesSet).sort();
-      
       // Extraer medidas únicas
       const medidasSet = new Set();
       this.productos.forEach(p => {
@@ -136,13 +127,6 @@ export default {
       if (this.filtros.marcas.length > 0) {
         resultado = resultado.filter(p => 
           this.filtros.marcas.includes(p.marca)
-        );
-      }
-      
-      // Filtro por almacén
-      if (this.filtros.almacenes.length > 0) {
-        resultado = resultado.filter(p => 
-          this.filtros.almacenes.includes(p.almacen)
         );
       }
       
@@ -202,7 +186,6 @@ export default {
     limpiarFiltros() {
       this.filtros = {
         marcas: [],
-        almacenes: [],
         medidas: [],
         precioMin: this.precioMinimo,
         precioMax: this.precioMaximo,

@@ -40,22 +40,6 @@
             </div>
           </div>
 
-          <!-- Filtro por Almacén -->
-          <div class="filtro-seccion">
-            <h3>Almacén</h3>
-            <div class="filtro-opciones">
-              <label v-for="almacen in almacenesDisponibles" :key="almacen" class="checkbox-label">
-                <input
-                  type="checkbox"
-                  :value="almacen"
-                  v-model="filtros.almacenes"
-                  @change="aplicarFiltros"
-                />
-                <span>{{ almacen }}</span>
-              </label>
-            </div>
-          </div>
-
           <!-- Filtro por Medida -->
           <div class="filtro-seccion">
             <h3>Medida</h3>

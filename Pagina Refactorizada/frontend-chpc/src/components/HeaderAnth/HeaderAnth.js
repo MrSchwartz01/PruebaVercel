@@ -88,8 +88,10 @@ export default {
             },
           );
 
-          this.sugerencias = Array.isArray(response.data)
-            ? response.data.slice(0, 8)
+          // Soportar tanto respuesta paginada como array directo
+          const productosData = response.data.data || response.data;
+          this.sugerencias = Array.isArray(productosData)
+            ? productosData.slice(0, 8)
             : [];
           this.mostrandoSugerencias = this.sugerencias.length > 0;
         } catch (error) {
@@ -152,7 +154,9 @@ export default {
           const response = await apiClient.get('/tienda/productos');
           console.log('Respuesta de API:', response.data);
           
-          const productos = Array.isArray(response.data) ? response.data : [];
+          // Soportar tanto respuesta paginada como array directo
+          const productosData = response.data.data || response.data;
+          const productos = Array.isArray(productosData) ? productosData : [];
           console.log('Total de productos:', productos.length);
           
           // Debug: Verificar si los productos tienen el campo marca

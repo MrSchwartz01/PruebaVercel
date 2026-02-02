@@ -108,7 +108,9 @@ export default {
 
       // Cargar Productos
       const productosResponse = await apiClient.get('/tienda/productos');
-      this.productos = productosResponse.data.map((producto) => ({
+      // Soportar tanto respuesta paginada como array directo
+      const productosData = productosResponse.data.data || productosResponse.data;
+      this.productos = productosData.map((producto) => ({
         ...producto,
         imagen_url:
           producto.media?.length > 0

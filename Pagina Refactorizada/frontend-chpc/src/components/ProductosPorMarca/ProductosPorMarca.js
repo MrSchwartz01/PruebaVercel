@@ -69,7 +69,8 @@ export default {
           params: { marca: marca }
         });
         
-        this.productos = response.data;
+        // Soportar tanto respuesta paginada como array directo
+        this.productos = response.data.data || response.data;
         
         if (this.productos.length === 0) {
           this.error = `No se encontraron productos de la marca ${marca}`;

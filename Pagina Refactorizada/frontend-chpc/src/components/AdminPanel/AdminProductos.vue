@@ -7,6 +7,34 @@
       </button>
     </div>
 
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+          v-model="searchQuery"
+          @input="onSearchInput"
+          type="text"
+          placeholder="Buscar por nombre, marca, medida, almacén o código..."
+          class="search-input"
+        />
+        <button 
+          v-if="searchQuery" 
+          @click="limpiarBusqueda" 
+          class="btn-clear-search"
+          title="Limpiar búsqueda"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="search-info">
+        <span v-if="totalProductos > 0">
+          Mostrando {{ productos.length }} de {{ totalProductos }} productos
+        </span>
+        <span v-else>No se encontraron productos</span>
+      </div>
+    </div>
+
     <!-- Lista de productos -->
     <div v-if="cargando" class="loading">⏳ Cargando productos...</div>
 
@@ -45,6 +73,58 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- Controles de paginación -->
+    <div v-if="!cargando && totalPages > 1" class="pagination-controls">
+      <button 
+        @click="irAPagina(1)" 
+        :disabled="currentPage === 1"
+        class="btn-pagination"
+        title="Primera página"
+      >
+        ⏮️
+      </button>
+      <button 
+        @click="paginaAnterior" 
+        :disabled="currentPage === 1"
+        class="btn-pagination"
+        title="Página anterior"
+      >
+        ◀️ Anterior
+      </button>
+      
+      <div class="pagination-numbers">
+        <button 
+          v-for="page in paginasVisibles" 
+          :key="page"
+          @click="irAPagina(page)"
+          :class="['btn-page', { active: page === currentPage }]"
+        >
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        @click="paginaSiguiente" 
+        :disabled="currentPage === totalPages"
+        class="btn-pagination"
+        title="Página siguiente"
+      >
+        Siguiente ▶️
+      </button>
+      <button 
+        @click="irAPagina(totalPages)" 
+        :disabled="currentPage === totalPages"
+        class="btn-pagination"
+        title="Última página"
+      >
+        ⏭️
+      </button>
+      
+      <span class="pagination-info">
+        Página {{ currentPage }} de {{ totalPages }}
+      </span>
     </div>
 
     <!-- Modal Editar Producto -->

@@ -44,8 +44,9 @@ export default {
         const response = await apiClient.get('/tienda/productos', {
           headers: { Authorization: `Bearer ${token}` },
         });
+        // La API devuelve { data: [...], total, page, limit, totalPages }
         // Mostrar todos los productos, incluso inactivos
-        this.productos = response.data;
+        this.productos = response.data.data || response.data;
       } catch (error) {
         console.error('Error al cargar productos:', error);
         alert('Error al cargar productos');

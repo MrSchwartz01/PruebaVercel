@@ -38,6 +38,11 @@
       <div v-if="activeTab === 'productos'" class="tab-panel">
         <AdminProductos />
       </div>
+
+      <!-- Tab de Garantías -->
+      <div v-if="activeTab === 'garantias'" class="tab-panel">
+        <AdminGarantias />
+      </div>
       
       <!-- Tab de Promociones -->
       <div v-if="activeTab === 'promociones'" class="tab-panel">

@@ -97,19 +97,22 @@
             <span>{{ producto.marca }}</span>
           </div>
 
+          <div class="detalle-item-garantia">
+            <strong>Garantía:</strong>
+            <div class="garantia-detalle">
+              <span class="garantia-tiempo">
+                {{ garantiaProducto.meses >= 12 
+                   ? Math.floor(garantiaProducto.meses / 12) + (Math.floor(garantiaProducto.meses / 12) === 1 ? ' año' : ' años')
+                   : garantiaProducto.meses + ' meses' 
+                }}
+              </span>
+              <p class="garantia-mensaje">{{ garantiaProducto.mensaje }}</p>
+            </div>
+          </div>
+
           <div class="detalle-item-compacto" v-if="producto.medida">
             <strong>Medida:</strong>
             <span>{{ producto.medida }}</span>
-          </div>
-
-          <div class="detalle-item-compacto" v-if="producto.almacen">
-            <strong>Almacén:</strong>
-            <span>{{ producto.almacen }}</span>
-          </div>
-
-          <div class="detalle-item-compacto" v-if="producto.garantia">
-            <strong>Garantía:</strong>
-            <span>{{ producto.garantia }}</span>
           </div>
 
           <div class="detalle-item-compacto stock-info">

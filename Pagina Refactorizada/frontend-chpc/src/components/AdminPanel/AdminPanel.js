@@ -1,6 +1,7 @@
 import apiClient from '@/services/api';
 import { API_BASE_URL } from '@/config/api';
 import AdminProductos from './AdminProductos.vue';
+import AdminGarantias from './AdminGarantias.vue';
 import NotificationsPanel from '../NotificationsPanel/NotificationsPanel.vue';
 import NotificationsBell from '../NotificationsPanel/NotificationsBell.vue';
 
@@ -8,6 +9,7 @@ export default {
   name: 'AdminPanelMain',
   components: {
     AdminProductos,
+    AdminGarantias,
     NotificationsPanel,
     NotificationsBell,
   },
@@ -18,6 +20,7 @@ export default {
       tabs: [
         { id: 'productos', label: 'Productos' },
         { id: 'promociones', label: 'Promociones' },
+        { id: 'garantias', label: 'Garantías' },
         { id: 'banners', label: 'Banners' },
         { id: 'logo', label: 'Logo' },
         { id: 'usuarios', label: 'Usuarios' },

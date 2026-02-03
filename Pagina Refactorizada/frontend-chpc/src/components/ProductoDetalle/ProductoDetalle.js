@@ -22,6 +22,9 @@ export default {
       zoomActivo: false,
       currentImageIndex: 0,
       carouselInterval: null,
+      // Garantías cargadas desde la API
+      garantiasPorMarca: {},
+      garantiaDefault: { meses: 6, mensaje: 'Garantía de 6 meses por defecto' },
     };
   },
   computed: {
@@ -31,6 +34,33 @@ export default {
         return this.imagenes[this.currentImageIndex].ruta_imagen;
       }
       return '/placeholder.jpg';
+    },
+    // Computed property para obtener la garantía según la marca
+    garantiaProducto() {
+      if (!this.producto || !this.producto.marca) {
+        return this.garantiaDefault;
+      }
+      
+      const marca = this.producto.marca.trim();
+      
+      // Buscar coincidencia exacta primero
+      if (this.garantiasPorMarca[marca]) {
+        return this.garantiasPorMarca[marca];
+      }
+      
+      // Buscar coincidencia parcial (case insensitive)
+      const marcaKey = Object.keys(this.garantiasPorMarca).find(key => 
+        key.toLowerCase() === marca.toLowerCase() ||
+        marca.toLowerCase().includes(key.toLowerCase()) ||
+        key.toLowerCase().includes(marca.toLowerCase())
+      );
+      
+      if (marcaKey) {
+        return this.garantiasPorMarca[marcaKey];
+      }
+      
+      // Retornar garantía por defecto
+      return this.garantiaDefault;
     },
     mostrarStock() {
       if (!this.producto) return '';
@@ -204,9 +234,29 @@ export default {
         params: { id: productoCodigo }
       });
     },
+    async cargarGarantias() {
+      try {
+        const response = await apiClient.get('/garantias/activas');
+        const garantias = response.data || [];
+        
+        // Convertir array a objeto para búsqueda rápida por marca
+        this.garantiasPorMarca = {};
+        garantias.forEach(g => {
+          this.garantiasPorMarca[g.marca] = {
+            meses: g.meses,
+            mensaje: g.mensaje
+          };
+        });
+      } catch (error) {
+        console.warn('No se pudieron cargar las garantías desde la API:', error);
+        // Mantener el objeto vacío, se usará la garantía por defecto
+      }
+    },
   },
   async created() {
     this.isAuthenticated = !!localStorage.getItem("access_token");
+    // Cargar garantías desde la API
+    await this.cargarGarantias();
     // El watch de $route.params.id se encargará de cargar el producto
     // con immediate: true
   },

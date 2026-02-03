@@ -349,6 +349,42 @@
   color: #6c757d;
 }
 
+/* Estilos para la sección de garantía */
+.detalle-item-garantia {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e9ecef;
+  align-items: start;
+}
+
+.detalle-item-garantia strong {
+  font-size: 14px;
+  color: #495057;
+  font-weight: 600;
+}
+
+.garantia-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.garantia-tiempo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.garantia-mensaje {
+  font-size: 12px;
+  color: #6c757d;
+  margin: 0;
+  font-style: italic;
+  line-height: 1.4;
+}
+
 .descripcion-texto,
 .especificaciones-texto {
   font-size: 14px;

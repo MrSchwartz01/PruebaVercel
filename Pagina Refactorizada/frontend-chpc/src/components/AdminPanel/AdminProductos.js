@@ -140,7 +140,17 @@ export default {
     editarProducto(producto) {
       this.editando = true;
       this.productoActual = producto;
-      this.formProducto = { ...producto };
+      // Solo copiar los campos editables del formulario
+      this.formProducto = {
+        codigo: producto.codigo,
+        producto: producto.producto || '',
+        marca: producto.marca || '',
+        medida: producto.medida || '',
+        almacen: producto.almacen || '',
+        garantia: producto.garantia || '',
+        costoTotal: producto.costoTotal || 0,
+        existenciaTotal: producto.existenciaTotal || '0',
+      };
       this.showEditModal = true;
     },
 
@@ -150,11 +160,22 @@ export default {
         const token = localStorage.getItem('access_token');
         const headers = { Authorization: `Bearer ${token}` };
 
+        // Preparar solo los campos válidos para el backend
+        const datosProducto = {
+          producto: this.formProducto.producto,
+          marca: this.formProducto.marca,
+          medida: this.formProducto.medida,
+          almacen: this.formProducto.almacen,
+          garantia: this.formProducto.garantia,
+          costoTotal: parseFloat(this.formProducto.costoTotal) || 0,
+          existenciaTotal: this.formProducto.existenciaTotal?.toString() || '0',
+        };
+
         if (this.editando) {
           // Actualizar producto existente
           await apiClient.put(
             `/tienda/productos/${this.productoActual.codigo}`,
-            this.formProducto,
+            datosProducto,
             { headers }
           );
           alert('Producto actualizado correctamente');

@@ -52,11 +52,12 @@ export default {
       try {
         this.cargando = true;
         const token = localStorage.getItem('access_token');
-        const response = await apiClient.get('/tienda/productos', {
+        // Usar endpoint de admin que muestra TODOS los productos (sin filtros de stock/precio)
+        const response = await apiClient.get('/tienda/productos/admin/todos', {
           headers: { Authorization: `Bearer ${token}` },
         });
         // La API devuelve { data: [...], total, page, limit, totalPages }
-        // Mostrar todos los productos, incluso inactivos
+        // Mostrar todos los productos, incluso sin stock o sin precio
         this.productos = response.data.data || response.data;
         this.productosFiltrados = [...this.productos];
         this.extraerOpcionesFiltros();

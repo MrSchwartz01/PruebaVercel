@@ -36,7 +36,14 @@ export default {
         this.garantias = response.data || [];
       } catch (err) {
         console.error('Error al cargar garantías:', err);
-        this.error = 'Error al cargar las garantías. Por favor, intenta de nuevo.';
+        if (err.response?.status === 401) {
+          this.error = 'No tienes permisos para acceder a esta sección o el módulo no está disponible.';
+        } else if (err.response?.status === 404) {
+          this.error = 'El módulo de garantías no está disponible. Verifica que el backend esté desplegado.';
+        } else {
+          this.error = 'Error al cargar las garantías. Por favor, intenta de nuevo.';
+        }
+        this.garantias = [];
       } finally {
         this.cargando = false;
       }
@@ -47,7 +54,8 @@ export default {
         const response = await apiClient.get('/garantias/marcas-productos');
         this.marcasDisponibles = response.data || [];
       } catch (err) {
-        console.error('Error al cargar marcas:', err);
+        console.warn('Error al cargar marcas:', err);
+        this.marcasDisponibles = [];
       }
     },
 

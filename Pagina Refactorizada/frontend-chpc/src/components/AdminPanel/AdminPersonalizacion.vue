@@ -1,8 +1,9 @@
 <template>
   <div class="admin-personalizacion">
-    <h2>🎨 Personalización del Sitio</h2>
+    <h2>Personalización de la página</h2>
     <p class="descripcion">
-      Personaliza los colores de énfasis de tu tienda. Los cambios se aplicarán inmediatamente en todo el sitio.
+      Personaliza los colores de énfasis de tu tienda.
+      Los cambios se aplicarán inmediatamente en todo el sitio.
     </p>
 
     <div class="colores-section">
@@ -142,14 +143,14 @@
           @click="guardarColores"
           :disabled="guardando"
         >
-          {{ guardando ? 'Guardando...' : '💾 Guardar Cambios' }}
+          {{ guardando ? 'Guardando...' : 'Guardar Cambios' }}
         </button>
         <button 
           class="btn btn-secondary" 
           @click="resetearColores"
           :disabled="guardando"
         >
-          🔄 Restablecer Valores por Defecto
+          Restablecer Valores por Defecto
         </button>
       </div>
 

@@ -59,11 +59,8 @@ export default {
     async cargarProductos() {
       try {
         this.cargando = true;
-        const token = localStorage.getItem('access_token');
-        // Usar endpoint de admin que muestra TODOS los productos (sin filtros de stock/precio)
-        const response = await apiClient.get('/tienda/productos/admin/todos', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        // El interceptor de apiClient ya agrega el token automáticamente
+        const response = await apiClient.get('/tienda/productos/admin/todos');
         // La API devuelve { data: [...], total, page, limit, totalPages }
         // Mostrar todos los productos, incluso sin stock o sin precio
         this.productos = response.data.data || response.data;
@@ -71,7 +68,16 @@ export default {
         this.extraerOpcionesFiltros();
       } catch (error) {
         console.error('Error al cargar productos:', error);
-        alert('Error al cargar productos');
+        // Verificar si es error de autenticación
+        if (error.response?.status === 401) {
+          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
+          // Redirigir al login si el token es inválido
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          window.location.href = '/login';
+        } else {
+          alert('Error al cargar productos');
+        }
       } finally {
         this.cargando = false;
       }

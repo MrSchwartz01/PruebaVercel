@@ -2,6 +2,7 @@ import apiClient from '@/services/api';
 import { API_BASE_URL } from '@/config/api';
 import AdminProductos from './AdminProductos.vue';
 import AdminGarantias from './AdminGarantias.vue';
+import AdminPersonalizacion from './AdminPersonalizacion.vue';
 import NotificationsPanel from '../NotificationsPanel/NotificationsPanel.vue';
 import NotificationsBell from '../NotificationsPanel/NotificationsBell.vue';
 
@@ -10,6 +11,7 @@ export default {
   components: {
     AdminProductos,
     AdminGarantias,
+    AdminPersonalizacion,
     NotificationsPanel,
     NotificationsBell,
   },
@@ -23,6 +25,7 @@ export default {
         { id: 'garantias', label: 'Garantías' },
         { id: 'banners', label: 'Banners' },
         { id: 'logo', label: 'Logo' },
+        { id: 'personalizacion', label: '🎨 Personalización' },
         { id: 'usuarios', label: 'Usuarios' },
         { id: 'permisos', label: 'Permisos Temporales' },
       ],

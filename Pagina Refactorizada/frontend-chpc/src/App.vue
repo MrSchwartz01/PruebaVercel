@@ -8,6 +8,7 @@
 <script>
 import WhatsAppWidget from './components/WhatsAppWidget/WhatsAppWidget.vue';
 import inactivityService from './services/inactivityService';
+import apiClient from './services/api';
 
 export default {
   name: 'App',
@@ -27,6 +28,9 @@ export default {
     const savedTheme = localStorage.getItem('theme');
     this.isDarkMode = savedTheme === 'dark';
     this.applyTheme();
+
+    // Cargar colores de énfasis personalizados
+    this.loadSiteColors();
 
     // Escuchar cambios de tema
     window.addEventListener('theme-changed', this.handleThemeChange);
@@ -57,6 +61,39 @@ export default {
       } else {
         document.body.classList.remove('dark-mode');
       }
+    },
+
+    // Cargar colores de énfasis desde el backend o localStorage
+    async loadSiteColors() {
+      try {
+        // Primero intentar cargar desde localStorage para una respuesta inmediata
+        const cachedColors = localStorage.getItem('site_colors');
+        if (cachedColors) {
+          this.applySiteColors(JSON.parse(cachedColors));
+        }
+
+        // Luego obtener los colores más recientes del servidor
+        const response = await apiClient.get('/configuracion/colores/tema');
+        if (response.data && response.data.valor) {
+          const colores = response.data.valor;
+          this.applySiteColors(colores);
+          // Actualizar cache
+          localStorage.setItem('site_colors', JSON.stringify(colores));
+        }
+      } catch (error) {
+        console.log('Usando colores por defecto');
+        // Los colores por defecto ya están en CSS :root
+      }
+    },
+
+    // Aplicar colores a las variables CSS
+    applySiteColors(colores) {
+      const root = document.documentElement;
+      if (colores.primary) root.style.setProperty('--color-primary', colores.primary);
+      if (colores.primaryDark) root.style.setProperty('--color-primary-dark', colores.primaryDark);
+      if (colores.primaryLight) root.style.setProperty('--color-primary-light', colores.primaryLight);
+      if (colores.success) root.style.setProperty('--color-success', colores.success);
+      if (colores.error) root.style.setProperty('--color-error', colores.error);
     },
     
     // Sistema de monitoreo de inactividad

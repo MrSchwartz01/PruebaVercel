@@ -277,6 +277,11 @@
         </div>
       </div>
 
+      <!-- Tab de Personalización -->
+      <div v-if="activeTab === 'personalizacion' && isAdmin" class="tab-panel">
+        <AdminPersonalizacion />
+      </div>
+
       <!-- Tab de Usuarios -->
       <div v-if="activeTab === 'usuarios' && isAdmin" class="tab-panel">
         <h2>Gestión de Usuarios</h2>

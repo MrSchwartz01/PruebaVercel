@@ -110,8 +110,12 @@ export default {
     };
   },
 
-  mounted() {
-    this.checkAuth();
+  async mounted() {
+    // Primero verificar autenticación
+    const isValid = await this.checkAuth();
+    if (!isValid) return;
+    
+    // Solo cargar datos si la autenticación es válida
     this.loadPromociones();
     this.loadProductos();
     this.loadBanners();
@@ -128,8 +132,27 @@ export default {
       this.$router.push('/home');
     },
     
-    checkAuth() {
+    async checkAuth() {
       const role = localStorage.getItem('user_rol');
+      const token = localStorage.getItem('access_token');
+      
+      // Verificar que hay un token
+      if (!token) {
+        console.error('❌ No hay token de acceso, redirigiendo al login');
+        this.$router.push('/login');
+        return false;
+      }
+      
+      // Verificar el token con el backend
+      try {
+        await apiClient.get('/auth/verificar');
+        console.log('✅ Token válido');
+      } catch (error) {
+        console.error('❌ Token inválido o expirado');
+        // El interceptor de apiClient manejará el refresh o redirigirá al login
+        return false;
+      }
+      
       this.userRole = role;
       this.isAdmin = role === 'administrador';
       this.isVendedor = role === 'vendedor';
@@ -137,7 +160,10 @@ export default {
       if (role !== 'administrador' && role !== 'vendedor') {
         this.$router.push('/');
         alert('Acceso denegado: Solo administradores y vendedores');
+        return false;
       }
+      
+      return true;
     },
 
     async loadPermisosVendedor() {
@@ -395,23 +421,23 @@ export default {
     // ========== USUARIOS ==========
     async loadUsuarios() {
       try {
-        const response = await apiClient.get('/usuarios',
-          this.getAuthHeaders()
-        );
+        // apiClient ya incluye el token automáticamente via interceptor
+        const response = await apiClient.get('/usuarios');
         this.usuarios = response.data;
       } catch (error) {
         console.error('Error al cargar usuarios:', error);
+        // Si es 401, el interceptor redirigirá al login
       }
     },
 
     async loadCurrentUserId() {
       try {
-        const response = await apiClient.get('/usuarios/perfil',
-          this.getAuthHeaders()
-        );
+        // apiClient ya incluye el token automáticamente via interceptor
+        const response = await apiClient.get('/usuarios/perfil');
         this.currentUserId = response.data.id;
       } catch (error) {
         console.error('Error al obtener ID del usuario actual:', error);
+        // Si es 401, el interceptor redirigirá al login
       }
     },
 

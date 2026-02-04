@@ -60,6 +60,7 @@ export default {
       try {
         this.cargando = true;
         // El interceptor de apiClient ya agrega el token automáticamente
+        // y manejará errores 401 (incluyendo refresh token y redirección al login)
         const response = await apiClient.get('/tienda/productos/admin/todos');
         // La API devuelve { data: [...], total, page, limit, totalPages }
         // Mostrar todos los productos, incluso sin stock o sin precio
@@ -68,15 +69,9 @@ export default {
         this.extraerOpcionesFiltros();
       } catch (error) {
         console.error('Error al cargar productos:', error);
-        // Verificar si es error de autenticación
-        if (error.response?.status === 401) {
-          alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-          // Redirigir al login si el token es inválido
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-          window.location.href = '/login';
-        } else {
-          alert('Error al cargar productos');
+        // Solo mostrar mensaje si no es error 401 (el interceptor ya lo maneja)
+        if (error.response?.status !== 401) {
+          alert('Error al cargar productos: ' + (error.response?.data?.message || error.message));
         }
       } finally {
         this.cargando = false;

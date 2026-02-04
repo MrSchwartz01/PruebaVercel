@@ -163,7 +163,7 @@ export default {
       this.mensaje = '';
 
       try {
-        const response = await apiClient.post('/configuracion/colores/reset');
+        await apiClient.post('/configuracion/colores/reset');
         
         // Restaurar colores por defecto
         this.colores = {

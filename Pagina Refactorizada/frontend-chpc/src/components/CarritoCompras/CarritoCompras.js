@@ -57,6 +57,13 @@ export default {
     }
   },
   methods: {
+    handleImageError(event) {
+      // Prevenir loop infinito: solo cambiar si no es ya el placeholder
+      if (!event.target.dataset.fallback) {
+        event.target.dataset.fallback = 'true';
+        event.target.src = '/placeholder_product.jpg';
+      }
+    },
     async cargarDatosUsuario() {
       try {
         const token = localStorage.getItem('access_token');

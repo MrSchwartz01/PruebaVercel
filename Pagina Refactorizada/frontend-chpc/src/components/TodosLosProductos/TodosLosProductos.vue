@@ -155,9 +155,10 @@
             >
               <div class="producto-imagen">
                 <img 
-                  :src="producto.imagen_url || '/placeholder.jpg'" 
+                  :src="producto.imagen_url || '/placeholder_product.jpg'" 
                   :alt="producto.producto"
                   @error="handleImageError"
+                  loading="lazy"
                 />
                 <span v-if="parseInt(producto.existenciaTotal) === 0" class="badge sin-stock">Sin Stock</span>
                 <span v-else-if="parseInt(producto.existenciaTotal) < 10" class="badge poco-stock">Pocas unidades</span>

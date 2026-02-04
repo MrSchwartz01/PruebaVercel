@@ -94,8 +94,10 @@
     <!-- Contenedor de imagen -->
     <div class="product-image-wrapper">
       <img
-        :src="producto.imagen_url || '/placeholder.jpg'"
+        :src="producto.imagen_url || '/placeholder_product.jpg'"
         :alt="producto.producto"
+        @error="handleImageError"
+        loading="lazy"
       />
     </div>
     <!-- Información del producto -->

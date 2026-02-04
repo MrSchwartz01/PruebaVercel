@@ -33,7 +33,7 @@ export default {
         // Usar el índice actual del carousel
         return this.imagenes[this.currentImageIndex].ruta_imagen;
       }
-      return '/placeholder.jpg';
+      return '/placeholder_product.jpg';
     },
     // Computed property para obtener la garantía según la marca
     garantiaProducto() {
@@ -75,6 +75,13 @@ export default {
     }
   },
   methods: {
+    handleImageError(event) {
+      // Prevenir loop infinito: solo cambiar si no es ya el placeholder
+      if (!event.target.dataset.fallback) {
+        event.target.dataset.fallback = 'true';
+        event.target.src = '/placeholder_product.jpg';
+      }
+    },
     async cargarProducto() {
       this.isLoading = true;
       this.errorMessage = "";

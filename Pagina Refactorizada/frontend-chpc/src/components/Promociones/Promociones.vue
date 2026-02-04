@@ -138,7 +138,7 @@ export default {
         const imagenPrincipal = producto.productImages.find(img => img.es_principal);
         return imagenPrincipal ? imagenPrincipal.ruta_imagen : producto.productImages[0].ruta_imagen;
       }
-      return producto.imagen_url || '/Productos/placeholder-product.png';
+      return producto.imagen_url || '/placeholder_product.jpg';
     },
     
     verDetalleProducto(productoId) {
@@ -149,11 +149,15 @@ export default {
     },
     
     obtenerImagenProducto(producto) {
-      return producto.imagen_url || '/Productos/placeholder-product.png';
+      return producto.imagen_url || '/placeholder_product.jpg';
     },
     
     manejarErrorImagen(event) {
-      event.target.src = '/Productos/placeholder-product.png';
+      // Prevenir loop infinito: solo cambiar si no es ya el placeholder
+      if (!event.target.dataset.fallback) {
+        event.target.dataset.fallback = 'true';
+        event.target.src = '/placeholder_product.jpg';
+      }
     },
     
     formatPrice(price) {

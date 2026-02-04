@@ -42,7 +42,13 @@
                 class="producto-item"
               >
                 <div class="item-image-wrapper">
-                  <img :src="item.imagen_url || '/placeholder.jpg'" :alt="item.producto" class="item-image" />
+                  <img 
+                    :src="item.imagen_url || '/placeholder_product.jpg'" 
+                    :alt="item.producto" 
+                    class="item-image" 
+                    loading="lazy"
+                    @error="handleImageError"
+                  />
                 </div>
 
                 <div class="item-details">

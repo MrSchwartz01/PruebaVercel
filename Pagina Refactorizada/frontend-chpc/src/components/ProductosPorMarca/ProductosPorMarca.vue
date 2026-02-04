@@ -29,9 +29,10 @@
             >
               <div class="product-image">
                 <img
-                  :src="producto.imagen_url || '/placeholder.jpg'"
+                  :src="producto.imagen_url || '/placeholder_product.jpg'"
                   :alt="producto.producto"
                   loading="lazy"
+                  @error="handleImageError"
                 />
               </div>
     <h3>{{ producto.producto }}</h3>

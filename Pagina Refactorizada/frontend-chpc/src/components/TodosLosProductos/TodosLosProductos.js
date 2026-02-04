@@ -303,7 +303,11 @@ export default {
     },
     
     handleImageError(event) {
-      event.target.src = '/placeholder.jpg';
+      // Prevenir loop infinito: solo cambiar si no es ya el placeholder
+      if (!event.target.dataset.fallback) {
+        event.target.dataset.fallback = 'true';
+        event.target.src = '/placeholder_product.jpg';
+      }
     },
     
     obtenerIconoCategoria(nombreCategoria) {

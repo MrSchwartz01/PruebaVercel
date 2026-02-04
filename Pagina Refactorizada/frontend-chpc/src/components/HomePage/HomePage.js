@@ -115,7 +115,7 @@ export default {
         imagen_url:
           producto.media?.length > 0
             ? `https://backend-chpc.vercel.app${producto.media[0].url}`
-            : producto.imagen_url || "/placeholder.jpg",
+            : producto.imagen_url || "/placeholder_product.jpg",
       }));
       
       console.log('Total de productos cargados:', this.productos.length);
@@ -241,6 +241,13 @@ export default {
     },
     verDetalle(codigo) {
       this.$router.push({ name: "ProductoDetalle", params: { id: codigo } });
+    },
+    handleImageError(event) {
+      // Prevenir loop infinito: solo cambiar si no es ya el placeholder
+      if (!event.target.dataset.fallback) {
+        event.target.dataset.fallback = 'true';
+        event.target.src = '/placeholder_product.jpg';
+      }
     },
     buscarProductos(query) {
       this.searchQuery = query.trim();

@@ -42,6 +42,7 @@
             :alt="producto.producto"
             class="imagen-producto-principal"
             @click="abrirZoom"
+            @error="handleImageError"
             style="cursor: zoom-in;"
           />
           

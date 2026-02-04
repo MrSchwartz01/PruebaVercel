@@ -145,8 +145,9 @@ export default {
         const token = localStorage.getItem('access_token');
         
         // Preparar items para el backend
+        // Asegurar que productId sea un número entero
         const items = this.productosCarrito.map(producto => ({
-          productId: producto.codigo, // Ahora es código tipo string
+          productId: parseInt(producto.codigo, 10),
           cantidad: producto.cantidad
         }));
 

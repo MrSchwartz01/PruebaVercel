@@ -24,7 +24,7 @@
         :class="['tab-button', { active: activeTab === 'notificaciones' }]"
         @click="activeTab = 'notificaciones'"
       >
-        🔔 Notificaciones
+        Notificaciones
       </button>
     </div>
 

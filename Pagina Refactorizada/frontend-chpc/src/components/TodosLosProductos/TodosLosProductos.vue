@@ -9,11 +9,19 @@
 
     <div class="todos-productos-container">
       <div class="page-header">
-        <h1>Todos los Productos</h1>
+        <h1>{{ searchQuery ? 'Resultados de búsqueda' : 'Todos los Productos' }}</h1>
         <p class="breadcrumb">
           <router-link to="/home">Inicio</router-link> /
-          <span>Productos</span>
+          <span v-if="searchQuery">Búsqueda: "{{ searchQuery }}"</span>
+          <span v-else>Productos</span>
         </p>
+        <!-- Indicador de búsqueda activa -->
+        <div v-if="searchQuery" class="search-indicator">
+          <span class="search-tag">
+            Buscando: <strong>{{ searchQuery }}</strong>
+            <button @click="limpiarBusqueda" class="clear-search-btn" title="Limpiar búsqueda">×</button>
+          </span>
+        </div>
       </div>
 
       <div class="productos-layout">

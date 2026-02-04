@@ -69,6 +69,25 @@ export default {
   async mounted() {
     this.verificarAutenticacion();
     await this.cargarProductos();
+    
+    // Leer búsqueda desde URL si existe
+    const searchFromUrl = this.$route.query.search;
+    if (searchFromUrl) {
+      this.searchQuery = searchFromUrl;
+      this.aplicarFiltrosConBusqueda();
+    }
+  },
+  watch: {
+    // Observar cambios en la URL para actualizar la búsqueda
+    '$route.query.search': {
+      handler(newSearch) {
+        if (newSearch !== undefined) {
+          this.searchQuery = newSearch || '';
+          this.aplicarFiltrosConBusqueda();
+        }
+      },
+      immediate: false
+    }
   },
   methods: {
     verificarAutenticacion() {
@@ -122,42 +141,8 @@ export default {
     },
     
     aplicarFiltros() {
-      let resultado = [...this.productos];
-      
-      // Filtro por marca
-      if (this.filtros.marcas.length > 0) {
-        resultado = resultado.filter(p => 
-          this.filtros.marcas.includes(p.marca)
-        );
-      }
-      
-      // Filtro por medida
-      if (this.filtros.medidas.length > 0) {
-        resultado = resultado.filter(p => 
-          this.filtros.medidas.includes(p.medida)
-        );
-      }
-      
-      // Filtro por precio
-      if (this.filtros.precioMin !== null) {
-        resultado = resultado.filter(p => 
-          parseFloat(p.costoTotal) >= this.filtros.precioMin
-        );
-      }
-      if (this.filtros.precioMax !== null) {
-        resultado = resultado.filter(p => 
-          parseFloat(p.costoTotal) <= this.filtros.precioMax
-        );
-      }
-      
-      // Filtro por stock
-      if (this.filtros.soloDisponibles) {
-        resultado = resultado.filter(p => parseInt(p.existenciaTotal) > 0);
-      }
-      
-      this.productosFiltrados = resultado;
-      this.paginaActual = 1; // Resetear a la primera página
-      this.aplicarOrdenamiento();
+      // Usar la función unificada que incluye búsqueda
+      this.aplicarFiltrosConBusqueda();
     },
     
     aplicarOrdenamiento() {
@@ -232,7 +217,71 @@ export default {
     
     buscarProductos(query) {
       this.searchQuery = query;
-      // Implementar búsqueda si es necesario
+      this.aplicarFiltrosConBusqueda();
+    },
+    
+    aplicarFiltrosConBusqueda() {
+      let resultado = [...this.productos];
+      const searchTerm = this.searchQuery.toLowerCase().trim();
+      
+      // Filtro por búsqueda de texto
+      if (searchTerm) {
+        resultado = resultado.filter(p => {
+          const nombre = (p.producto || '').toLowerCase();
+          const marca = (p.marca || '').toLowerCase();
+          const medida = (p.medida || '').toLowerCase();
+          const almacen = (p.almacen || '').toLowerCase();
+          const codigo = String(p.codigo || '').toLowerCase();
+          
+          return nombre.includes(searchTerm) ||
+                 marca.includes(searchTerm) ||
+                 medida.includes(searchTerm) ||
+                 almacen.includes(searchTerm) ||
+                 codigo.includes(searchTerm);
+        });
+      }
+      
+      // Filtro por marca
+      if (this.filtros.marcas.length > 0) {
+        resultado = resultado.filter(p => 
+          this.filtros.marcas.includes(p.marca)
+        );
+      }
+      
+      // Filtro por medida
+      if (this.filtros.medidas.length > 0) {
+        resultado = resultado.filter(p => 
+          this.filtros.medidas.includes(p.medida)
+        );
+      }
+      
+      // Filtro por precio
+      if (this.filtros.precioMin !== null) {
+        resultado = resultado.filter(p => 
+          parseFloat(p.costoTotal) >= this.filtros.precioMin
+        );
+      }
+      if (this.filtros.precioMax !== null) {
+        resultado = resultado.filter(p => 
+          parseFloat(p.costoTotal) <= this.filtros.precioMax
+        );
+      }
+      
+      // Filtro por stock
+      if (this.filtros.soloDisponibles) {
+        resultado = resultado.filter(p => parseInt(p.existenciaTotal) > 0);
+      }
+      
+      this.productosFiltrados = resultado;
+      this.paginaActual = 1;
+      this.aplicarOrdenamiento();
+    },
+    
+    limpiarBusqueda() {
+      this.searchQuery = '';
+      // Actualizar URL removiendo el parámetro search
+      this.$router.replace({ path: '/productos' });
+      this.aplicarFiltrosConBusqueda();
     },
     
     cerrarSesion() {

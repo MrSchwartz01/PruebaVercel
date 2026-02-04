@@ -51,13 +51,9 @@ export default {
           this.mostrandoSugerencias = false;
           this.sugerencias = [];
           
-          // Si estamos en HomePage, emitir evento
-          if (this.$route.name === 'HomePage') {
-            this.$emit('buscar', query);
-          } else {
-            // Si estamos en otra página, redirigir a HomePage con búsqueda
-            this.$router.push({ name: 'HomePage', query: { search: query } });
-          }
+          // Siempre redirigir a la página de productos con la búsqueda
+          // Esto permite ver todos los resultados filtrados
+          this.$router.push({ path: '/productos', query: { search: query } });
         }
       },
       onInput() {

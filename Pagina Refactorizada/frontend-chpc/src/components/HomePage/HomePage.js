@@ -210,7 +210,7 @@ export default {
             const marca = (producto.marca || "").toLowerCase();
             const medida = (producto.medida || "").toLowerCase();
             const almacen = (producto.almacen || "").toLowerCase();
-            const codigo = (producto.codigo || "").toLowerCase();
+            const codigo = String(producto.codigo || "").toLowerCase();
             
             return nombre.includes(query) ||
                    marca.includes(query) ||

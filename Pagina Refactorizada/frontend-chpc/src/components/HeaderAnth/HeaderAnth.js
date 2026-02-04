@@ -61,7 +61,7 @@ export default {
         }
       },
       onInput() {
-        this.buscarProductos();
+        // Solo programar sugerencias, NO ejecutar búsqueda completa en cada tecla
         this.programarCargaSugerencias();
       },
       programarCargaSugerencias() {

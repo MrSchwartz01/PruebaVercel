@@ -132,15 +132,16 @@ export default {
       // Combinar promociones con productos
       this.aplicarPromocionesAProductos();
       
-      this.cargarMasProductos();
+      // Procesar la búsqueda inicial DESPUÉS de cargar productos (si existe)
+      const search = this.$route.query.search;
+      if (search) {
+        this.searchQuery = search;
+        this.buscarProductos(search);
+      } else {
+        this.cargarMasProductos();
+      }
     } catch (error) {
       console.error("Error al cargar los datos:", error);
-    }
-
-    // Procesar la búsqueda inicial (si existe)
-    const search = this.$route.query.search;
-    if (search) {
-      this.buscarProductos(search);
     }
   },
   computed: {

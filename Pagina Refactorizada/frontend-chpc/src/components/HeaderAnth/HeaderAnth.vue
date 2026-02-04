@@ -16,6 +16,7 @@
               v-model="localSearchQuery"
               placeholder="¿Qué estás buscando hoy?"
               @input="onInput"
+              @keyup.enter="buscarProductos"
               @focus="programarCargaSugerencias"
               @blur="cerrarSugerencias"
               aria-label="Buscar productos"
